@@ -527,9 +527,7 @@ const checkBusinessStatus = async () => {
           />
         );
         
-      case 'balance':
-        return <BalanceScreen />;
-        
+         
       case 'subscriptions':
         return <SubscriptionsScreen />;
         

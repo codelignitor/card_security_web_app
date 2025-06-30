@@ -111,44 +111,7 @@ function DevelopersScreen() {
           </div>
         </div>
 
-        {/* SDK Downloads */}
-        <div className="p-4 border rounded-lg">
-          <h3 className="font-semibold mb-2">SDK Downloads</h3>
-          <p className="text-gray-600 text-sm mb-4">Download our official SDKs for popular programming languages.</p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div className="p-3 border rounded-md text-center">
-              <div className="text-2xl mb-2">🟢</div>
-              <h4 className="font-medium text-sm mb-2">Node.js</h4>
-              <button 
-                onClick={() => handleDownloadSDK('Node.js')}
-                className="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200 w-full"
-              >
-                Download
-              </button>
-            </div>
-            <div className="p-3 border rounded-md text-center">
-              <div className="text-2xl mb-2">🐍</div>
-              <h4 className="font-medium text-sm mb-2">Python</h4>
-              <button 
-                onClick={() => handleDownloadSDK('Python')}
-                className="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200 w-full"
-              >
-                Download
-              </button>
-            </div>
-            <div className="p-3 border rounded-md text-center">
-              <div className="text-2xl mb-2">🐘</div>
-              <h4 className="font-medium text-sm mb-2">PHP</h4>
-              <button 
-                onClick={() => handleDownloadSDK('PHP')}
-                className="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200 w-full"
-              >
-                Download
-              </button>
-            </div>
-          </div>
-        </div>
+   
 
         {/* API Documentation */}
         <div className="p-4 border rounded-lg">

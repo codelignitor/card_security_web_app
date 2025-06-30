@@ -40,7 +40,7 @@ function BusinessScreen({
             </div>
           )}
           
-          <div className="bg-gray-50 rounded-lg p-4 mb-6">
+          {/* <div className="bg-gray-50 rounded-lg p-4 mb-6">
             <h3 className="font-medium text-gray-900 mb-3">Submitted Information:</h3>
             <div className="text-left space-y-2 text-sm">
               <p><span className="font-medium">Business Name:</span> {businessInfo.business_name}</p>
@@ -51,7 +51,7 @@ function BusinessScreen({
               <p><span className="font-medium">Documents:</span> {businessInfo.registration_document ? '1 file uploaded' : 'No files'}</p>
             </div>
           </div>
-          
+           */}
           <div className="flex justify-center space-x-4">
             <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50">
               Contact Support

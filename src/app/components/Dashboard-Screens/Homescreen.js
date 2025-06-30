@@ -1,6 +1,9 @@
-import React from 'react';
+'use client'
+import React, { useEffect, useState } from 'react';
 
 function HomeScreen({ status, setActiveTab }) {
+    const [verificationReason, setVerificationReason] = useState('');
+
   // Function to get status-specific styling
   const getStatusStyling = (currentStatus) => {
     switch (currentStatus) {
@@ -62,6 +65,22 @@ function HomeScreen({ status, setActiveTab }) {
         return 'Status unknown';
     }
   };
+
+    useEffect(() => {
+    const storedUser = localStorage.getItem('userData');
+    if (storedUser) {
+      try {
+        const parsed = JSON.parse(storedUser);
+        const user = parsed?.user || parsed;
+        const reason = user?.verification_reason;
+        if (reason) {
+          setVerificationReason(reason);
+        }
+      } catch (err) {
+        console.error('Failed to parse user data:', err);
+      }
+    }
+  }, []);
 
   const statusStyling = getStatusStyling(status);
 
@@ -167,19 +186,28 @@ function HomeScreen({ status, setActiveTab }) {
       </div>
 
       {/* Additional Status-based Information */}
-      {status === 'incomplete' && (
-        <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-          <h3 className="font-semibold text-red-900 mb-2">Complete Your Setup</h3>
-          <p className="text-red-700 text-sm mb-3">
-            To activate your account, please complete the following steps:
-          </p>
-          <ul className="space-y-1 text-red-700 text-sm">
-            <li>• Complete business profile information</li>
-            <li>• Upload required documents</li>
-            <li>• Verify your business details</li>
-          </ul>
-        </div>
-      )}
+   {status === 'incomplete' && (
+  <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+    <h3 className="font-semibold text-red-900 mb-2">Complete Your Setup</h3>
+
+    {verificationReason && (
+      <div className="mb-3">
+        <p className="text-red-600 text-sm font-semibold">Reason for rejection:</p>
+        <p className="text-red-700 text-sm">{verificationReason}</p>
+      </div>
+    )}
+
+    <p className="text-red-700 text-sm mb-3">
+      To activate your account, please complete the following steps:
+    </p>
+    <ul className="space-y-1 text-red-700 text-sm">
+      <li>• Complete business profile information</li>
+      <li>• Upload required documents</li>
+      <li>• Verify your business details</li>
+    </ul>
+  </div>
+)}
+
 
       {status === 'pending' && (
         <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">

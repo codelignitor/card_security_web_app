@@ -32,13 +32,13 @@ const Navbar = () => {
   };
 
   return (
-    <nav className={`fixed w-full p-3 lg:pt-2 top-0 z-50 transition-all duration-300 ${
+    <nav className={`fixed w-full  lg:py-1 top-0 z-50 transition-all duration-300 ${
       isScrolled 
         ? 'bg-white/95 backdrop-blur-md shadow-lg' 
         : 'bg-transparent'
     }`}>
       <div className="container mx-auto px-4 sm:px-6 lg:max-w-6xl">
-        <div className="flex justify-between items-center py-4">
+        <div className="flex justify-between items-center py-1">
           {/* Logo */}
           <div className="text-xl sm:text-2xl font-bold">  
             <video autoPlay loop muted playsInline width="70">
@@ -269,6 +269,7 @@ const Navbar = () => {
 
 import { Menu, X, ArrowRight, Check, Star, Users, Shield, Zap } from 'lucide-react';
 import FAQs from "./FAQs";
+import Image from "next/image";
 
 const LandingPage = () => {
 
@@ -392,10 +393,6 @@ const LandingPage = () => {
   };
 
 
-
-
-
-
   // Component to render section content
 const SectionContent = ({ data, isDark = false }) => {
   const shouldDivideFeatures = data.features && data.features.length > 5;
@@ -438,12 +435,12 @@ const SectionContent = ({ data, isDark = false }) => {
 
   return (
     <div className={`w-full ${isDark ? 'bg-slate-900' : ''}`}>
-      <div className="flex flex-col max-w-6xl mx-auto justify-center py-10 px-4 sm:px-6">
+      <div className="flex flex-col max-w-[1320px] mx-auto justify-center py-10 px-4 sm:px-6">
         <div className="w-full text-center lg:text-left space-y-6">
           <h3
             className={`${
               isDark ? 'text-blue-400' : 'text-blue-500'
-            } font-bold text-3xl`}
+            } font-bold text-3xl text-center`}
           >
             {data.title}
           </h3>
@@ -524,7 +521,8 @@ const SectionContent = ({ data, isDark = false }) => {
       </section>
 
         {/* About Us Section */}
-    <section id="about" className="py-12 px-6 bg-gray-100 w-full">
+
+    <section id="about" className="py-5 px-6 bg-gray-100 w-full">
   <div className="max-w-7xl mx-auto">
     <h2 className="text-3xl md:text-4xl font-bold mb-10 text-gray-900 text-center">
       About Us
@@ -541,15 +539,19 @@ const SectionContent = ({ data, isDark = false }) => {
           At the core of our platform is the <strong>CardNest Card-At-Present (CAP) engine</strong>, a multi-layered security technology that uses deep learning behavioral modeling, pattern recognition, and anomaly detection to confirm cardholder legitimacy. Our Artificial Intelligence models continuously analyze thousands of data points, including card security features, transaction history, device fingerprinting, location consistency, behavioral biometrics, and more—enabling our system to flag suspicious transactions with unparalleled accuracy before payment checkout happens.
         </p>
 
-        <p className="text-base md:text-lg text-gray-700 leading-relaxed">
-          CardNest security architecture is <strong>PCI/DSS compliant</strong>, ensuring that all processes meet the highest global standards for payment data protection. Importantly, CardNest does not store <strong>sensitive cardholder information.</strong> All analysis and validation are performed in real-time, minimizing risk and maximizing user privacy. Designed with developers and businesses in mind, CardNest offers a <strong>simple, API-based integration</strong> that seamlessly connects to any existing payment gateway, merchant system, e-commerce platform, remittance business, or banking infrastructure. Whether you are a startup or an enterprise-scale institution, CardNest adapts to your needs—scaling protection as your transaction volume grows. Our technology is currently trusted by businesses across financial services, e-commerce, digital remittance, and SaaS industries. Organizations using CardNest have seen <strong>up to a 98% or more reduction in chargebacks</strong>, increased customer trust, and significant improvements in operational efficiency and revenue retention. At CardNest, we are not just building fraud detection software—we are redefining what it means to transact safely online. By staying ahead of emerging fraud tactics and continuously evolving our Artificial Intelligence capabilities, we help our clients maintain integrity, protect customer trust, and accelerate secure digital growth.
-        </p>
+       
       </div>
 
       {/* Right Image/Video Section */}
       <div className="w-full md:w-1/2 flex justify-center">
-        <div className="bg-white border text-black rounded-xl shadow-md p-4 w-full max-w-md">
-          IMG or Video
+        <div className="">
+        <div className="flex justify-center items-center pb-3">
+                   <Image src="/images/CardNest.png" alt="this is about img" width="450" height="450"/>
+
+        </div>
+          <p className="text-base md:text-lg text-gray-700 leading-relaxed">
+          CardNest security architecture is <strong>PCI/DSS compliant</strong>, ensuring that all processes meet the highest global standards for payment data protection. Importantly, CardNest does not store <strong>sensitive cardholder information.</strong> All analysis and validation are performed in real-time, minimizing risk and maximizing user privacy. Designed with developers and businesses in mind, CardNest offers a <strong>simple, API-based integration</strong> that seamlessly connects to any existing payment gateway, merchant system, e-commerce platform, remittance business, or banking infrastructure. Whether you are a startup or an enterprise-scale institution, CardNest adapts to your needs—scaling protection as your transaction volume grows. Our technology is currently trusted by businesses across financial services, e-commerce, digital remittance, and SaaS industries. Organizations using CardNest have seen <strong>up to a 98% or more reduction in chargebacks</strong>, increased customer trust, and significant improvements in operational efficiency and revenue retention. At CardNest, we are not just building fraud detection software—we are redefining what it means to transact safely online. By staying ahead of emerging fraud tactics and continuously evolving our Artificial Intelligence capabilities, we help our clients maintain integrity, protect customer trust, and accelerate secure digital growth.
+        </p>
         </div>
       </div>
     </div>
@@ -596,166 +598,150 @@ const SectionContent = ({ data, isDark = false }) => {
 
 
       {/* Footer */}
-      <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white relative overflow-hidden">
-        {/* Animated top border */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-60 animate-pulse"></div>
+     <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white relative overflow-hidden">
+  {/* Animated top border */}
+  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-60 animate-pulse"></div>
 
-        <div className="container mx-auto px-6 py-12">
-          {/* Main footer content */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-            {/* Brand section */}
-            <div className="lg:col-span-2 space-y-6">
-              <div className="flex items-center space-x-3">
-                {/* logo footer */}
-
-                   <div className="text-xl sm:text-2xl font-bold text-white">  
- <video autoPlay loop muted playsInline width="50">
-      <source src="/videos/cardnest.webm" type="video/webm" />
-      Your browser does not support the video tag.
-    </video>            </div>
-
-
-
-
-                <div className="text-2xl font-bold text-white">
-                  Card Nest
-                </div>
-              </div>
-              <p className="text-gray-300 max-w-md leading-relaxed">
-                Protecting your financial data with cutting-edge security
-                technology. Your trust is our commitment to excellence.
-              </p>
-
-              {/* Social links */}
-              <div className="flex space-x-4">
-                {[
-                  {
-                    icon: "M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z",
-                    label: "Twitter",
-                  },
-                  {
-                    icon: "M12 0c-6.626 0-12 5.373-12 12c0 5.302 3.438 9.8 8.207 11.387c.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416c-.546-1.387-1.333-1.756-1.333-1.756c-1.089-.745.083-.729.083-.729c1.205.084 1.839 1.237 1.839 1.237c1.07 1.834 2.807 1.304 3.492.997c.107-.775.418-1.305.762-1.604c-2.665-.305-5.467-1.334-5.467-5.931c0-1.311.469-2.381 1.236-3.221c-.124-.303-.535-1.524.117-3.176c0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404c2.291-1.552 3.297-1.23 3.297-1.23c.653 1.653.242 2.874.118 3.176c.77.84 1.235 1.911 1.235 3.221c0 4.609-2.807 5.624-5.479 5.921c.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z",
-                    label: "GitHub",
-                  },
-                  {
-                    icon: "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037c-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85c3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065c0-1.138.92-2.063 2.063-2.063c1.14 0 2.064.925 2.064 2.063c0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z",
-                    label: "LinkedIn",
-                  },
-                ].map((social, index) => (
-                  <a
-                    key={index}
-                    href="#"
-                    className="w-10 h-10 bg-gray-800 hover:bg-gradient-to-br hover:from-blue-500 hover:to-purple-600 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg group"
-                    aria-label={social.label}
-                  >
-                    <svg
-                      className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d={social.icon} />
-                    </svg>
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* Navigation section */}
-            <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-white relative">
-                Navigation
-                <div className="absolute -bottom-2 left-0 w-8 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded"></div>
-              </h3>
-              <ul className="space-y-3">
-                {[
-                  { name: "Home", href: "#hero" },
-                  { name: "Features", href: "#features" },
-                  { name: "Benefits", href: "#benefits" },
-                  { name: "Pricing", href: "#pricing" },
-                ].map((link) => (
-                  <li key={link.name}>
-                    <a
-                      href={link.href}
-                      className="text-gray-400 hover:text-white transition-all duration-200 flex items-center group"
-                    >
-                      <span className="opacity-0 group-hover:opacity-100 transition-opacity mr-2">
-                        →
-                      </span>
-                      {link.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Support section */}
-            <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-white relative">
-                Support
-                <div className="absolute -bottom-2 left-0 w-8 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded"></div>
-              </h3>
-              <ul className="space-y-3">
-                {[
-              
-                  { name: "FAQ", href: "#" },
-                ].map((link) => (
-                  <li key={link.name}>
-                    <a
-                      href={link.href}
-                      className="text-gray-400 hover:text-white transition-all duration-200 flex items-center group"
-                    >
-                      <span className="opacity-0 group-hover:opacity-100 transition-opacity mr-2">
-                        →
-                      </span>
-                      {link.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+  <div className="container mx-auto px-6 py-12">
+    {/* Main footer content */}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+      {/* Brand section */}
+      <div className="lg:col-span-2 space-y-6">
+        <div className="flex items-center space-x-3">
+          {/* logo footer */}
+          <div className="text-xl sm:text-2xl font-bold text-white">  
+            <video autoPlay loop muted playsInline width="50">
+              <source src="/videos/cardnest.webm" type="video/webm" />
+              Your browser does not support the video tag.
+            </video>            
           </div>
 
-          {/* Bottom section */}
-          <div className="border-t border-gray-700/50 pt-8">
-            <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
-              <div className="text-gray-400 text-sm">
-                © 2025 CardNest. All rights reserved. Built with security in mind.
-              </div>
-
-              <div className="flex flex-wrap justify-center lg:justify-end space-x-6 text-sm">
-                {[
-              
-            
-                ].map((link, index) => (
-                  <a
-                    key={index}
-                    href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors duration-200"
-                  >
-                    {link.name}
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* Security badges */}
-            <div className="flex justify-center items-center space-x-6 mt-6 pt-6 border-t border-gray-700/30">
-              <div className="flex items-center space-x-2 text-xs text-gray-500">
-                <Check className="w-4 h-4 text-green-500" />
-                <span>SSL Secured</span>
-              </div>
-              <div className="flex items-center space-x-2 text-xs text-gray-500">
-                <Shield className="w-4 h-4 text-blue-500" />
-                <span>Privacy Protected</span>
-              </div>
-              <div className="flex items-center space-x-2 text-xs text-gray-500">
-                <Zap className="w-4 h-4 text-purple-500" />
-                <span>24/7 Monitoring</span>
-              </div>
-            </div>
+          <div className="text-2xl font-bold text-white">
+            CardNest
           </div>
         </div>
-      </footer>
+        <p className="text-gray-300 max-w-md leading-relaxed">
+          Protecting your financial data with cutting-edge security
+          technology. Your trust is our commitment to excellence.
+        </p>
+
+        {/* Social links */}
+        <div className="flex space-x-4">
+          {[
+            {
+              icon: "M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z",
+              label: "Twitter",
+            },
+            {
+              icon: "M12 0c-6.626 0-12 5.373-12 12c0 5.302 3.438 9.8 8.207 11.387c.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416c-.546-1.387-1.333-1.756-1.333-1.756c-1.089-.745.083-.729.083-.729c1.205.084 1.839 1.237 1.839 1.237c1.07 1.834 2.807 1.304 3.492.997c.107-.775.418-1.305.762-1.604c-2.665-.305-5.467-1.334-5.467-5.931c0-1.311.469-2.381 1.236-3.221c-.124-.303-.535-1.524.117-3.176c0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404c2.291-1.552 3.297-1.23 3.297-1.23c.653 1.653.242 2.874.118 3.176c.77.84 1.235 1.911 1.235 3.221c0 4.609-2.807 5.624-5.479 5.921c.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z",
+              label: "GitHub",
+            },
+            {
+              icon: "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037c-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85c3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065c0-1.138.92-2.063 2.063-2.063c1.14 0 2.064.925 2.064 2.063c0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z",
+              label: "LinkedIn",
+            },
+          ].map((social, index) => (
+            <a
+              key={index}
+              href="#"
+              className="w-10 h-10 bg-gray-800 hover:bg-gradient-to-br hover:from-blue-500 hover:to-purple-600 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg group"
+              aria-label={social.label}
+            >
+              <svg
+                className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d={social.icon} />
+              </svg>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {/* Navigation section */}
+      <div className="space-y-6">
+        <h3 className="text-lg font-semibold text-white relative">
+          Navigation
+          <div className="absolute -bottom-2 left-0 w-8 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded"></div>
+        </h3>
+        <ul className="space-y-3">
+          {[
+            { name: "Home", href: "#hero" },
+            { name: "Features", href: "#features" },
+            { name: "Benefits", href: "#benefits" },
+            { name: "Pricing", href: "#pricing" },
+          ].map((link) => (
+            <li key={link.name}>
+              <a
+                href={link.href}
+                className="text-gray-400 hover:text-white transition-all duration-200 flex items-center group"
+              >
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity mr-2">
+                  →
+                </span>
+                {link.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Support section */}
+      <div className="space-y-6">
+        <h3 className="text-lg font-semibold text-white relative">
+          Support
+          <div className="absolute -bottom-2 left-0 w-8 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded"></div>
+        </h3>
+        <ul className="space-y-3">
+          {[
+            { name: "Help Center", href: "#" },
+            { name: "Documentation", href: "#" },
+            { name: "Contact Support", href: "#contact" },
+            { name: "FAQ", href: "#" },
+          ].map((link) => (
+            <li key={link.name}>
+              <a
+                href={link.href}
+                className="text-gray-400 hover:text-white transition-all duration-200 flex items-center group"
+              >
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity mr-2">
+                  →
+                </span>
+                {link.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    {/* Bottom section */}
+    <div className="">
+      <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
+        <div className="text-gray-400 text-sm">
+          © 2025 CardNest. All rights reserved. Built with security in mind.
+        </div>
+
+        <div className="flex flex-wrap justify-center lg:justify-end space-x-6 text-sm">
+          {[
+            // Add any legal links here if needed
+          ].map((link, index) => (
+            <a
+              key={index}
+              href={link.href}
+              className="text-gray-400 hover:text-white transition-colors duration-200"
+            >
+              {link.name}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {/* Security badges */}
+    </div>
+  </div>
+</footer>
     </div>
   );
 };

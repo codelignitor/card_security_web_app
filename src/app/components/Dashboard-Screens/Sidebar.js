@@ -1,4 +1,5 @@
-import React from 'react';
+'use client'
+import React, { useEffect, useState } from 'react';
 
 function Sidebar({ 
   sidebarOpen, 
@@ -7,10 +8,37 @@ function Sidebar({
   setActiveTab, 
   status 
 }) {
+
+ const [email, setEmail] = useState('');
+
+
+
+ useEffect(() => {
+  const storedData = localStorage.getItem('userData');
+  if (storedData) {
+    try {
+      const parsed = JSON.parse(storedData);
+      const userEmail = parsed?.user?.email || parsed?.email;
+      if (userEmail) {
+        console.log('Loaded email:', userEmail);
+        setEmail(userEmail);
+      } else {
+        console.log('Email not found in stored user data');
+      }
+    } catch (err) {
+      console.error('Error parsing user data from localStorage:', err);
+    }
+  } else {
+    console.log('No userData found in localStorage');
+  }
+}, []);
+
+
+
+
   const sidebarItems = [
     { id: 'home', label: 'Home', icon: '🏠' },
     { id: 'profile', label: 'Business Profile', icon: '👤' },
-    { id: 'balance', label: 'Balance', icon: '💰' },
     { id: 'subscriptions', label: 'Subscriptions', icon: '📋' },
     { id: 'documents', label: 'Documents', icon: '📄' },
     { id: 'support', label: 'Support', icon: '💬' },
@@ -59,52 +87,6 @@ function Sidebar({
             ))}
           </div>
 
-          {/* Additional sections that could be added for scrolling demonstration */}
-          {sidebarOpen && (
-            <>
-              {/* Account Section */}
-              <div className="px-4 mt-6">
-                <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
-                  Account
-                </div>
-                <div className="space-y-1">
-                  <button className="w-full flex items-center px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">
-                    <span className="mr-3">⚙️</span>
-                    Settings
-                  </button>
-                  <button className="w-full flex items-center px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">
-                    <span className="mr-3">🔒</span>
-                    Security
-                  </button>
-                  <button className="w-full flex items-center px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">
-                    <span className="mr-3">🔔</span>
-                    Notifications
-                  </button>
-                </div>
-              </div>
-
-              {/* Resources Section */}
-              <div className="px-4 mt-6">
-                <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
-                  Resources
-                </div>
-                <div className="space-y-1">
-                  <button className="w-full flex items-center px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">
-                    <span className="mr-3">📚</span>
-                    Documentation
-                  </button>
-                  <button className="w-full flex items-center px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">
-                    <span className="mr-3">🎓</span>
-                    Tutorials
-                  </button>
-                  <button className="w-full flex items-center px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">
-                    <span className="mr-3">📊</span>
-                    Analytics
-                  </button>
-                </div>
-              </div>
-            </>
-          )}
         </nav>
       </div>
 
@@ -129,7 +111,7 @@ function Sidebar({
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900 truncate">User Account</p>
-                <p className="text-xs text-gray-500 truncate">user@example.com</p>
+                <p className="text-xs text-gray-500 truncate">{email || 'Loading...'}</p>
               </div>
             </div>
           </div>

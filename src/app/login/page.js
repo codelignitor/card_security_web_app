@@ -350,7 +350,7 @@ const setStoredAuth = (token, user, remember) => {
           // Success - OTP sent, show OTP form
           setLoginData(data)
           setIsOtpMode(true)
-          console.log('Login OTP sent:', data)
+          console.log('Login verification code sent:', data)
           
           // Save credentials if remember me is checked
           if (rememberMe && isClient) {
@@ -410,7 +410,7 @@ const setStoredAuth = (token, user, remember) => {
       const data = await response.json()
       
       if (response.ok && data.status) {
-        setSuccess('OTP resent successfully!')
+        setSuccess('Verification code resent successfully!')
         console.log('Resend otp', data)
         
         // Clear success message after 3 seconds

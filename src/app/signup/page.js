@@ -388,7 +388,7 @@ const handleSubmit = async (e) => {
       const data = await response.json();
       
       if (response.ok && data.status) {
-        setSuccess('OTP resent successfully!');
+        setSuccess('Verification code resent successfully!');
         console.log('Resend otp', data);
       } else {
         setOtpError(data.message || 'Failed to resend OTP.');
