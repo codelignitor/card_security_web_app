@@ -283,7 +283,7 @@ import FAQs from "./FAQs";
 import Image from "next/image";
 
 const LandingPage = () => {
-  const sectionsData = {
+ const sectionsData = {
     // modular: {
     //   title: "Modular solutions",
     //   heading: "A fully integrated suite of payments products",
@@ -427,13 +427,16 @@ const LandingPage = () => {
   };
 
   // Component to render section content
-  const SectionContent = ({ data, isDark = false }) => {
-    const shouldDivideFeatures = data.features && data.features.length > 5;
+  const SectionContent = ({ data, isDark = false, sectionKey }) => {
+    // Determine split count based on section - 4 for connect, 5 for others
+    const splitCount = sectionKey === 'connect' ? 4 : 5;
+    const shouldDivideFeatures = data.features && data.features.length > splitCount;
+    
     const leftFeatures = shouldDivideFeatures
-      ? data.features.slice(0, 5)
+      ? data.features.slice(0, splitCount)
       : data.features;
     const rightFeatures = shouldDivideFeatures
-      ? data.features.slice(5, 10)
+      ? data.features.slice(splitCount, splitCount * 2)
       : [];
 
     const FeatureItem = ({ feature, index }) => (
@@ -517,9 +520,9 @@ const LandingPage = () => {
                     <div className="space-y-4">
                       {rightFeatures.map((feature, index) => (
                         <FeatureItem
-                          key={index + 5}
+                          key={index + splitCount}
                           feature={feature}
-                          index={index + 5}
+                          index={index + splitCount}
                         />
                       ))}
                     </div>
@@ -660,6 +663,8 @@ const LandingPage = () => {
       {/* Connect Section */}
       <section id="benefits" className="bg-white">
         <SectionContent data={sectionsData.connect} isDark={true} />
+        <SectionContent data={sectionsData.connect} sectionKey="connect" />
+
       </section>
 
       {/* Pricing Section */}

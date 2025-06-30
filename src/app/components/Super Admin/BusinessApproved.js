@@ -67,7 +67,7 @@ const BusinessApprovalSection = () => {
   // Enhanced download function with multiple fallback methods
   const handleDownloadDocument = async (documentPath, fileName) => {
     setDownloadLoading(true);
-    const fullUrl = `https://cardsecuritysystem-8xdez.ondigitalocean.app/storage/${documentPath}`;
+    const fullUrl = `${documentPath}`;
     
     try {
       // Method 1: Fetch and create blob (works for CORS-enabled servers)
@@ -504,7 +504,7 @@ const BusinessApprovalSection = () => {
                       </div>
                       <div className="flex space-x-2">
                         <button
-                          onClick={() => window.open(`https://cardsecuritysystem-8xdez.ondigitalocean.app/storage/${selectedBusiness.registration_document_path}`, '_blank')}
+                          onClick={() => window.open(`${selectedBusiness.registration_document_path}`, '_blank')}
                           className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                         >
                           <Eye className="h-3 w-3 mr-1" />
@@ -535,13 +535,13 @@ const BusinessApprovalSection = () => {
                       <div className="aspect-w-16 aspect-h-9">
                         {selectedBusiness.registration_document_path.toLowerCase().includes('.pdf') ? (
                           <iframe
-                            src={`https://cardsecuritysystem-8xdez.ondigitalocean.app/storage/${selectedBusiness.registration_document_path}`}
+                            src={`${selectedBusiness.registration_document_path}`}
                             className="w-full h-64 border-0 rounded"
                             title="Document Preview"
                           />
                         ) : (
                           <img
-                            src={`https://cardsecuritysystem-8xdez.ondigitalocean.app/storage/${selectedBusiness.registration_document_path}`}
+                            src={`${selectedBusiness.registration_document_path}`}
                             alt="Registration Document"
                             className="w-full h-64 object-contain rounded"
                             onError={(e) => {

@@ -2,11 +2,11 @@
   "rewrites": [
     {
       "source": "/securityscan",
-      "destination": "https://card-detector-react-app.vercel.app/securityscan"
+      "destination": "https://card-detector-react-dxf8pthne-dawood-ayubs-projects.vercel.app/securityscan"
     },
     {
       "source": "/securityscan/:match*",
-      "destination": "https://card-detector-react-app.vercel.app/securityscan/:match*"
+      "destination": "https://card-detector-react-dxf8pthne-dawood-ayubs-projects.vercel.app/securityscan/:match*"
     }
   ]
 }
