@@ -634,7 +634,7 @@ const LandingPage = () => {
                     height="450"
                   />
                 </div>
-                <p className="text-base md:text-lg text-gray-700 leading-relaxed">
+                <p className="text-base md:text-lg text-gray-700 pt-7 leading-relaxed">
                 
                   increased customer trust, and significant improvements in
                   operational efficiency and revenue retention. At CardNest, we
