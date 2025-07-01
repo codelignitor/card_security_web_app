@@ -61,9 +61,9 @@ const DiagonalHeroSection = () => {
       </div>
 
       {/* Background Image - Smaller and contained within hero section */}
-      <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 right-0 w-[35%] h-[400px] z-[5]">
+      <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 right-5 w-[38%] h-[390px] z-[5]">
         <div 
-          className="w-full h-full bg-contain bg-center bg-no-repeat"
+          className="w-full h-full bg-  bg-no-repeat"
           style={{
             backgroundImage: 'url(/images/image.png)',
           }}
@@ -99,7 +99,7 @@ const DiagonalHeroSection = () => {
       </div>
 
       {/* Main Video Container - Positioned to overlay on edge of background image */}
-      <div className="hidden lg:block absolute right-[30%] top-1/2 -translate-y-1/2 z-20">
+      <div className="hidden lg:block absolute right-[40%] top-1/2 -translate-y-1/2 z-20">
         {/* Main hero video - Clean and prominent */}
         {!mainVideoError ? (
           <video 
