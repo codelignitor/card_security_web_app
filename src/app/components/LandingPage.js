@@ -309,7 +309,7 @@ const LandingPage = () => {
       media: null,
     },
     connect: {
-      title: "Benefits of CardNest Why Businesses Trust Us",
+      title: "Benefits of CardNest",
       heading: "",
       description: "",
       media: null,
@@ -659,6 +659,62 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
+{/* Video Section  */}
+
+
+{/* Video Section */}
+      <section id="video" className="py-16 px-6 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
+              Why Businesses Trust Us ?
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Discover how our AI-powered fraud prevention technology protects your business in real-time
+            </p>
+          </div>
+          
+          <div className="relative max-w-4xl mx-auto">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-black">
+              <video
+                className="w-full h-auto"
+                controls
+                muted
+                autoPlay
+                loop
+                preload="metadata"
+                poster="/images/ss.jpg" // Optional: Add a poster image
+              >
+                <source
+                  src="https://d21vkevu6wrni5.cloudfront.net/Cardnest%20Main%20Promotion%20Video.mp4"
+                  type="video/mp4"
+                />
+                Your browser does not support the video tag.
+              </video>
+              
+              {/* Optional: Custom overlay with play button */}
+              <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                  <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            
+            {/* Video description */}
+            <div className="mt-8 text-center">
+              <p className="text-gray-600 leading-relaxed max-w-3xl mx-auto">
+                Watch how CardNest's advanced AI technology seamlessly integrates with your existing payment systems 
+                to provide millisecond fraud detection without disrupting the customer experience.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
 
       {/* Connect Section */}
       <section id="benefits" className="bg-white">
