@@ -186,198 +186,368 @@ export default function PaymentPage({ params }) {
           </div>
 
           {/* Right Side - Payment Form */}
-          <div className="lg:sticky lg:top-28 lg:h-fit">
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Payment Details</h2>
-              
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Email */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="your@email.com"
-                    required
-                  />
-                </div>
-
-                {/* Card Information */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Card Information
-                  </label>
-                  <div className="space-y-3">
-                    <input
-                      type="text"
-                      name="cardNumber"
-                      value={formData.cardNumber}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="1234 1234 1234 1234"
-                      required
-                    />
-                    <div className="grid grid-cols-2 gap-3">
-                      <input
-                        type="text"
-                        name="expiryDate"
-                        value={formData.expiryDate}
-                        onChange={handleInputChange}
-                        className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="MM/YY"
-                        required
-                      />
-                      <input
-                        type="text"
-                        name="cvv"
-                        value={formData.cvv}
-                        onChange={handleInputChange}
-                        className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="CVV"
-                        required
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Cardholder Name */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Cardholder Name
-                  </label>
-                  <input
-                    type="text"
-                    name="cardholderName"
-                    value={formData.cardholderName}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Full name on card"
-                    required
-                  />
-                </div>
-
-                {/* Billing Address */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Billing Address
-                  </label>
-                  <div className="space-y-3">
-                    <input
-                      type="text"
-                      name="billingAddress"
-                      value={formData.billingAddress}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="Street address"
-                      required
-                    />
-                    <div className="grid grid-cols-2 gap-3">
-                      <input
-                        type="text"
-                        name="city"
-                        value={formData.city}
-                        onChange={handleInputChange}
-                        className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="City"
-                        required
-                      />
-                      <input
-                        type="text"
-                        name="zipCode"
-                        value={formData.zipCode}
-                        onChange={handleInputChange}
-                        className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="ZIP Code"
-                        required
-                      />
-                    </div>
-                    <select
-                      name="country"
-                      value={formData.country}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                      <option value="US">United States</option>
-                      <option value="CA">Canada</option>
-                      <option value="UK">United Kingdom</option>
-                      <option value="AU">Australia</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Order Summary with Tax Calculation */}
-                <div className="border-t pt-6">
-                  <h3 className="font-semibold text-gray-900 mb-4">Order Summary</h3>
-                  
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-600">Plan:</span>
-                      <span className="font-medium">{plan.name}</span>
-                    </div>
-                    
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-600">Billing:</span>
-                      <span className="font-medium">Monthly</span>
-                    </div>
-
-                    {/* Pricing Breakdown */}
-                    {plan.price !== 'SALES' && plan.price !== 'Free' && (
-                      <>
-                        <div className="flex justify-between items-center">
-                          <span className="text-gray-600">Subtotal:</span>
-                          <span className="font-medium">{formatCurrency(pricingCalculation.subtotal)}</span>
-                        </div>
-                        
-                        <div className="flex justify-between items-center">
-                          <span className="text-gray-600">
-                            Tax (3%):
-                          </span>
-                          <span className="font-medium">{formatCurrency(pricingCalculation.tax)}</span>
-                        </div>
-                        
-                        <div className="border-t pt-3 flex justify-between items-center text-lg font-bold">
-                          <span>Total:</span>
-                          <span>{formatCurrency(pricingCalculation.total)}</span>
-                        </div>
-                      </>
-                    )}
-
-                    {/* For Free or Sales plans */}
-                    {(plan.price === 'SALES' || plan.price === 'Free') && (
-                      <div className="flex justify-between items-center text-lg font-bold">
-                        <span>Total:</span>
-                        <span>{plan.price === 'SALES' ? 'Contact Sales' : 'Free'}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  className={`w-full ${plan.buttonColor} text-white py-4 px-6 rounded-lg font-semibold text-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-0.5`}
-                  disabled={plan.price === 'SALES'}
-                >
-                  {plan.price === 'SALES' 
-                    ? 'Contact Sales Team' 
-                    : plan.price === 'Free'
-                    ? 'Start Free Plan'
-                    : `Pay ${formatCurrency(pricingCalculation.total)}`
-                  }
-                </button>
-
-                <p className="text-xs text-gray-500 text-center">
-                  By subscribing, you agree to our Terms of Service and Privacy Policy. 
-                  You can cancel anytime.
-                </p>
-              </form>
+       {/* Right Side - Payment Form or Custom Plan Form */}
+<div className="lg:sticky lg:top-28 lg:h-fit">
+  <div className="bg-white rounded-2xl shadow-lg p-8">
+    {/* Conditional rendering based on plan type */}
+    {plan.price === 'SALES' || plan.name.toLowerCase().includes('custom') ? (
+      // Custom Plan Contact Form
+      <>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Contact Sales</h2>
+        <p className="text-gray-600 mb-6">
+          Get in touch with our sales team to discuss your custom requirements and pricing.
+        </p>
+        
+        <form onSubmit={handleSubmit} className="space-y-6 text-left">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 mb-2">
+                Company Name *
+              </label>
+              <input
+                type="text"
+                id="companyName"
+                name="companyName"
+                required
+                value={formData.companyName}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                placeholder="Your company name"
+              />
+            </div>
+            
+            <div>
+              <label htmlFor="contactName" className="block text-sm font-medium text-gray-700 mb-2">
+                Contact Name *
+              </label>
+              <input
+                type="text"
+                id="contactName"
+                name="contactName"
+                required
+                value={formData.contactName}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                placeholder="Your full name"
+              />
             </div>
           </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                Business Email *
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                value={formData.email}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                placeholder="you@company.com"
+              />
+            </div>
+            
+            <div>
+              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                Phone Number
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                placeholder="+1 (555) 123-4567"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label htmlFor="businessType" className="block text-sm font-medium text-gray-700 mb-2">
+                Business Type *
+              </label>
+              <select
+                id="businessType"
+                name="businessType"
+                required
+                value={formData.businessType}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              >
+                <option value="">Select your business type</option>
+                <option value="ecommerce">E-commerce</option>
+                <option value="saas">SaaS/Software</option>
+                <option value="marketplace">Marketplace</option>
+                <option value="subscription">Subscription Business</option>
+                <option value="retail">Retail/Physical Store</option>
+                <option value="nonprofit">Non-profit</option>
+                <option value="professional-services">Professional Services</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            
+            <div>
+              <label htmlFor="monthlyVolume" className="block text-sm font-medium text-gray-700 mb-2">
+                Expected Monthly Volume
+              </label>
+              <select
+                id="monthlyVolume"
+                name="monthlyVolume"
+                value={formData.monthlyVolume}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              >
+                <option value="">Select expected volume</option>
+                <option value="under-10k">Under $10,000</option>
+                <option value="10k-50k">$10,000 - $50,000</option>
+                <option value="50k-100k">$50,000 - $100,000</option>
+                <option value="100k-500k">$100,000 - $500,000</option>
+                <option value="500k-1m">$500,000 - $1,000,000</option>
+                <option value="over-1m">Over $1,000,000</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label htmlFor="currentProvider" className="block text-sm font-medium text-gray-700 mb-2">
+              Current Payment Provider
+            </label>
+            <input
+              type="text"
+              id="currentProvider"
+              name="currentProvider"
+              value={formData.currentProvider}
+              onChange={handleInputChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              placeholder="e.g., Stripe, Square, PayPal, or 'None'"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+              Tell us about your payment needs
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              rows={4}
+              value={formData.message}
+              onChange={handleInputChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-vertical"
+              placeholder="What specific payment features or challenges are you looking to address? Any integration requirements?"
+            />
+          </div>
+
+          <div className="text-center">
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white px-8 py-4 rounded-lg font-medium hover:bg-blue-700 transition-all duration-200 shadow-md hover:shadow-lg"
+            >
+              Send Message
+            </button>
+          </div>
+        </form>
+      </>
+    ) : (
+      // Regular Payment Form
+      <>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Payment Details</h2>
+        
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Email Address
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="your@email.com"
+              required
+            />
+          </div>
+
+          {/* Card Information */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Card Information
+            </label>
+            <div className="space-y-3">
+              <input
+                type="text"
+                name="cardNumber"
+                value={formData.cardNumber}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="1234 1234 1234 1234"
+                required
+              />
+              <div className="grid grid-cols-2 gap-3">
+                <input
+                  type="text"
+                  name="expiryDate"
+                  value={formData.expiryDate}
+                  onChange={handleInputChange}
+                  className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="MM/YY"
+                  required
+                />
+                <input
+                  type="text"
+                  name="cvv"
+                  value={formData.cvv}
+                  onChange={handleInputChange}
+                  className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="CVV"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Cardholder Name */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Cardholder Name
+            </label>
+            <input
+              type="text"
+              name="cardholderName"
+              value={formData.cardholderName}
+              onChange={handleInputChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Full name on card"
+              required
+            />
+          </div>
+
+          {/* Billing Address */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Billing Address
+            </label>
+            <div className="space-y-3">
+              <input
+                type="text"
+                name="billingAddress"
+                value={formData.billingAddress}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Street address"
+                required
+              />
+              <div className="grid grid-cols-2 gap-3">
+                <input
+                  type="text"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleInputChange}
+                  className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="City"
+                  required
+                />
+                <input
+                  type="text"
+                  name="zipCode"
+                  value={formData.zipCode}
+                  onChange={handleInputChange}
+                  className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="ZIP Code"
+                  required
+                />
+              </div>
+              <select
+                name="country"
+                value={formData.country}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="US">United States</option>
+                <option value="CA">Canada</option>
+                <option value="UK">United Kingdom</option>
+                <option value="AU">Australia</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Order Summary with Tax Calculation */}
+          <div className="border-t pt-6">
+            <h3 className="font-semibold text-gray-900 mb-4">Order Summary</h3>
+            
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">Plan:</span>
+                <span className="font-medium">{plan.name}</span>
+              </div>
+              
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">Billing:</span>
+                <span className="font-medium">Monthly</span>
+              </div>
+
+              {/* Pricing Breakdown */}
+              {plan.price !== 'SALES' && plan.price !== 'Free' && (
+                <>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">Subtotal:</span>
+                    <span className="font-medium">{formatCurrency(pricingCalculation.subtotal)}</span>
+                  </div>
+                  
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">
+                      Tax (3%):
+                    </span>
+                    <span className="font-medium">{formatCurrency(pricingCalculation.tax)}</span>
+                  </div>
+                  
+                  <div className="border-t pt-3 flex justify-between items-center text-lg font-bold">
+                    <span>Total:</span>
+                    <span>{formatCurrency(pricingCalculation.total)}</span>
+                  </div>
+                </>
+              )}
+
+              {/* For Free or Sales plans */}
+              {(plan.price === 'SALES' || plan.price === 'Free') && (
+                <div className="flex justify-between items-center text-lg font-bold">
+                  <span>Total:</span>
+                  <span>{plan.price === 'SALES' ? 'Contact Sales' : 'Free'}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className={`w-full ${plan.buttonColor} text-white py-4 px-6 rounded-lg font-semibold text-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-0.5`}
+            disabled={plan.price === 'SALES'}
+          >
+            {plan.price === 'SALES' 
+              ? 'Contact Sales Team' 
+              : plan.price === 'Free'
+              ? 'Start Free Plan'
+              : `Pay ${formatCurrency(pricingCalculation.total)}`
+            }
+          </button>
+
+          <p className="text-xs text-gray-500 text-center">
+            By subscribing, you agree to our Terms of Service and Privacy Policy. 
+            You can cancel anytime.
+          </p>
+        </form>
+      </>
+    )}
+  </div>
+</div>
         </div>
       </div>
     </div>
