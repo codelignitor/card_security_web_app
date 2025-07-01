@@ -706,7 +706,7 @@ const LandingPage = () => {
             {/* Video description */}
             <div className="mt-8 text-center">
               <p className="text-gray-600 leading-relaxed max-w-3xl mx-auto">
-                Watch how CardNest's advanced AI technology seamlessly integrates with your existing payment systems 
+                Watch how CardNest advanced AI technology seamlessly integrates with your existing payment systems 
                 to provide millisecond fraud detection without disrupting the customer experience.
               </p>
             </div>
