@@ -60,6 +60,16 @@ const DiagonalHeroSection = () => {
         <div className="absolute inset-0 bg-white/5"></div>
       </div>
 
+      {/* Background Image - Smaller and contained within hero section */}
+      <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 right-0 w-[35%] h-[400px] z-[5]">
+        <div 
+          className="w-full h-full bg-contain bg-center bg-no-repeat"
+          style={{
+            backgroundImage: 'url(/images/image.png)',
+          }}
+        ></div>
+      </div>
+
       {/* Content Container */}
       <div className="relative z-10 flex pt-35 pb-10 lg:pt-20 xl:pt-20 md:pt-20 items-start lg:items-start xl:items-start md:items-center justify-center">
         <div className="container max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -82,52 +92,53 @@ const DiagonalHeroSection = () => {
               </div>
             </div>
 
-            {/* Right Content Section - Only Main Video */}
-            <div className="space-y-8 hidden lg:flex lg:justify-center lg:items-center mt-8 lg:mt-0">
-              <div className="relative">
-                {/* Main hero video - Clean and prominent */}
-                {!mainVideoError ? (
-                  <video 
-                    ref={mainVideoRef}
-                    width="200"
-                    height="auto"
-                    className="object-contain rounded-xl shadow-2xl border border-gray-200"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    preload="auto"
-                    onError={(e) => {
-                      console.error('Main video error:', e.target.error);
-                      setMainVideoError(true);
-                    }}
-                    onCanPlay={() => console.log('Main video ready to play')}
-                    onLoadedData={() => console.log('Main video loaded successfully')}
-                  >
-                    <source src="/videos/main_video.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                ) : (
-                  /* Clean fallback */
-                  <div 
-                    className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl shadow-2xl flex items-center justify-center border border-gray-200"
-                    style={{ width: '300px', height: '300px' }}
-                  >
-                    <div className="text-center">
-                      <div className="w-20 h-20 bg-slate-800 rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M8 5v10l7-5z"/>
-                        </svg>
-                      </div>
-                      <p className="text-sm text-gray-600 font-medium">CardNest Demo</p>
-                      <p className="text-xs text-gray-500 mt-1">Loading video...</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
+            {/* Right Content Section - Empty to maintain grid layout */}
+            <div className="hidden lg:block"></div>
           </div>
         </div>
+      </div>
+
+      {/* Main Video Container - Positioned to overlay on edge of background image */}
+      <div className="hidden lg:block absolute right-[30%] top-1/2 -translate-y-1/2 z-20">
+        {/* Main hero video - Clean and prominent */}
+        {!mainVideoError ? (
+          <video 
+            ref={mainVideoRef}
+            width="180"
+            height="auto"
+            className="object-contain rounded-xl shadow-2xl border border-gray-200"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            onError={(e) => {
+              console.error('Main video error:', e.target.error);
+              setMainVideoError(true);
+            }}
+            onCanPlay={() => console.log('Main video ready to play')}
+            onLoadedData={() => console.log('Main video loaded successfully')}
+          >
+            <source src="https://d2s949xdj8dp2l.cloudfront.net/CardNest%20Ads%20Main%20Mobile%20iPhone%20version.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        ) : (
+          /* Clean fallback */
+          <div 
+            className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl shadow-2xl flex items-center justify-center border border-gray-200"
+            style={{ width: '200px', height: '300px' }}
+          >
+            <div className="text-center">
+              <div className="w-20 h-20 bg-slate-800 rounded-full mx-auto mb-4 flex items-center justify-center">
+                <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M8 5v10l7-5z"/>
+                </svg>
+              </div>
+              <p className="text-sm text-gray-600 font-medium">CardNest Demo</p>
+              <p className="text-xs text-gray-500 mt-1">Loading video...</p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

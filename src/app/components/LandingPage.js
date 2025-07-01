@@ -662,8 +662,7 @@ const LandingPage = () => {
 
       {/* Connect Section */}
       <section id="benefits" className="bg-white">
-        <SectionContent data={sectionsData.connect} isDark={true} />
-        <SectionContent data={sectionsData.connect} sectionKey="connect" />
+        <SectionContent data={sectionsData.connect} isDark={true}  sectionKey="connect" />
 
       </section>
 
