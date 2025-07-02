@@ -1,16 +1,12 @@
 {
   "rewrites": [
     {
-      "source": "/_next/static/:match*",
-      "destination": "https://card-detection-businesses.vercel.app/_next/static/:match*"
+      "source": "/_next/:match*",
+      "destination": "https://card-detection-businesses.vercel.app/_next/:match*"
     },
     {
-      "source": "/securityscan",
-      "destination": "https://card-detector-react-app.vercel.app/securityscan"
-    },
-    {
-      "source": "/securityscan/:match*",
-      "destination": "https://card-detector-react-app.vercel.app/securityscan/:match*"
+      "source": "/favicon.ico",
+      "destination": "https://card-detection-businesses.vercel.app/favicon.ico"
     },
     {
       "source": "/:businessname/:scanid",
@@ -19,6 +15,14 @@
     {
       "source": "/:businessname",
       "destination": "https://card-detection-businesses.vercel.app/:businessname"
+    },
+    {
+      "source": "/securityscan",
+      "destination": "https://card-detector-react-app.vercel.app/securityscan"
+    },
+    {
+      "source": "/securityscan/:match*",
+      "destination": "https://card-detector-react-app.vercel.app/securityscan/:match*"
     }
   ]
 }
