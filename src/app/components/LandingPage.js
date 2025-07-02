@@ -10,6 +10,25 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+useEffect(() => {
+  const storedUser = localStorage.getItem("userData");
+  if (storedUser) {
+    try {
+      const parsedUser = JSON.parse(storedUser);
+      const userObj = parsedUser.user || parsedUser;
+      if (userObj && userObj.merchant_id) {
+        setIsLoggedIn(true);
+      }
+    } catch (e) {
+      console.error("Error parsing userData:", e);
+      setIsLoggedIn(false);
+    }
+  }
+}, []);
+
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
@@ -106,14 +125,15 @@ const Navbar = () => {
 
           {/* CTA Button - Only show on large screens */}
           <div className="hidden lg:block space-x-5">
-            <Link
-              href="/login"
-              className={`hover:text-teal-600 transition-colors duration-200 font-medium mr-6 ${
-                isScrolled ? "text-gray-800" : "text-white hover:text-teal-300"
-              }`}
-            >
-              Sign In
-            </Link>
+          <Link
+  href={isLoggedIn ? "/dashboard" : "/login"}
+  className={`hover:text-teal-600 transition-colors duration-200 font-medium mr-6 ${
+    isScrolled ? "text-gray-800" : "text-white hover:text-teal-300"
+  }`}
+>
+  {isLoggedIn ? "Dashboard" : "Sign In"}
+</Link>
+
             <Link
               href="/signup"
               className={`px-6 py-2 rounded-lg font-semibold transition-all duration-200 shadow-md hover:shadow-lg ${
@@ -242,13 +262,14 @@ const Navbar = () => {
 
                 {/* Sign In Link */}
                 <div className="pt-4 border-t border-gray-700">
-                  <Link
-                    href="/login"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="block text-left text-white hover:text-teal-300 hover:bg-gray-800 transition-all duration-200 font-medium py-4 px-4 rounded-lg"
-                  >
-                    Sign In
-                  </Link>
+                <Link
+  href={isLoggedIn ? "/dashboard" : "/login"}
+  onClick={() => setIsMenuOpen(false)}
+  className="block text-left text-white hover:text-teal-300 hover:bg-gray-800 transition-all duration-200 font-medium py-4 px-4 rounded-lg"
+>
+  {isLoggedIn ? "Dashboard" : "Sign In"}
+</Link>
+
                 </div>
 
                 {/* CTA Button */}

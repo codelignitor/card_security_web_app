@@ -122,6 +122,7 @@ function BusinessScreen({
                 type="text"
                 name="business_name"
                 value={businessInfo.business_name}
+                placeholder='Enter your business name'
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
@@ -149,6 +150,7 @@ function BusinessScreen({
               <input
                 type="email"
                 name="email"
+                placeholder='Enter the same email you entered while signing up'
                 value={businessInfo.email}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -165,7 +167,7 @@ function BusinessScreen({
                 name="bank_info"
                 value={businessInfo.bank_info}
                 onChange={handleInputChange}
-                placeholder="e.g., JS Bank"
+                placeholder="e.g., Bank of America"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -244,24 +246,35 @@ function BusinessScreen({
                 />
               </div>
               
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Country *
-                </label>
-                <select
-                  name="country"
-                  value={businessInfo.country}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                >
-                  <option value="Pakistan">Pakistan</option>
-                  <option value="United States">United States</option>
-                  <option value="Canada">Canada</option>
-                  <option value="United Kingdom">United Kingdom</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
+          <div>
+  <label className="block text-sm font-medium text-gray-700 mb-2">
+    Country *
+  </label>
+  <input
+    list="country-options"
+    name="country"
+    value={businessInfo.country}
+    onChange={handleInputChange}
+    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+    required
+    placeholder="Enter your country"
+  />
+  <datalist id="country-options">
+    <option value="United States" />
+    <option value="Canada" />
+    <option value="United Kingdom" />
+    <option value="France" />
+    <option value="India" />
+    
+    <option value="Pakistan" />
+     <option value="France" />
+     
+    <option value="Others" />
+
+
+  </datalist>
+</div>
+
             </div>
           </div>
 

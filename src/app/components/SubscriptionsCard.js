@@ -1,15 +1,156 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Check, X } from 'lucide-react';
 import Link from 'next/link';
-import { plans } from '../lib/plans';
 
 const PricingSection = ({ isDark = false }) => {
+  const [plans, setPlans] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Static features that apply to all plans
+  const staticFeatures = [
+    { text: 'Front-side card scan', included: true },
+    { text: 'Back-side scan', included: true },
+    { text: 'AI fraud detection', included: true },
+    { text: 'CardNest protection', included: true },
+    { text: 'ML data accuracy', included: true },
+    { text: 'PCI/DSS security', included: true },
+    { text: 'API integration', included: true },
+    { text: '24/7 fraud watch', included: true }
+  ];
+
+  // Function to map API data to component format
+  const mapApiDataToPlans = (apiData) => {
+    const planStyles = {
+      'Standard': {
+        gradient: 'from-purple-500 to-purple-700',
+        bgGradient: 'from-purple-100 to-purple-50',
+        buttonColor: 'bg-purple-500 hover:bg-purple-600',
+        popular: false
+      },
+      'Premium': {
+        gradient: 'from-cyan-400 to-blue-500',
+        bgGradient: 'from-cyan-50 to-blue-50',
+        buttonColor: 'bg-cyan-500 hover:bg-cyan-600',
+        popular: true
+      },
+      'Enterprise': {
+        gradient: 'from-pink-500 to-purple-600',
+        bgGradient: 'from-pink-50 to-purple-50',
+        buttonColor: 'bg-pink-500 hover:bg-pink-600',
+        popular: false
+      }
+    };
+
+    return apiData.map(plan => {
+      const style = planStyles[plan.package_name] || planStyles['Standard'];
+      const isEnterprise = plan.package_name === 'Enterprise';
+      
+      // Create features array
+      const features = [...staticFeatures];
+      
+      // Add overage rate feature
+      if (isEnterprise) {
+        features.push({ text: 'Custom pricing/options', included: true });
+      } else {
+        features.push({ text: `$${plan.overage_rate}/extra scan`, included: true });
+      }
+
+      return {
+        id: plan.id,
+        name: plan.package_name.toUpperCase(),
+        subtitle: isEnterprise ? 'CONTACT SUPPORT' : 'FOR BUSINESS',
+        price: isEnterprise ? 'CONTACT' : `$${plan.package_price}`,
+        period: plan.package_period.toUpperCase(),
+        apiScans: isEnterprise ? 'UNLIMITED*' : `${plan.monthly_limit} API SCANS`,
+        gradient: style.gradient,
+        bgGradient: style.bgGradient,
+        buttonColor: style.buttonColor,
+        popular: style.popular,
+        features: features,
+        originalData: plan // Keep original data for reference
+      };
+    });
+  };
+
+  // Fetch plans from API
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('https://cardsecuritysystem-8xdez.ondigitalocean.app/api/Packages');
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.status && data.data) {
+          const mappedPlans = mapApiDataToPlans(data.data);
+          setPlans(mappedPlans);
+        } else {
+          throw new Error('Invalid API response format');
+        }
+      } catch (err) {
+        console.error('Error fetching plans:', err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPlans();
+  }, []);
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className={`${isDark ? 'bg-slate-900' : 'bg-white'} py-4 px-4`}>
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-4">
+            <h2 className={`text-4xl font-bold ${isDark ? 'text-white' : 'text-black'} mb-3`}>
+              Subscription Plans
+            </h2>
+          </div>
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className={`${isDark ? 'bg-slate-900' : 'bg-white'} py-4 px-4`}>
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-4">
+            <h2 className={`text-4xl font-bold ${isDark ? 'text-white' : 'text-black'} mb-3`}>
+              Subscription Plans
+            </h2>
+          </div>
+          <div className="text-center py-8">
+            <p className="text-red-500 mb-4">Error loading plans: {error}</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={`${isDark ? 'bg-slate-900' : 'bg-white'} py-4 px-4`}>
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-4">
           <h2 className={`text-4xl font-bold ${isDark ? 'text-white' : 'text-black'} mb-3`}>
-            Subscriptions Plans
+            Subscription Plans
           </h2>
           <p className={`${isDark ? 'text-gray-300' : 'text-gray-400'} text-base`}>
             Protect your transactions with AI-powered card fraud detection
@@ -19,11 +160,17 @@ const PricingSection = ({ isDark = false }) => {
         <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
           {plans.map((plan, index) => (
             <div
-              key={index}
+              key={plan.id}
               className={`relative rounded-2xl overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-300 ${
                 plan.popular ? 'ring-2 ring-cyan-400' : ''
               }`}
             >
+              {/* Popular badge */}
+              {plan.popular && (
+                <div className="absolute top-0 right-0 bg-cyan-400 text-white px-3 py-1 text-xs font-semibold rounded-bl-lg z-20">
+                  POPULAR
+                </div>
+              )}
                          
               {/* Header with gradient */}
                <div className={`bg-gradient-to-br ${plan.gradient} p-6 text-white relative overflow-hidden`}>
@@ -94,7 +241,7 @@ const PricingSection = ({ isDark = false }) => {
                   </ul>
                   
                   <Link href={`/payments/${plan.id}`} className={`w-full ${plan.buttonColor} text-white block text-center py-2.5 px-4 rounded-full text-sm font-semibold transition-all duration-300 hover:shadow-lg transform hover:-translate-y-0.5`}>
-                    {plan.name === 'CUSTOM' ? 'CONTACT SALES →' : 'SUBSCRIBE NOW →'}
+                    {plan.name === 'ENTERPRISE' ? 'CONTACT SALES →' : 'SUBSCRIBE NOW →'}
                   </Link>
                 </div>
               </div>
@@ -105,7 +252,7 @@ const PricingSection = ({ isDark = false }) => {
         {/* Additional info */}
         <div className="text-center mt-8">
           <p className={`${isDark ? 'text-gray-400' : 'text-gray-500'} text-xs`}>
-            * Custom plan limits determined by sales team. All plans include $0.50 per additional scan after monthly limit.
+            * Enterprise plan includes unlimited scans. Standard and Premium plans include ${plans.length > 0 ? `$${plans[0]?.originalData?.overage_rate || '0.10'}` : '$0.10'} per additional scan after monthly limit.
           </p>
         </div>
       </div>
