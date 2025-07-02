@@ -8,13 +8,13 @@
       "source": "/securityscan/:match*",
       "destination": "https://card-detector-react-app.vercel.app/securityscan/:match*"
     },
-    {
+   {
       "source": "/lollicash",
-      "destination": "https://card-detection-businesses.vercel.app"
+      "destination": "https://card-detection-businesses.vercel.app/lollicash"
     },
     {
       "source": "/lollicash/:match*",
-      "destination": "https://card-detection-businesses.vercel.app/:match*"
+      "destination": "https://card-detection-businesses.vercel.app/lollicash/:match*"
     }
   ]
 }
