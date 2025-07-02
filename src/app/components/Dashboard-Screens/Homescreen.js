@@ -7,6 +7,14 @@ function HomeScreen({ status, setActiveTab }) {
   // Function to get status-specific styling
   const getStatusStyling = (currentStatus) => {
     switch (currentStatus) {
+      case 'incomplete-profile':
+        return {
+          bgColor: 'bg-orange-50',
+          borderColor: 'border-orange-200',
+          titleColor: 'text-orange-900',
+          textColor: 'text-orange-700',
+          icon: '🟠'
+        };
       case 'incomplete':
         return {
           bgColor: 'bg-red-50',
@@ -53,8 +61,10 @@ function HomeScreen({ status, setActiveTab }) {
   // Function to get status message
   const getStatusMessage = (currentStatus) => {
     switch (currentStatus) {
+      case 'incomplete-profile':
+        return 'Please complete your business profile to continue';
       case 'incomplete':
-        return 'Please complete your business profile';
+        return 'Please update your business profile based on feedback';
       case 'pending':
         return 'Your application is under review';
       case 'approved':
@@ -95,16 +105,22 @@ function HomeScreen({ status, setActiveTab }) {
             <span className="text-lg mr-2">{statusStyling.icon}</span>
             <h3 className={`font-semibold ${statusStyling.titleColor}`}>Account Status</h3>
           </div>
-          <p className={`${statusStyling.textColor} capitalize font-medium mb-1`}>{status}</p>
+          <p className={`${statusStyling.textColor} capitalize font-medium mb-1`}>
+            {status === 'incomplete-profile' ? 'Incomplete Profile' : status}
+          </p>
           <p className={`${statusStyling.textColor} text-sm`}>{getStatusMessage(status)}</p>
           
           {/* Action button based on status */}
-          {status === 'incomplete' && (
+          {(status === 'incomplete-profile' || status === 'incomplete') && (
             <button 
               onClick={() => setActiveTab('profile')}
-              className="mt-3 px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 text-sm"
+              className={`mt-3 px-3 py-1 text-white rounded-md text-sm ${
+                status === 'incomplete-profile' 
+                  ? 'bg-orange-600 hover:bg-orange-700' 
+                  : 'bg-red-600 hover:bg-red-700'
+              }`}
             >
-              Complete Now
+              {status === 'incomplete-profile' ? 'Complete Profile' : 'Update Profile'}
             </button>
           )}
           {status === 'pending' && (
@@ -186,28 +202,42 @@ function HomeScreen({ status, setActiveTab }) {
       </div>
 
       {/* Additional Status-based Information */}
-   {status === 'incomplete' && (
-  <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-    <h3 className="font-semibold text-red-900 mb-2">Complete Your Setup</h3>
+      {status === 'incomplete-profile' && (
+        <div className="mt-6 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+          <h3 className="font-semibold text-orange-900 mb-2">Complete Your Business Profile</h3>
+          <p className="text-orange-700 text-sm mb-3">
+            Welcome! To get started, please complete your business profile with the following information:
+          </p>
+          <ul className="space-y-1 text-orange-700 text-sm">
+            <li>• Business name and registration details</li>
+            <li>• Contact information and address</li>
+            <li>• Upload business registration document</li>
+            <li>• Bank account information</li>
+          </ul>
+        </div>
+      )}
 
-    {verificationReason && (
-      <div className="mb-3">
-        <p className="text-red-600 text-sm font-semibold">Reason for rejection:</p>
-        <p className="text-red-700 text-sm">{verificationReason}</p>
-      </div>
-    )}
+      {status === 'incomplete' && (
+        <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+          <h3 className="font-semibold text-red-900 mb-2">Profile Update Required</h3>
 
-    <p className="text-red-700 text-sm mb-3">
-      To activate your account, please complete the following steps:
-    </p>
-    <ul className="space-y-1 text-red-700 text-sm">
-      <li>• Complete business profile information</li>
-      <li>• Upload required documents</li>
-      <li>• Verify your business details</li>
-    </ul>
-  </div>
-)}
+          {verificationReason && (
+            <div className="mb-3">
+              <p className="text-red-600 text-sm font-semibold">Feedback from our team:</p>
+              <p className="text-red-700 text-sm">{verificationReason}</p>
+            </div>
+          )}
 
+          <p className="text-red-700 text-sm mb-3">
+            Please update your business profile based on the feedback provided:
+          </p>
+          <ul className="space-y-1 text-red-700 text-sm">
+            <li>• Review and update business information</li>
+            <li>• Upload corrected documents if needed</li>
+            <li>• Ensure all details are accurate and complete</li>
+          </ul>
+        </div>
+      )}
 
       {status === 'pending' && (
         <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">

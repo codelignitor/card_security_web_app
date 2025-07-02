@@ -11,8 +11,6 @@ function Sidebar({
 
  const [email, setEmail] = useState('');
 
-
-
  useEffect(() => {
   const storedData = localStorage.getItem('userData');
   if (storedData) {
@@ -32,9 +30,6 @@ function Sidebar({
     console.log('No userData found in localStorage');
   }
 }, []);
-
-
-
 
   const sidebarItems = [
     { id: 'home', label: 'Home', icon: '🏠' },
@@ -97,10 +92,11 @@ function Sidebar({
             status === 'active' ? 'bg-green-100 text-green-800' :
             status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
             status === 'approved' ? 'bg-blue-100 text-blue-800' :
+            status === 'incomplete-profile' ? 'bg-orange-100 text-orange-800' :
             status === 'incomplete' ? 'bg-red-100 text-red-800' :
             'bg-gray-100 text-gray-800'
           }`}>
-            Status: {status.charAt(0).toUpperCase() + status.slice(1)}
+            Status: {status === 'incomplete-profile' ? 'Incomplete Profile' : status.charAt(0).toUpperCase() + status.slice(1)}
           </div>
 
           {/* User info at bottom */}

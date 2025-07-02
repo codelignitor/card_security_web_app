@@ -22,13 +22,20 @@ function DashboardLoader() {
   );
 }
 
-// Function to map business_verified value to status
+
+// Updated getStatusFromBusinessVerified function
+// Function to map business_verified value to status - UPDATE THIS FUNCTION
 function getStatusFromBusinessVerified(businessVerified) {
   if (businessVerified === null || businessVerified === undefined || businessVerified === '') {
-    return 'incomplete';
+    return 'incomplete-profile';
   }
   
   switch (businessVerified.toString().toUpperCase()) {
+    case 'INCOMPLETE PROFILE':
+    case 'INCOMPLETE_PROFILE':
+      return 'incomplete-profile';
+    case 'INCOMPLETE':
+      return 'incomplete';
     case 'PENDING':
       return 'pending';
     case 'APPROVED':
@@ -42,10 +49,74 @@ function getStatusFromBusinessVerified(businessVerified) {
       return 'pending';
     case '1':
       return 'approved';
-    default:
+    case '2':
       return 'incomplete';
+    default:
+      return 'incomplete-profile';
   }
 }
+
+// UPDATE THE renderContent FUNCTION
+const renderContent = () => {
+  switch (activeTab) {
+    case 'home':
+      return (
+        <HomeScreen
+          status={status} 
+          setActiveTab={handleTabChange}
+        />
+      );
+      
+    case 'profile':
+      // Show business form for both incomplete-profile and incomplete statuses
+      if (status === 'incomplete-profile' || status === 'incomplete') {
+        return (
+          <BusinessScreen
+            businessInfo={businessInfo}
+            documents={documents}
+            status={status}
+            isSubmitting={isSubmitting}
+            submitError={submitError}
+            submitSuccess={submitSuccess}
+            handleInputChange={handleInputChange}
+            handleFileUpload={handleFileUpload}
+            removeDocument={removeDocument}
+            handleSubmit={handleSubmit}
+            router={router}
+          />
+        );
+      } else {
+        // Show profile view for other statuses
+        return (
+          <div className="bg-white rounded-lg shadow-sm border p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Business Profile</h2>
+            <p className="text-gray-600">Your business profile is complete and under review.</p>
+          </div>
+        );
+      }
+       
+    case 'subscriptions':
+      return <SubscriptionsScreen />;
+      
+    case 'documents':
+      return (
+        <DocumentsScreen 
+          documents={documents} 
+          setActiveTab={handleTabChange}
+          handleFileUpload={handleFileUpload}
+        />
+      );
+      
+    case 'support':
+      return <SupportScreen />;
+
+    case 'developers':
+      return <DevelopersScreen />;
+      
+    default:
+      return null;
+  }
+};
 
 // Separate component that uses useSearchParams
 function DashboardContent() {

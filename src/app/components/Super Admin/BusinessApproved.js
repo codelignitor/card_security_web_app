@@ -5,6 +5,7 @@ const BusinessApprovalSection = () => {
   const [businesses, setBusinesses] = useState([]);
   const [approvedBusinesses, setApprovedBusinesses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [approvedLoading, setApprovedLoading] = useState(false);
   const [selectedBusiness, setSelectedBusiness] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
@@ -14,27 +15,31 @@ const BusinessApprovalSection = () => {
   const [rejectReason, setRejectReason] = useState('');
   const [showRejectForm, setShowRejectForm] = useState(false);
 
-  // Fetch businesses on page load
+  // Fetch both pending and approved businesses on page load
   useEffect(() => {
-    const fetchBusinesses = async () => {
+    const fetchAllBusinesses = async () => {
       try {
-        const response = await fetch('https://cardsecuritysystem-8xdez.ondigitalocean.app/api/business-profile');
-        const data = await response.json();
+        // Fetch pending businesses
+        const pendingResponse = await fetch('https://cardsecuritysystem-8xdez.ondigitalocean.app/api/business-profile');
+        const pendingData = await pendingResponse.json();
             
-        if (data.status) {
-          // Separate pending and approved businesses
-          const allBusinesses = data.data;
+        if (pendingData.status) {
+          // Only get pending businesses from this endpoint
+          const allBusinesses = pendingData.data;
           const pending = allBusinesses.filter(business => {
             const status = business.user.business_verified;
             return status === 0 || status === "0" || status === null || status === "PENDING";
           });
-          const approved = allBusinesses.filter(business => {
-            const status = business.user.business_verified;
-            return status === 1 || status === "1" || status === "APPROVED";
-          });
           
           setBusinesses(pending);
-          setApprovedBusinesses(approved);
+        }
+
+        // Fetch approved businesses
+        const approvedResponse = await fetch('https://cardsecuritysystem-8xdez.ondigitalocean.app/api/business-profile/approved');
+        const approvedData = await approvedResponse.json();
+            
+        if (approvedData.status) {
+          setApprovedBusinesses(approvedData.data || []);
         }
       } catch (error) {
         console.error('Error fetching businesses:', error);
@@ -44,11 +49,34 @@ const BusinessApprovalSection = () => {
       }
     };
 
-    fetchBusinesses();
+    fetchAllBusinesses();
   }, []);
+
+  // Fetch approved businesses when approved tab is clicked (only if not already loaded)
+  const fetchApprovedBusinesses = async () => {
+    if (approvedBusinesses.length > 0) return; // Already loaded
+    
+    setApprovedLoading(true);
+    try {
+      const response = await fetch('https://cardsecuritysystem-8xdez.ondigitalocean.app/api/business-profile/approved');
+      const data = await response.json();
+          
+      if (data.status) {
+        setApprovedBusinesses(data.data || []);
+      }
+    } catch (error) {
+      console.error('Error fetching approved businesses:', error);
+      showNotification('Error fetching approved businesses', 'error');
+    } finally {
+      setApprovedLoading(false);
+    }
+  };
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
+    if (tab === 'approved') {
+      fetchApprovedBusinesses();
+    }
   };
 
   const showNotification = (message, type = 'success') => {
@@ -145,17 +173,19 @@ const BusinessApprovalSection = () => {
       if (response.ok && data.status) {
         showNotification(data.message || 'Business approved successfully', 'success');
         
-        // Remove from pending businesses and add to approved
+        // Remove from pending businesses
         setBusinesses(prevBusinesses => 
           prevBusinesses.filter(business => business.id !== businessId)
         );
         
-        // Add to approved businesses
-        const approvedBusiness = { 
-          ...selectedBusiness, 
-          user: { ...selectedBusiness.user, business_verified: 1 }
-        };
-        setApprovedBusinesses(prevApproved => [...prevApproved, approvedBusiness]);
+        // If approved tab data is already loaded, add to approved businesses
+        if (approvedBusinesses.length > 0) {
+          const approvedBusiness = { 
+            ...selectedBusiness, 
+            user: { ...selectedBusiness.user, business_verified: 1 }
+          };
+          setApprovedBusinesses(prevApproved => [...prevApproved, approvedBusiness]);
+        }
         
         setIsModalOpen(false);
       } else {
@@ -249,73 +279,80 @@ const BusinessApprovalSection = () => {
     }
   };
 
-  const renderBusinessTable = (businessList) => (
+  const renderBusinessTable = (businessList, isApproved = false) => (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Company Name
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Email
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              {activeTab === 'approved' ? 'Approved Date' : 'Requested Date'}
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Status
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {businessList.map((business) => (
-            <tr key={business.id} className="hover:bg-gray-50">
-              <td className="px-6 py-4 whitespace-nowrap">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0 h-8 w-8">
-                    <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
-                      <Building className="h-4 w-4 text-blue-600" />
-                    </div>
-                  </div>
-                  <div className="ml-3">
-                    <div className="text-sm font-medium text-gray-900">
-                      {business.business_name}
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      Reg: {business.business_registration_number}
-                    </div>
-                  </div>
-                </div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <div className="flex items-center">
-                  <Mail className="h-4 w-4 text-gray-400 mr-2" />
-                  <div className="text-sm text-gray-900">{business.user.email}</div>
-                </div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {formatDate(business.created_at)}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                {getStatusBadge(business.user.business_verified)}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button
-                  onClick={() => handleViewDocument(business)}
-                  className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  <Eye className="h-3 w-3 mr-1" />
-                  View Documents
-                </button>
-              </td>
+      {isApproved && approvedLoading ? (
+        <div className="p-6 text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-500">Loading approved businesses...</p>
+        </div>
+      ) : (
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Company Name
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Email
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {activeTab === 'approved' ? 'Approved Date' : 'Requested Date'}
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Status
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Actions
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {businessList.map((business) => (
+              <tr key={business.id} className="hover:bg-gray-50">
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0 h-8 w-8">
+                      <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                        <Building className="h-4 w-4 text-blue-600" />
+                      </div>
+                    </div>
+                    <div className="ml-3">
+                      <div className="text-sm font-medium text-gray-900">
+                        {business.business_name}
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        Reg: {business.business_registration_number}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="flex items-center">
+                    <Mail className="h-4 w-4 text-gray-400 mr-2" />
+                    <div className="text-sm text-gray-900">{business.user.email}</div>
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {formatDate(business.created_at)}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {getStatusBadge(business.user.business_verified)}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <button
+                    onClick={() => handleViewDocument(business)}
+                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    <Eye className="h-3 w-3 mr-1" />
+                    View Documents
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 
@@ -420,8 +457,8 @@ const BusinessApprovalSection = () => {
 
       {activeTab === 'approved' && (
         <>
-          {approvedBusinesses.length > 0 ? (
-            renderBusinessTable(approvedBusinesses)
+          {approvedBusinesses.length > 0 || approvedLoading ? (
+            renderBusinessTable(approvedBusinesses, true)
           ) : (
             renderEmptyState(
               'No Approved Businesses',
@@ -584,22 +621,19 @@ const BusinessApprovalSection = () => {
               {activeTab === 'pending' && (
                 <div className="flex items-center justify-end space-x-4 mt-6 pt-4 border-t border-gray-200">
                   <button
-                    onClick={() => {
-                      setIsModalOpen(false);
-                      setShowRejectForm(false);
-                      setRejectReason('');
-                    }}
+                    onClick={() => handleApprove(selectedBusiness.id)}
                     disabled={actionLoading}
-                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Cancel
+                    {actionLoading ? (
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    ) : (
+                      <CheckCircle className="h-4 w-4 mr-2" />
+                    )}
+                    Approve
                   </button>
 
                   {!showRejectForm ? (
-
-
-
-                    
                     <button
                       onClick={handleRejectClick}
                       disabled={actionLoading}
@@ -624,16 +658,15 @@ const BusinessApprovalSection = () => {
                   )}
                   
                   <button
-                    onClick={() => handleApprove(selectedBusiness.id)}
+                    onClick={() => {
+                      setIsModalOpen(false);
+                      setShowRejectForm(false);
+                      setRejectReason('');
+                    }}
                     disabled={actionLoading}
-                    className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {actionLoading ? (
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    ) : (
-                      <CheckCircle className="h-4 w-4 mr-2" />
-                    )}
-                    Approve
+                    Cancel
                   </button>
                 </div>
               )}
