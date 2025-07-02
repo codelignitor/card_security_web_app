@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/_next/static/:match*",
+      "destination": "https://card-detection-businesses.vercel.app/_next/static/:match*"
+    },
+    {
       "source": "/securityscan",
       "destination": "https://card-detector-react-app.vercel.app/securityscan"
     },
