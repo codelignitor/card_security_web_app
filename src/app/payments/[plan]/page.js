@@ -305,15 +305,6 @@ export default function PaymentPage({ params }) {
 
   // Error state
   if (error) {
-      const router = useRouter();
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      router.replace('/login');
-    }, 3000); // wait 3 seconds
-
-    return () => clearTimeout(timer);
-  }, []);
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="text-center max-w-md mx-auto p-6">
