@@ -669,7 +669,7 @@ const checkBusinessStatus = async () => {
 
         {/* Scrollable Content Area */}
         <div className="flex-1 overflow-y-auto">
-          <div className="p-6">
+          <div className=" p-3">
             {renderContent()}
           </div>
         </div>

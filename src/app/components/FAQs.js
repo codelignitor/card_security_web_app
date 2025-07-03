@@ -1,17 +1,19 @@
 'use client';
 
-import React, { useState, useId } from 'react';
+import React, { useState } from 'react';
 
-const FAQItem = ({ question, answer }) => {
+const FAQItem = ({ question, answer, index }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const id = useId(); // ensures consistent ID across server and client
+  const id = `faq-${index}`; // stable, SSR-safe ID
 
   return (
     <div className="bg-white/80 backdrop-blur-md rounded-lg border border-gray-200 shadow-sm">
       <button
-        id={`faq-${id}`} // consistent and SSR-safe ID
+        id={id}
         className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50/50 transition-colors"
         onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        aria-controls={`${id}-content`}
       >
         <h3 className="font-semibold text-gray-900 pr-4">{question}</h3>
         <svg
@@ -24,7 +26,7 @@ const FAQItem = ({ question, answer }) => {
         </svg>
       </button>
       {isOpen && (
-        <div className="px-6 pb-4">
+        <div id={`${id}-content`} className="px-6 pb-4">
           <p className="text-gray-700 leading-relaxed">{answer}</p>
         </div>
       )}
@@ -37,12 +39,12 @@ function FAQs() {
     {
       question: "What is CardNest and how does it work?",
       answer:
-        "CardNest is an AI-powered fraud prevention platform that secures online credit and debit card transactions in real-time. It uses machine learning, behavioral analytics, and advanced fraud modeling to detect and stop suspicious transactions before they are authorized—ensuring only legitimate payments are processed.",
+        "CardNest is an AI-powered fraud prevention platform that secures online credit and debit card transactions in real-time...",
     },
     {
       question: "How does CardNest prevent online fraud before a transaction is completed?",
       answer:
-        "CardNest's Card-At-Present engine scans, detects, and analyzes user behavior, device identity, geolocation, and thousands of transaction data points in milliseconds...",
+        "CardNest's Card-At-Present engine scans, detects, and analyzes user behavior, device identity, geolocation...",
     },
     {
       question: "Does CardNest store any customer or cardholder data?",
@@ -112,7 +114,12 @@ function FAQs() {
 
       <div className="max-w-3xl mx-auto space-y-6 mb-8 py-10 relative z-10">
         {faqData.map((faq, index) => (
-          <FAQItem key={index} question={faq.question} answer={faq.answer} />
+          <FAQItem
+            key={index}
+            index={index}
+            question={faq.question}
+            answer={faq.answer}
+          />
         ))}
       </div>
     </section>
