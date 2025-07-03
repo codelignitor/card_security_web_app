@@ -70,7 +70,7 @@ const DiagonalHeroSection = () => {
             {/* Left Content Section - Fixed width allocation */}
             <div className="w-full lg:w-[55%] xl:w-[50%] px-4 sm:px-6 lg:px-8 flex items-center justify-center pt-0 lg:pt-20 md:pt-10">
               <div className="w-full lg:w-[70%] md:w-[80%] xl:w-[84%]  space-y-4 ">
-                <h1 className="text-[40px] text-gray-900 sm:text-6xl md:text-5xl lg:text-[35px] xl:text-[50px] font-extrabold lg:text-gray-900 md:text-gray-900 drop-shadow-lg leading-tight">
+                <h1 className="text-[39px] text-gray-900 sm:text-6xl md:text-5xl lg:text-[35px] xl:text-[48px] font-extrabold lg:text-gray-900 md:text-gray-900 drop-shadow-lg leading-tight">
                   Online Credit & Debit Card Fraud Prevention Intelligence System Designed to Grow Your Revenue
                 </h1>
                 
