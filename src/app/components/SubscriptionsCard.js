@@ -262,7 +262,6 @@
 
 // export default PricingSection;
 
-
 import React, { useState, useEffect } from 'react';
 import { Check, X, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
@@ -418,14 +417,21 @@ const PricingSection = ({ isDark = false }) => {
       return;
     }
 
-    // If business verification is not APPROVED, show modal
-    if (businessVerification && businessVerification.business_verified !== 'APPROVED') {
+    // If business verification is 'INCOMPLETE PROFILE', show modal
+    if (businessVerification && businessVerification.business_verified === 'INCOMPLETE PROFILE') {
       setShowModal(true);
       return;
     }
 
-    // If everything is good, proceed to payment (this would normally be handled by the Link component)
-    // console.log('Proceeding to payment for plan:', planId);
+    // For any other status (APPROVED, PENDING, REJECTED, etc.), proceed to payment
+    window.location.href = `/payments/${planId}`;
+  };
+
+  // Helper function to check if user should be redirected to payments
+  const shouldRedirectToPayments = () => {
+    if (!userData) return false;
+    if (!businessVerification) return true; // If no verification data, allow payment
+    return businessVerification.business_verified !== 'INCOMPLETE PROFILE';
   };
 
   // Modal component
@@ -523,21 +529,7 @@ const PricingSection = ({ isDark = false }) => {
           </p>
         </div>
         
-        {/* Show verification status if user is logged in */}
-        {/* {userData && businessVerification && businessVerification.business_verified !== 'APPROVED' && (
-          <div className="mb-6 max-w-4xl mx-auto">
-            <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-              <div className="flex items-center">
-                <AlertCircle className="w-5 h-5 text-orange-500 mr-2" />
-                <p className="text-sm text-orange-800">
-                  Your business verification is {businessVerification.business_verified.toLowerCase()}. 
-                  Complete your profile to unlock payment options.
-                </p>
-              </div>
-            </div>
-          </div>
-        )} */}
-        
+              
         <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
           {plans.map((plan, index) => (
             <div
@@ -629,20 +621,20 @@ const PricingSection = ({ isDark = false }) => {
                     >
                       {plan.name === 'ENTERPRISE' ? 'CONTACT SALES →' : 'SUBSCRIBE NOW →'}
                     </button>
-                  ) : userData && businessVerification && businessVerification.business_verified !== 'APPROVED' ? (
-                    <button
-                      onClick={() => handlePlanClick(plan.id, plan.name)}
-                      className={`w-full ${plan.buttonColor} text-white block text-center py-2.5 px-4 rounded-full text-sm font-semibold transition-all duration-300 hover:shadow-lg transform hover:-translate-y-0.5`}
-                    >
-                      {plan.name === 'ENTERPRISE' ? 'CONTACT SALES →' : 'SUBSCRIBE NOW →'}
-                    </button>
-                  ) : (
+                  ) : shouldRedirectToPayments() ? (
                     <Link 
                       href={`/payments/${plan.id}`} 
                       className={`w-full ${plan.buttonColor} text-white block text-center py-2.5 px-4 rounded-full text-sm font-semibold transition-all duration-300 hover:shadow-lg transform hover:-translate-y-0.5`}
                     >
                       {plan.name === 'ENTERPRISE' ? 'CONTACT SALES →' : 'SUBSCRIBE NOW →'}
                     </Link>
+                  ) : (
+                    <button
+                      onClick={() => handlePlanClick(plan.id, plan.name)}
+                      className={`w-full ${plan.buttonColor} text-white block text-center py-2.5 px-4 rounded-full text-sm font-semibold transition-all duration-300 hover:shadow-lg transform hover:-translate-y-0.5`}
+                    >
+                      {plan.name === 'ENTERPRISE' ? 'CONTACT SALES →' : 'SUBSCRIBE NOW →'}
+                    </button>
                   )}
                 </div>
               </div>

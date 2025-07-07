@@ -327,44 +327,65 @@ const handleSubmit = async (e) => {
   }
 };
 
-  const handleOtpSubmit = async (e) => {
-    e.preventDefault();
-    if (!userInfo) {
-      setOtpError('User information not found. Please try signing up again.');
-      return;
-    }
+const handleOtpSubmit = async (e) => {
+  e.preventDefault();
+  if (!userInfo) {
+    setOtpError('User information not found. Please try signing up again.');
+    return;
+  }
 
-    setLoading(true);
-    setOtpError('');
+  setLoading(true);
+  setOtpError('');
 
-    try {
-      const response = await fetch('https://cardsecuritysystem-8xdez.ondigitalocean.app/api/verify-otp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-          email: userInfo.email,  // Get email from signup API response
-          otp: otp,
-        }),
-      });
+  try {
+    const response = await fetch('https://cardsecuritysystem-8xdez.ondigitalocean.app/api/verify-otp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        email: userInfo.email,  // Get email from signup API response
+        otp: otp,
+      }),
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (response.ok && data.status) {
-        setSuccess('Account created successfully!')
+    if (response.ok && data.status) {
+      console.log("Signup successful:", data);
+
+      // ✅ Save user data including role
+      const userData = {
+        token: data.token,
+        user: data.user,
+      };
+
+      localStorage.setItem("userData", JSON.stringify(userData));
+
+      // ✅ Role-based redirection
+      const userRole = data.user?.role;
+
+      if (userRole === "superadmin") {
+        router.push("/admin");
+      } else if (userRole === "BUSINESS_USER") {
         router.push("/dashboard");
       } else {
-        setOtpError(data.message || 'Invalid OTP. Please try again.');
+        // Default to dashboard for any other role or missing role
+        router.push("/dashboard");
       }
-    } catch (err) {
-      console.error('OTP verification error:', err);
-      setOtpError('Network error. Please try again.');
-    } finally {
-      setLoading(false);
+
+      setSuccess('Account created successfully!');
+    } else {
+      setOtpError(data.message || 'Invalid OTP. Please try again.');
     }
-  };
+  } catch (err) {
+    console.error('OTP verification error:', err);
+    setOtpError('Network error. Please try again.');
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleResendOtp = async () => {
     if (!userInfo) return;

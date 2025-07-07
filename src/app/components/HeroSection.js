@@ -60,17 +60,15 @@ const DiagonalHeroSection = () => {
         <div className="absolute inset-0 bg-white/5"></div>
       </div>
 
-
-
       {/* Content Container */}
       <div className="relative z-10 flex pt-35 pb-10 lg:pt-20 xl:pt-20 md:pt-20 items-start lg:items-start xl:items-start md:items-center justify-center">
         <div className="w-full">
-          <div className="flex items-center">
+          <div className="flex mx-auto justify-center items-start lg:items-start xl:items-start">
             
-            {/* Left Content Section - Fixed width allocation */}
-            <div className="w-full lg:w-[55%] xl:w-[50%] px-4 sm:px-6 lg:px-8 flex items-center justify-center pt-0 lg:pt-20 md:pt-10">
-              <div className="w-full lg:w-[70%] md:w-[80%] xl:w-[84%]  space-y-4 ">
-                <h1 className="text-[39px] text-gray-900 sm:text-6xl md:text-5xl lg:text-[35px] xl:text-[48px] font-extrabold lg:text-gray-900 md:text-gray-900 drop-shadow-lg leading-tight">
+            {/* Left Content Section - Added matching pt-20 for alignment */}
+            <div className="w-full lg:w-[50%] xl:w-[45%] px-4 sm:px-6 lg:px-8 flex items-center justify-center pt-0 lg:pt-20 md:pt-10">
+              <div className="w-full lg:w-[70%] md:w-[80%] xl:w-[84%] space-y-4">
+                <h1 className="text-[39px] text-gray-900 sm:text-6xl md:text-5xl lg:text-[35px] xl:text-[43px] font-extrabold lg:text-gray-900 md:text-gray-900 drop-shadow-lg leading-tight">
                   Online Credit & Debit Card Fraud Prevention Intelligence System Designed to Grow Your Revenue
                 </h1>
                 
@@ -87,7 +85,7 @@ const DiagonalHeroSection = () => {
             </div>
 
             {/* Right Content Section - Video and Image extending to screen edge */}
-            <div className="hidden lg:flex lg:w-[45%] xl:w-[48%] items-center h-full pt-20">
+            <div className="hidden lg:flex lg:w-[45%] xl:w-[48%] items-start h-full pt-20">
               <div className="flex items-center gap-[5px] h-[350px] w-full">
                 {/* Video on the left */}
                 <div className="flex-shrink-0">
@@ -139,8 +137,6 @@ const DiagonalHeroSection = () => {
           </div>
         </div>
       </div>
-
-
     </div>
   );
 };
