@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, use, useMemo, useEffect } from 'react';
-import { Check, X, ArrowLeft, CreditCard, Shield, Lock } from 'lucide-react';
+import { Check, X, ArrowLeft, CreditCard, Shield, Lock, Salad } from 'lucide-react';
 import Link from 'next/link';
 import { notFound, useRouter } from 'next/navigation';
 
@@ -13,6 +13,8 @@ export default function PaymentPage({ params }) {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [notification, setnotification] = useState(null)
+  const [Success, setSuccess] = useState(false)
 
   const [formData, setFormData] = useState({
     email: '',
@@ -194,91 +196,91 @@ export default function PaymentPage({ params }) {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    // Handle nested user object structure for merchant_id
-    const userObj = userData?.user || userData;
-    
-    if (!userObj?.merchant_id) {
-      setError('Merchant ID not found. Please log in again.');
-      return;
-    }
 
-    if (!plan) {
-      setError('Plan information not available.');
-      return;
-    }
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  // Handle nested user object structure for merchant_id
+  const userObj = userData?.user || userData;
+  
+  if (!userObj?.merchant_id) {
+    setError('Merchant ID not found. Please log in again.');
+    return;
+  }
 
-    setSubmitting(true);
-    setError(null);
+  if (!plan) {
+    setError('Plan information not available.');
+    return;
+  }
 
-    try {
-      // For Enterprise/Custom plans, handle contact form submission
-      if (plan.price === 'SALES' || plan.name.toLowerCase().includes('enterprise')) {
-        // You can implement contact form submission to your API here
-        console.log('Contact form submitted:', {
-          ...formData,
-          plan_id: plan.id,
-          merchant_id: userObj.merchant_id
-        });
-        
-        alert('Your message has been sent! Our sales team will contact you soon.');
-        router.push('/dashboard'); // Redirect to dashboard or appropriate page
-        return;
-      }
+  setSubmitting(true);
+  setError(null);
 
-      // For regular subscription plans
-      const subscriptionData = {
-        merchant_id: userObj.merchant_id,
-        package_id: plan.id,
-        renewal_date: new Date().toISOString().split('T')[0] // Current date in YYYY-MM-DD format
-      };
-
-      console.log('Submitting subscription:', subscriptionData);
-
-      const response = await fetch('https://cardsecuritysystem-8xdez.ondigitalocean.app/api/Subscriptions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(subscriptionData)
+  try {
+    // For Enterprise/Custom plans, handle contact form submission
+    if (plan.price === 'SALES' || plan.name.toLowerCase().includes('enterprise')) {
+      // You can implement contact form submission to your API here
+      console.log('Contact form submitted:', {
+        ...formData,
+        plan_id: plan.id,
+        merchant_id: userObj.merchant_id
       });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || `HTTP error! status: ${response.status}`);
-      }
-
-      if (result.status) {
-        // Success
-        console.log('Subscription created successfully:', result);
-        
-        // Update user data in localStorage if needed
-        const updatedUserData = {
-          ...userData,
-          subscription: {
-            package_id: plan.id,
-            package_name: plan.name,
-            renewal_date: subscriptionData.renewal_date
-          }
-        };
-        localStorage.setItem('userData', JSON.stringify(updatedUserData));
-        
-        alert('Subscription created successfully!');
-        router.push('/dashboard'); // Redirect to dashboard
-      } else {
-        throw new Error(result.message || 'Subscription creation failed');
-      }
-
-    } catch (err) {
-      console.error('Subscription error:', err);
-      setError(err.message || 'An error occurred while processing your subscription');
-    } finally {
-      setSubmitting(false);
+      
+      alert('Your message has been sent! Our sales team will contact you soon.');
+      router.push('/dashboard'); // Redirect to dashboard or appropriate page
+      return;
     }
-  };
+
+    // For regular subscription plans - Updated to match API requirements
+    const subscriptionData = {
+      merchant_id: userObj.merchant_id,
+      package_id: plan.id,
+      subscription_date: new Date().toISOString().split('T')[0] // Current date in YYYY-MM-DD format
+    };
+
+    console.log('Submitting subscription:', subscriptionData);
+
+    const response = await fetch('https://cardsecuritysystem-8xdez.ondigitalocean.app/api/Subscriptions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(subscriptionData)
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.message || `HTTP error! status: ${response.status}`);
+    }
+
+    if (result.status) {
+      // Success
+      console.log('Subscription created successfully:', result);
+      
+      // Update user data in localStorage if needed
+      const updatedUserData = {
+        ...userData,
+        subscription: {
+          package_id: plan.id,
+          package_name: plan.name,
+          subscription_date: subscriptionData.subscription_date
+        }
+      };
+      localStorage.setItem('userData', JSON.stringify(updatedUserData));
+      setnotification('Subscription created successfully!');
+      router.push('/dashboard'); // Redirect to dashboard
+    } else {
+      throw new Error(result.message || 'Subscription creation failed');
+    }
+
+  } catch (err) {
+    console.error('Subscription error:', err);
+    setError(err.message || 'An error occurred while processing your subscription');
+  } finally {
+    setSubmitting(false);
+  }
+};
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
@@ -299,6 +301,8 @@ export default function PaymentPage({ params }) {
     );
   }
 
+
+ 
 
  
 
@@ -629,9 +633,20 @@ export default function PaymentPage({ params }) {
                   </form>
                 </>
               ) : (
+              
                 // Regular Payment Form
                 <>
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Payment Details</h2>
+         
+  {notification && (
+    <div className='bg-green-100 border border-green-400 text-green-800 rounded-md p-3 mb-5 flex items-center'>
+      <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+      </svg>
+      <span className="font-medium">Success:</span>
+      <span className="ml-1">{notification}</span>
+    </div>
+  )}
                   
                   <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Email */}
