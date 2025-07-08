@@ -29,6 +29,9 @@ function SupportScreen() {
       <div className="space-y-6">
         <div className="p-4 border rounded-lg">
           <h3 className="font-semibold mb-4">Contact Support</h3>
+
+
+          
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -117,8 +120,8 @@ function SupportScreen() {
         <div className="p-4 bg-gray-50 rounded-lg">
           <h3 className="font-semibold mb-3">Other Ways to Reach Us</h3>
           <div className="space-y-2 text-sm">
-            <p><span className="font-medium">Email:</span> support@company.com</p>
-            <p><span className="font-medium">Phone:</span> +1 (555) 123-4567</p>
+            <p><span className="font-medium">Email:</span> support@cardnest.io</p>
+            {/* <p><span className="font-medium">Phone:</span> +1 (555) 123-4567</p> */}
             <p><span className="font-medium">Hours:</span> Monday - Friday, 9AM - 6PM EST</p>
           </div>
         </div>

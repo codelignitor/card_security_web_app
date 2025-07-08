@@ -34,7 +34,7 @@ const DiagonalHeroSection = () => {
   }, [mainVideoError]);
 
   return (
-    <div className="relative h-[710px] bg-white w-full overflow-hidden">
+    <div className="relative h-[660px] bg-white w-full overflow-hidden">
       {/* Animation Video Background Layer */}
       <div className="absolute top-0 left-0 w-full h-[480px] md:h-[600px] xl:h-[600px] lg:h-[600px] z-0 overflow-hidden">
         {!videoError ? (
@@ -61,15 +61,26 @@ const DiagonalHeroSection = () => {
       </div>
 
       {/* Content Container */}
-      <div className="relative z-10 flex pt-35 pb-10 lg:pt-20 xl:pt-20 md:pt-20 items-start lg:items-start xl:items-start md:items-center justify-center">
-        <div className="w-full">
-          <div className="flex mx-auto justify-center items-start lg:items-start xl:items-start">
+      <div className="relative z-10 flex pt-25 pb-10 lg:pt-20 xl:pt-20 md:pt-20 items-start lg:items-start xl:items-start md:items-center justify-center">
+        <div className="container mx-auto lg:max-w-6xl">
+          <div className="flex mx-auto  items-start lg:items-start xl:items-start">
             
-            {/* Left Content Section - Added matching pt-20 for alignment */}
-            <div className="w-full lg:w-[50%] xl:w-[45%] px-4 sm:px-6 lg:px-8 flex items-center justify-center pt-0 lg:pt-20 md:pt-10">
-              <div className="w-full lg:w-[70%] md:w-[80%] xl:w-[84%] space-y-4">
-                <h1 className="text-[39px] text-gray-900 sm:text-6xl md:text-5xl lg:text-[35px] xl:text-[43px] font-extrabold lg:text-gray-900 md:text-gray-900 drop-shadow-lg leading-tight">
-                  Online Credit & Debit Card Fraud Prevention Intelligence System Designed to Grow Your Revenue
+            {/* Left Content Section - Aligned with navbar logo */}
+            <div className="w-full lg:w-[55%] xl:w-[50%] px-4 sm:px-6 lg:px-4 flex items-start justify-start pt-0 lg:pt-20 md:pt-10">
+              <div className="w-full space-y-7">
+                <h1 className="text-gray-900 font-extrabold lg:text-gray-900 md:text-gray-900 drop-shadow-lg leading-tight">
+                  <div className="text-[38px] sm:text-[40px] md:text-[40px] lg:text-[38px] xl:text-[45px] 2xl:text-[55px] sm:whitespace-nowrap md:whitespace-nowrap lg:whitespace-nowrap xl:whitespace-nowrap">
+                    Online Credit & Debit Card
+                  </div>
+                  <div className="text-[38px] sm:text-[40px] md:text-[40px] lg:text-[34px] xl:text-[45px] 2xl:text-[53px] sm:whitespace-nowrap md:whitespace-nowrap lg:whitespace-nowrap xl:whitespace-nowrap">
+                    Fraud Prevention Intelligence
+                  </div>
+                  <div className="text-[38px] sm:text-[40px] md:text-[40px] lg:text-[38px] xl:text-[45px] 2xl:text-[55px] sm:whitespace-nowrap md:whitespace-nowrap lg:whitespace-nowrap xl:whitespace-nowrap">
+                    System Designed to Grow
+                  </div>
+                  <div className="text-[38px] sm:text-[40px] md:text-[40px] lg:text-[38px] xl:text-[45px] 2xl:text-[55px] sm:whitespace-nowrap md:whitespace-nowrap lg:whitespace-nowrap xl:whitespace-nowrap">
+                    Your Revenue
+                  </div>
                 </h1>
                 
                 <p className="lg:text-[16px] text-black sm:text-lg md:text-xl lg:text-gray-900 leading-relaxed drop-shadow-md">
@@ -83,56 +94,58 @@ const DiagonalHeroSection = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
 
-            {/* Right Content Section - Video and Image extending to screen edge */}
-            <div className="hidden lg:flex lg:w-[45%] xl:w-[48%] items-start h-full pt-20">
-              <div className="flex items-center gap-[5px] h-[350px] w-full">
-                {/* Video on the left */}
-                <div className="flex-shrink-0">
-                  {!mainVideoError ? (
-                    <video 
-                      ref={mainVideoRef}
-                      className="h-[350px] w-auto object-contain rounded-xl shadow-2xl border border-gray-200"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      preload="auto"
-                      onError={(e) => {
-                        console.error('Main video error:', e.target.error);
-                        setMainVideoError(true);
-                      }}
-                      onCanPlay={() => console.log('Main video ready to play')}
-                      onLoadedData={() => console.log('Main video loaded successfully')}
-                    >
-                      <source src="https://d2s949xdj8dp2l.cloudfront.net/CardNest%20Ads%20Main%20Mobile%20iPhone%20version.mp4" type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                  ) : (
-                    <div className="h-[350px] w-[200px] bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl shadow-2xl flex items-center justify-center border border-gray-200">
-                      <div className="text-center">
-                        <div className="w-20 h-20 bg-slate-800 rounded-full mx-auto mb-4 flex items-center justify-center">
-                          <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M8 5v10l7-5z"/>
-                          </svg>
-                        </div>
-                        <p className="text-sm text-gray-600 font-medium">CardNest Demo</p>
-                        <p className="text-xs text-gray-500 mt-1">Loading video...</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Image extending to the right edge of screen */}
-                <div className="flex-1 h-[350px] rounded-l-xl shadow-2xl border border-gray-200 overflow-hidden">
-                  <div 
-                    className="w-full h-full bg-cover bg-center bg-no-repeat"
-                    style={{
-                      backgroundImage: 'url(/images/image.png)',
-                    }}
-                  ></div>
-                </div>
+        {/* Right Content Section - Starting from the right edge of screen */}
+        <div className="hidden lg:block lg:absolute lg:right-0 lg:top-20 xl:top-20 lg:w-[50vw] xl:w-[45vw] h-full pt-20">
+          <div className="flex items-center justify-between h-[350px] w-full  pr-[10px]">
+            {/* Image positioned at the very right with 10px margin */}
+            <div className="absolute right-[10px] h-[350px] w-[300px] xl:w-[350px]">
+              <div className="w-full h-full rounded-l-xl shadow-2xl border border-gray-200 overflow-hidden">
+                <div 
+                  className="w-full h-full bg-cover bg-center bg-no-repeat"
+                  style={{
+                    backgroundImage: 'url(/images/image.png)',
+                  }}
+                ></div>
               </div>
+            </div>
+
+            {/* Video positioned to the left of the image */}
+            <div className="absolute right-[320px] xl:right-[370px] flex-shrink-0 z-20">
+              {!mainVideoError ? (
+                <video 
+                  ref={mainVideoRef}
+                  className="h-[350px] w-auto object-contain rounded-xl shadow-2xl border border-gray-200"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="auto"
+                  onError={(e) => {
+                    console.error('Main video error:', e.target.error);
+                    setMainVideoError(true);
+                  }}
+                  onCanPlay={() => console.log('Main video ready to play')}
+                  onLoadedData={() => console.log('Main video loaded successfully')}
+                >
+                  <source src="https://d2s949xdj8dp2l.cloudfront.net/CardNest%20Ads%20Main%20Mobile%20iPhone%20version.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              ) : (
+                <div className="h-[350px] w-[200px] bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl shadow-2xl flex items-center justify-center border border-gray-200">
+                  <div className="text-center">
+                    <div className="w-20 h-20 bg-slate-800 rounded-full mx-auto mb-4 flex items-center justify-center">
+                      <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M8 5v10l7-5z"/>
+                      </svg>
+                    </div>
+                    <p className="text-sm text-gray-600 font-medium">CardNest Demo</p>
+                    <p className="text-xs text-gray-500 mt-1">Loading video...</p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
