@@ -198,7 +198,7 @@ useEffect(() => {
               }`}
             >
               {/* Sidebar Header */}
-              <div className="flex justify-between items-center p-6 border-b border-gray-700">
+              <div className="flex justify-between items-center p-6 border-b border-gray-700 bg-gray-900">
                 <div className="text-xl font-bold text-white">CardNest</div>
                 <button
                   onClick={() => setIsMenuOpen(false)}
@@ -221,7 +221,7 @@ useEffect(() => {
               </div>
 
               {/* Sidebar Navigation */}
-              <div className="flex flex-col p-6 space-y-4">
+              <div className="flex flex-col p-6 space-y-4 min-h-screen bg-gray-900 ">
                 <button
                   onClick={() => scrollToSection("hero")}
                   className="text-left text-white hover:text-teal-300 hover:bg-gray-800 transition-all duration-200 font-medium py-4 px-4 rounded-lg"
