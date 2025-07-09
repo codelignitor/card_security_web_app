@@ -1,12 +1,15 @@
-// 'use client';
+'use client';
 
-// import MainPage from '@/app/components/scanning/MainPage';
-// import { useParams } from 'next/navigation';
+import MainPage from '@/app/components/scanning/MainPage';
+import { useParams } from 'next/navigation';
 
-// export default function DynamicScanPage() {
-//   const { businessname, scanid } = useParams();
+export default function DynamicScanPage() {
+  const params = useParams();
+  const businessname = params?.businessname;
+  const scanid = params?.scanid;
 
-//   // In the future you can use businessname & scanid here
+  // Optional: log to verify
+  console.log('Params:', { businessname, scanid });
 
-//   return <MainPage />;
-// }
+  return <MainPage />;
+}
