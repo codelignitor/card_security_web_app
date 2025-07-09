@@ -172,10 +172,10 @@ const AdminDashboard = () => {
         return;
       }
       
-      const userRole = "SUPER_ADMIN";
+      // const userRole = "SUPER_ADMIN";
 
 
-      // const userRole = userData.user?.role;
+      const userRole = userData.user?.role;
       
       if (userRole !== "SUPER_ADMIN") {
         // User is not a superadmin
