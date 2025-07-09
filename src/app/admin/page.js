@@ -365,12 +365,12 @@ const AdminDashboard = () => {
         return;
       }
       
-      const userRole = "superadmin";
+      // const userRole = "superadmin";
 
 
-      // const userRole = userData.user?.role;
+      const userRole = userData.user?.role;
       
-      if (userRole !== "superadmin") {
+      if (userRole !== "SUPER_ADMIN") {
         // User is not a superadmin
         console.log("Access denied: User is not a superadmin");
         
