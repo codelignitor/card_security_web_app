@@ -36,7 +36,6 @@ function Sidebar({
     { id: 'profile', label: 'Business Profile', icon: '👤' },
     { id: 'subscriptions', label: 'Subscriptions', icon: '📋' },
     { id: 'documents', label: 'Documents', icon: '📄' },
-    { id: 'support', label: 'Support', icon: '💬' },
     { id: 'developers', label: 'Developers', icon: '⚡' }
   ];
 

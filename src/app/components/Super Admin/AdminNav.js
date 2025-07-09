@@ -2,9 +2,8 @@ import React from 'react';
 
 const NavigationTabs = ({ activeTab, setActiveTab }) => {
   const tabs = [
-    { id: 'pay-per-call', label: 'Pay-Per-Call', icon: '💳' },
+        { id: 'enterprise', label: 'Enterprise Approval', icon: '🏢' },
     { id: 'pricing', label: 'Pricing', icon: '💰' },
-    { id: 'enterprise', label: 'Enterprise Approval', icon: '🏢' },
     { id: 'activity', label: 'User Activity', icon: '📊' },
     { id: 'content', label: 'Content Management', icon: '📝' },
     { id: 'api-docs', label: 'API Documentation', icon: '📖' }

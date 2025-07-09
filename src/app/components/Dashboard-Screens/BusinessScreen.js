@@ -58,7 +58,7 @@ function BusinessScreen({
   
   const renderApprovedStatus = () => {
     const profile = verificationData?.data?.business_profile;
-    
+  
     return (
       <div className="bg-white rounded-lg shadow-sm border p-6">
         <div className="text-center py-8">
@@ -84,10 +84,10 @@ function BusinessScreen({
                   <p><span className="font-medium text-gray-700">Account Holder:</span></p>
                   <p className="text-gray-900">{profile?.account_holder_first_name} {profile?.account_holder_last_name}</p>
                 </div>
-                <div>
+                {/* <div>
                   <p><span className="font-medium text-gray-700">Bank Information:</span></p>
                   <p className="text-gray-900">{profile?.bank_info || 'Not provided'}</p>
-                </div>
+                </div> */}
               </div>
               
               <div className="border-t pt-4">
@@ -175,10 +175,10 @@ function BusinessScreen({
                   <p><span className="font-medium text-gray-700">Account Holder:</span></p>
                   <p className="text-gray-900">{profile?.account_holder_first_name} {profile?.account_holder_last_name}</p>
                 </div>
-                <div>
+                {/* <div>
                   <p><span className="font-medium text-gray-700">Bank Information:</span></p>
                   <p className="text-gray-900">{profile?.bank_info || 'Not provided'}</p>
-                </div>
+                </div> */}
               </div>
               
               <div className="border-t pt-4">
@@ -323,19 +323,7 @@ function BusinessScreen({
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Bank Information
-              </label>
-              <input
-                type="text"
-                name="bank_info"
-                value={businessInfo.bank_info}
-                onChange={handleInputChange}
-                placeholder="e.g., Bank of America"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
+        
           </div>
 
           {/* Business Address */}

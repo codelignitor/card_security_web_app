@@ -5,7 +5,6 @@ import BusinessScreen from '../components/Dashboard-Screens/BusinessScreen';
 import BalanceScreen from '../components/Dashboard-Screens/Balancescreen';
 import SubscriptionsScreen from '../components/Dashboard-Screens/SubscriptionScreen';
 import DocumentsScreen from '../components/Dashboard-Screens/DocumentScreens';
-import SupportScreen from '../components/Dashboard-Screens/SupportScreen';
 import DevelopersScreen from '../components/Dashboard-Screens/Developer';
 import Sidebar from '../components/Dashboard-Screens/Sidebar';
 import HomeScreen from '../components/Dashboard-Screens/Homescreen';
@@ -107,8 +106,7 @@ const renderContent = () => {
         />
       );
       
-    case 'support':
-      return <SupportScreen />;
+ 
 
     case 'developers':
       return <DevelopersScreen />;
@@ -221,11 +219,10 @@ useEffect(() => {
     city: '',
     state: '',
     zip_code: '',
-    country: 'Pakistan',
+    country: 'United States of America',
     account_holder_first_name: '',
     account_holder_last_name: '',
     registration_document: null,
-    bank_info: '',
     email: ''
   });
   
@@ -611,8 +608,7 @@ const checkBusinessStatus = async () => {
           />
         );
         
-      case 'support':
-        return <SupportScreen />;
+ 
 
       case 'developers':
         return <DevelopersScreen />;

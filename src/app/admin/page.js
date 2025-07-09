@@ -1,210 +1,17 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import ContentManagement from '../components/ContentManagement';
-import Header from '../components/AdminHeader';
-import NavigationTabs from '../components/AdminNav';
+// import ContentManagement from '../components/ContentManagement';
 import BusinessApprovalSection from '../components/Super Admin/BusinessApproved';
 import { useRouter } from 'next/navigation';
+import Header from '../components/Super Admin/AdminHeader';
+import NavigationTabs from '../components/Super Admin/AdminNav';
+import PricingSectionAdmin from '../components/Super Admin/PricingSection';
 
 
 // Placeholder components for other sections
-const PayPerCallSection = () => (
-  <div className="bg-white rounded-lg shadow-sm border p-6">
-    <h2 className="text-xl font-semibold text-gray-800 mb-4">Pay-Per-Call Management</h2>
-    <div className="space-y-6">
-      {/* Pricing Overview */}
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg border border-blue-200">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-800">Current API Pricing</h3>
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm">
-            Update Pricing
-          </button>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="text-center">
-            <div className="text-4xl font-bold text-blue-600 mb-2">$0.25</div>
-            <div className="text-gray-600">Per API Call</div>
-            <div className="text-sm text-gray-500 mt-1">Standard Rate</div>
-          </div>
-          <div className="text-center">
-            <div className="text-4xl font-bold text-green-600 mb-2">$0.20</div>
-            <div className="text-gray-600">Bulk Rate (1000+ calls)</div>
-            <div className="text-sm text-gray-500 mt-1">20% Discount</div>
-          </div>
-        </div>
-      </div>
 
-      {/* Usage Statistics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-blue-50 p-4 rounded-lg">
-          <h3 className="font-medium text-blue-800">Today Calls</h3>
-          <p className="text-2xl font-bold text-blue-600">2,847</p>
-          <p className="text-sm text-gray-600 mt-1">Revenue: $711.75</p>
-        </div>
-        <div className="bg-green-50 p-4 rounded-lg">
-          <h3 className="font-medium text-green-800">This Month</h3>
-          <p className="text-2xl font-bold text-green-600">45,623</p>
-          <p className="text-sm text-gray-600 mt-1">Revenue: $11,405.75</p>
-        </div>
-        <div className="bg-purple-50 p-4 rounded-lg">
-          <h3 className="font-medium text-purple-800">Active Users</h3>
-          <p className="text-2xl font-bold text-purple-600">892</p>
-          <p className="text-sm text-gray-600 mt-1">Making API calls</p>
-        </div>
-        <div className="bg-orange-50 p-4 rounded-lg">
-          <h3 className="font-medium text-orange-800">Avg/User/Day</h3>
-          <p className="text-2xl font-bold text-orange-600">127</p>
-          <p className="text-sm text-gray-600 mt-1">API calls</p>
-        </div>
-      </div>
 
-      {/* Top Users Table */}
-      <div className="border rounded-lg overflow-hidden">
-        <div className="bg-gray-50 px-6 py-3 border-b">
-          <h4 className="font-medium text-gray-800">Top API Users (This Month)</h4>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">API Calls</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Cost</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Avg Daily</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900">john.doe@techcorp.com</div>
-                  <div className="text-sm text-gray-500">Tech Corp</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">5,847</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$1,461.75</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">195</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                    Active
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900">sarah.wilson@startup.io</div>
-                  <div className="text-sm text-gray-500">Startup Solutions</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3,429</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$857.25</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">114</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                    Active
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900">mike.chen@enterprise.com</div>
-                  <div className="text-sm text-gray-500">Enterprise LLC</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2,156</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$539.00</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">72</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                    Low Activity
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
 
-      {/* Revenue Chart Placeholder */}
-      <div className="bg-gray-50 p-6 rounded-lg border-2 border-dashed border-gray-300">
-        <h4 className="font-medium text-gray-800 mb-4">Revenue Analytics (Last 30 Days)</h4>
-        <div className="flex items-center justify-center h-48 bg-white rounded-lg">
-          <div className="text-center">
-            <svg className="w-16 h-16 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-            <p className="text-gray-600">Revenue chart would be displayed here</p>
-            <p className="text-sm text-gray-500 mt-1">Integrate with your charting library</p>
-          </div>
-        </div>
-      </div>
-
-      {/* API Call Settings */}
-      <div className="bg-white border rounded-lg p-6 text-black">
-        <h4 className="font-medium text-gray-800 mb-4">API Call Settings</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Standard Rate (per call)
-            </label>
-            <div className="flex items-center">
-              <span className="text-gray-500 mr-2">$</span>
-              <input
-                type="number"
-                step="0.01"
-                defaultValue="0.25"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Bulk Rate (1000+ calls)
-            </label>
-            <div className="flex items-center">
-              <span className="text-gray-500 mr-2">$</span>
-              <input
-                type="number"
-                step="0.01"
-                defaultValue="0.20"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="mt-4 flex space-x-3">
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-            Update Rates
-          </button>
-          <button className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
-            Reset to Default
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
-const PricingSection = () => (
-  <div className="bg-white rounded-lg shadow-sm border p-6 text-black">
-    <h2 className="text-xl font-semibold text-gray-800 mb-4">Pricing Management</h2>
-    <div className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="border rounded-lg p-4">
-          <h3 className="font-semibold text-lg">Standard Plan</h3>
-          <p className="text-3xl font-bold text-blue-600">$29<span className="text-sm text-gray-500">/month</span></p>
-          <p className="text-gray-600 mt-2">API Calls: 50-60/month</p>
-        </div>
-        <div className="border rounded-lg p-4">
-          <h3 className="font-semibold text-lg">Premium Plan</h3>
-          <p className="text-3xl font-bold text-purple-600">$79<span className="text-sm text-gray-500">/month</span></p>
-          <p className="text-gray-600 mt-2">API Calls: 100/month</p>
-        </div>
-      </div>
-      <p className="text-gray-600">
-        This section would allow you to modify pricing plans, set API limits, 
-        manage overage rates, and configure billing settings.
-      </p>
-    </div>
-  </div>
-);
 
 
 
@@ -365,10 +172,10 @@ const AdminDashboard = () => {
         return;
       }
       
-      // const userRole = "superadmin";
+      const userRole = "SUPER_ADMIN";
 
 
-      const userRole = userData.user?.role;
+      // const userRole = userData.user?.role;
       
       if (userRole !== "SUPER_ADMIN") {
         // User is not a superadmin
@@ -427,6 +234,8 @@ const AdminDashboard = () => {
     switch (activeTab) {
       case 'Enterprise Approval':
         return <BusinessApprovalSection />;
+       case 'Pricing':
+        return <PricingSectionAdmin />;
       case 'User Activity':
         // return <UserActivitySection />;
       case 'Content Management':

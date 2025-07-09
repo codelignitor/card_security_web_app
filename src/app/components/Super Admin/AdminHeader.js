@@ -1,10 +1,13 @@
 import React from 'react';
 
 const Header = () => {
-  const handleLogout = () => {
-    // Add your logout logic here
-    console.log('Logout clicked');
-  };
+const handleLogout = () => {
+  // Remove user data from localStorage
+  localStorage.removeItem('user');
+
+  localStorage.clear();
+  window.location.href = '/login'; // or '/'
+};
 
   return (
     <header className="bg-slate-700 text-white px-6 py-4 shadow-lg">
@@ -28,10 +31,7 @@ const Header = () => {
           
           <div className="flex items-center space-x-3">
             <button className="p-2 hover:bg-slate-600 rounded-lg transition-colors">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                      d="M15 17h5l-5 5-5-5h5v-5h5v5z" />
-              </svg>
+          
             </button>
             
             <button 

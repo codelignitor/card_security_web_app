@@ -23,6 +23,7 @@ const ControlPanel = ({
 
 }) => {
   const isActive = detectionActive || isProcessing || countdown > 0;
+  const isLastAttempt = attemptCount === maxAttempts - 1;
 
   // Show results if detection is complete
   if (currentPhase === 'results') {
@@ -60,6 +61,35 @@ const ControlPanel = ({
               </button>
             )}
           </div>
+
+          {/* Show alternative payment methods when only one attempt left */}
+          {isLastAttempt && (
+            <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-sm text-blue-800 mb-3 font-medium">
+                Or try payment with:
+              </p>
+              <div className="flex justify-center items-center gap-4">
+                {/* Google Pay Logo */}
+                <div className="flex items-center justify-center bg-white rounded-lg p-3 shadow-sm border">
+                  <svg width="48" height="20" viewBox="0 0 48 20" fill="none">
+                    <path d="M19.7 10c0-2.8-2.2-5-5-5s-5 2.2-5 5 2.2 5 5 5 5-2.2 5-5zm-7.5 0c0-1.4 1.1-2.5 2.5-2.5s2.5 1.1 2.5 2.5-1.1 2.5-2.5 2.5-2.5-1.1-2.5-2.5z" fill="#4285F4"/>
+                    <path d="M27.2 7.5h-4.8V5h4.8c1.4 0 2.5 1.1 2.5 2.5s-1.1 2.5-2.5 2.5z" fill="#34A853"/>
+                    <path d="M27.2 12.5h-4.8V10h4.8c1.4 0 2.5 1.1 2.5 2.5s-1.1 2.5-2.5 2.5z" fill="#FBBC04"/>
+                    <path d="M22.4 15h4.8c1.4 0 2.5-1.1 2.5-2.5v-5c0-1.4-1.1-2.5-2.5-2.5h-4.8v10z" fill="#EA4335"/>
+                  </svg>
+                  <span className="ml-2 text-sm font-medium text-gray-700">Google Pay</span>
+                </div>
+
+                {/* Apple Pay Logo */}
+                <div className="flex items-center justify-center bg-white rounded-lg p-3 shadow-sm border">
+                  <svg width="48" height="20" viewBox="0 0 48 20" fill="none">
+                    <path d="M11.5 1c-1.1 0-2.1.4-2.8 1.1-.7.7-1.1 1.7-1.1 2.8 0 .2 0 .4.1.6 1.2-.1 2.4-.6 3.2-1.4.8-.8 1.2-1.9 1.2-3-.4-.1-.4-.1-.6-.1zm1.3 3.2c-1.7 0-3.1.9-3.9.9s-2.2-.9-3.7-.9c-1.9 0-3.6 1.1-4.6 2.8-1.9 3.4-.5 8.4 1.4 11.2.9 1.4 2 2.9 3.4 2.9s1.9-.9 3.5-.9 2.1.9 3.5.9 2.4-1.4 3.3-2.8c1.1-1.6 1.5-3.2 1.5-3.3 0-.1-2.9-1.1-2.9-4.4 0-2.8 2.3-4.1 2.4-4.2-1.3-1.9-3.3-2.1-4-2.2z" fill="#000"/>
+                  </svg>
+                  <span className="ml-2 text-sm font-medium text-gray-700">Apple Pay</span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -73,7 +103,6 @@ const ControlPanel = ({
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
             <h3 className="text-lg font-semibold text-red-800 mb-2">Oops! Currently, you have reached the maximum number of times you can scan. </h3>
             <p className="text-red-700 mb-3 font-bold">Contact customer support for assistance or retry the scanning process. </p>
-     
           </div>
         </div>
       </div>
@@ -91,9 +120,9 @@ const ControlPanel = ({
           <button
             onClick={onStartValidation}
             disabled={isActive || maxAttemptsReached}
-            className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-6 py-3 rounded-lg font-medium transition-colors w-full sm:w-auto"
+            className="bg-red-600 hover:bg-red-700 disabled:bg-gray-400 text-white px-6 py-3 rounded-lg  transition-colors w-full sm:w-auto"
           >
-            {isActive ? 'Validating...' : 'Start Card Scan'}
+            {isActive ? 'Validating...' : 'Start Scanning'}
           </button>
         )}
 
@@ -179,6 +208,35 @@ const ControlPanel = ({
           </div>
         )}
       </div>
+
+      {/* Show alternative payment methods when only one attempt left during validation */}
+      {currentPhase === 'idle' && isLastAttempt && (
+        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <p className="text-sm text-blue-800 mb-3 font-medium text-center">
+            Or try payment with:
+          </p>
+          <div className="flex justify-center items-center gap-4">
+            {/* Google Pay Logo */}
+            <div className="flex items-center justify-center bg-white rounded-lg p-3 shadow-sm border">
+              <svg width="48" height="20" viewBox="0 0 48 20" fill="none">
+                <path d="M19.7 10c0-2.8-2.2-5-5-5s-5 2.2-5 5 2.2 5 5 5 5-2.2 5-5zm-7.5 0c0-1.4 1.1-2.5 2.5-2.5s2.5 1.1 2.5 2.5-1.1 2.5-2.5 2.5-2.5-1.1-2.5-2.5z" fill="#4285F4"/>
+                <path d="M27.2 7.5h-4.8V5h4.8c1.4 0 2.5 1.1 2.5 2.5s-1.1 2.5-2.5 2.5z" fill="#34A853"/>
+                <path d="M27.2 12.5h-4.8V10h4.8c1.4 0 2.5 1.1 2.5 2.5s-1.1 2.5-2.5 2.5z" fill="#FBBC04"/>
+                <path d="M22.4 15h4.8c1.4 0 2.5-1.1 2.5-2.5v-5c0-1.4-1.1-2.5-2.5-2.5h-4.8v10z" fill="#EA4335"/>
+              </svg>
+              <span className="ml-2 text-sm font-medium text-gray-700">Google Pay</span>
+            </div>
+
+            {/* Apple Pay Logo */}
+            <div className="flex items-center justify-center bg-white rounded-lg p-3 shadow-sm border">
+              <svg width="48" height="20" viewBox="0 0 48 20" fill="none">
+                <path d="M11.5 1c-1.1 0-2.1.4-2.8 1.1-.7.7-1.1 1.7-1.1 2.8 0 .2 0 .4.1.6 1.2-.1 2.4-.6 3.2-1.4.8-.8 1.2-1.9 1.2-3-.4-.1-.4-.1-.6-.1zm1.3 3.2c-1.7 0-3.1.9-3.9.9s-2.2-.9-3.7-.9c-1.9 0-3.6 1.1-4.6 2.8-1.9 3.4-.5 8.4 1.4 11.2.9 1.4 2 2.9 3.4 2.9s1.9-.9 3.5-.9 2.1.9 3.5.9 2.4-1.4 3.3-2.8c1.1-1.6 1.5-3.2 1.5-3.3 0-.1-2.9-1.1-2.9-4.4 0-2.8 2.3-4.1 2.4-4.2-1.3-1.9-3.3-2.1-4-2.2z" fill="#000"/>
+              </svg>
+              <span className="ml-2 text-sm font-medium text-gray-700">Apple Pay</span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Requirements not met warning */}
       {currentPhase === 'ready-for-back' && !frontScanState.canProceedToBack && (
