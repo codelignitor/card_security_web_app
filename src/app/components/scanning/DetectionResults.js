@@ -19,7 +19,7 @@ const DetectionResults = ({ finalOcrResults, onReset }) => {
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-1 sm:p-6 max-w-4xl mx-auto">
-      <h2 className="text-2xl sm:text-3xl font-bold text-center my-4 sm:my-7 text-green-600">
+      <h2 className="text-xl sm:text-2xl font-bold text-center my-4 sm:my-7 text-green-600">
         Card Security Scan Successful
       </h2>
 
@@ -172,7 +172,7 @@ const DetectionResults = ({ finalOcrResults, onReset }) => {
       {/* Raw JSON Response Viewer */}
 
       {/* <JsonResponseViewer data={finalOcrResults} />  */}
-
+{/* 
       <div className="text-center my-4">
         <button
           onClick={onReset}
@@ -180,7 +180,7 @@ const DetectionResults = ({ finalOcrResults, onReset }) => {
         >
           Start New Detection
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };
