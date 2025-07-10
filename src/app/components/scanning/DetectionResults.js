@@ -25,7 +25,7 @@ const DetectionResults = ({ finalOcrResults, onReset }) => {
 
       {/* Final OCR Results */}
   
-    {/* {final_ocr && (
+    {final_ocr && (
         <div className="mb-6 p-3 sm:p-4 bg-green-50 border text-black border-green-200 rounded-lg">
           <h3 className="text-base sm:text-lg font-semibold mb-3 text-green-700">
             Scanning and Detection Results
@@ -88,13 +88,13 @@ const DetectionResults = ({ finalOcrResults, onReset }) => {
             )}
           </div>
         </div>
-      )} */}
+      )} 
 
 
 
       {/* Detection Summary */}
       
-      {/* <div className="mb-6 p-3 sm:p-4 bg-blue-50 border text-black border-blue-200 rounded-lg">
+      <div className="mb-6 p-3 sm:p-4 bg-blue-50 border text-black border-blue-200 rounded-lg">
         <h3 className="text-base sm:text-lg font-semibold mb-3 text-blue-700">
           Detection Summary
         </h3>
@@ -167,7 +167,7 @@ const DetectionResults = ({ finalOcrResults, onReset }) => {
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
 
       {/* Raw JSON Response Viewer */}
 
