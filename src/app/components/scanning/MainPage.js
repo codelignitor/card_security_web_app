@@ -441,66 +441,75 @@ export default function MainPage() {
     });
   };
 
-  const startBackSideDetection = async () => {
-    if (maxAttemptsReached) {
-      console.log('🚫 Cannot start back scan - max attempts reached');
-      return;
-    }
+
+  // Updated startBackSideDetection function for your main component
+
+const startBackSideDetection = async () => {
+  if (maxAttemptsReached) {
+    console.log('🚫 Cannot start back scan - max attempts reached');
+    return;
+  }
+  
+  console.log('🔍 Starting back side detection...');
+  setCurrentPhase('back-countdown');
+  setErrorMessage('');
+
+  startCountdown(async () => {
+    if (stopRequestedRef.current) return;
     
-    console.log('🔍 Starting back side detection...');
-    setCurrentPhase('back-countdown');
-    setErrorMessage('');
+    setCurrentPhase('back');
+    setDetectionActive(true);
+    stopRequestedRef.current = false;
 
-    startCountdown(async () => {
-      if (stopRequestedRef.current) return;
+    // Start detection timeout
+    startDetectionTimeout('Back side');
+
+    try {
+      console.log('🚀 Starting back side detection with complete_scan check...');
+      const finalResult = await captureAndSendFrames('back');
       
-      setCurrentPhase('back');
-      setDetectionActive(true);
-      stopRequestedRef.current = false;
-
-      // Start detection timeout
-      startDetectionTimeout('Back side');
-
-      try {
-        const finalResult = await captureAndSendFrames('back');
+      if (!stopRequestedRef.current) {
+        clearDetectionTimeout();
+        setDetectionActive(false);
         
-        if (!stopRequestedRef.current) {
-          clearDetectionTimeout();
-          setDetectionActive(false);
+        console.log('🔍 Checking final result from detection hook:', finalResult);
+        
+        // Check for complete_scan flag
+        if (finalResult.complete_scan === true) {
+          console.log('🎯✅ FINAL: Complete scan confirmed in main component');
+          console.log('🚫 No more API calls should occur after this point');
+          console.log('📊 Final result data:', finalResult);
           
-          console.log('🔍 Checking final result:', finalResult);
-          
-          if (finalResult.encrypted_card_data && finalResult.status) {
-            console.log('🎯 Final encrypted response detected - Setting phase to final_response');
-            console.log(`Status: ${finalResult.status}, Score: ${finalResult.score}`);
-            setFinalOcrResults(finalResult);
-            setCurrentPhase('final_response');
-          } else if (finalResult.final_ocr) {
-            console.log('📋 Regular OCR results - Setting phase to results');
-            setFinalOcrResults(finalResult);
-            setCurrentPhase('results');
-          } else {
-            console.log('⚠️ No final OCR or encrypted data found');
-            setFinalOcrResults(finalResult);
-            setCurrentPhase('results');
-          }
+          setFinalOcrResults(finalResult);
+          setCurrentPhase('results');
           
           console.log('✅ Back scan successful! Resetting attempt count.');
-          // FIXED: Reset attempts only on successful back scan
+          setAttemptCount(0);
+          setMaxAttemptsReached(false);
+          setCurrentOperation('');
+        } else {
+          console.log('⚠️ Warning: Detection completed but complete_scan flag not found');
+          console.log('📊 Result without complete_scan:', finalResult);
+          
+          // Fallback handling if needed
+          setFinalOcrResults(finalResult);
+          setCurrentPhase('results');
           setAttemptCount(0);
           setMaxAttemptsReached(false);
           setCurrentOperation('');
         }
-        
-      } catch (error) {
-        console.error('Back side detection failed:', error);
-        setDetectionActive(false);
-        if (!stopRequestedRef.current) {
-          handleDetectionFailure(`Back side detection failed: ${error.message}`, 'back');
-        }
       }
-    });
-  };
+      
+    } catch (error) {
+      console.error('❌ Back side detection failed:', error);
+      setDetectionActive(false);
+      if (!stopRequestedRef.current) {
+        handleDetectionFailure(`Back side detection failed: ${error.message}`, 'back');
+      }
+    }
+  });
+};
+
 
   const resetApplication = () => {
     console.log('🔄 Resetting application completely...');

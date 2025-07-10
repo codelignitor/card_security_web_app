@@ -24,7 +24,8 @@ const DetectionResults = ({ finalOcrResults, onReset }) => {
       </h2>
 
       {/* Final OCR Results */}
-      {final_ocr && (
+  
+    {/* {final_ocr && (
         <div className="mb-6 p-3 sm:p-4 bg-green-50 border text-black border-green-200 rounded-lg">
           <h3 className="text-base sm:text-lg font-semibold mb-3 text-green-700">
             Scanning and Detection Results
@@ -39,9 +40,7 @@ const DetectionResults = ({ finalOcrResults, onReset }) => {
                   <div className="font-mono text-sm sm:text-base">
                     {final_ocr.cardholder_name.value}
                   </div>
-                  {/* <div className="text-xs sm:text-sm text-gray-500">
-                    Confidence: {Math.round(final_ocr.cardholder_name.confidence * 100)}%
-                  </div> */}
+              
                 </div>
               </div>
             )}
@@ -55,9 +54,7 @@ const DetectionResults = ({ finalOcrResults, onReset }) => {
                   <div className="font-mono text-sm sm:text-base">
                     {final_ocr.card_number.value}
                   </div>
-                  {/* <div className="text-xs sm:text-sm text-gray-500">
-                    Confidence: {Math.round(final_ocr.card_number.confidence * 100)}%
-                  </div> */}
+            
                 </div>
               </div>
             )}
@@ -71,9 +68,7 @@ const DetectionResults = ({ finalOcrResults, onReset }) => {
                   <div className="font-mono text-sm sm:text-base">
                     {final_ocr.expiry_date.value}
                   </div>
-                  {/* <div className="text-xs sm:text-sm text-gray-500">
-                    Confidence: {Math.round(final_ocr.expiry_date.confidence * 100)}%
-                  </div> */}
+             
                 </div>
               </div>
             )}
@@ -87,19 +82,19 @@ const DetectionResults = ({ finalOcrResults, onReset }) => {
                   <div className="font-mono text-sm sm:text-base">
                     {final_ocr.bank_name.value}
                   </div>
-                  {/* <div className="text-xs sm:text-sm text-gray-500">
-                    Confidence: {Math.round(final_ocr.bank_name.confidence * 100)}%
-                  </div> */}
+              
                 </div>
               </div>
             )}
           </div>
         </div>
-      )}
+      )} */}
+
+
 
       {/* Detection Summary */}
       
-      <div className="mb-6 p-3 sm:p-4 bg-blue-50 border text-black border-blue-200 rounded-lg">
+      {/* <div className="mb-6 p-3 sm:p-4 bg-blue-50 border text-black border-blue-200 rounded-lg">
         <h3 className="text-base sm:text-lg font-semibold mb-3 text-blue-700">
           Detection Summary
         </h3>
@@ -172,11 +167,11 @@ const DetectionResults = ({ finalOcrResults, onReset }) => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Raw JSON Response Viewer */}
 
-      <JsonResponseViewer data={finalOcrResults} /> 
+      {/* <JsonResponseViewer data={finalOcrResults} />  */}
 
       <div className="text-center my-4">
         <button

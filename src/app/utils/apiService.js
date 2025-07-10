@@ -50,13 +50,7 @@
 
 
 
-
-
-
-
 // new working
-
-
 
 
 // API Service for Card Detection
@@ -84,6 +78,8 @@ export const sendFrameToAPI = async (frame, phase, sessionId, frameNumber) => {
       console.log(`Using scan ID from URL: ${scanId}`);
       
       const apiUrl = `https://cardapp.hopto.org/detect/card/${scanId}`;
+      // const apiUrl = `https://4720e2eef0cb.ngrok-free.app/detect/card/${scanId}`;
+
       
       const response = await fetch(apiUrl, {
         method: 'POST',
