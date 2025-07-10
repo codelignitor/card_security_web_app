@@ -9,25 +9,26 @@ import PricingSection from "./SubscriptionsCard";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState(null);
 
-useEffect(() => {
-  const storedUser = localStorage.getItem("userData");
-  if (storedUser) {
-    try {
-      const parsedUser = JSON.parse(storedUser);
-      const userObj = parsedUser.user || parsedUser;
-      if (userObj && userObj.merchant_id) {
-        setIsLoggedIn(true);
+  useEffect(() => {
+    const storedUser = localStorage.getItem("userData");
+    if (storedUser) {
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        const userObj = parsedUser.user || parsedUser;
+        if (userObj && userObj.merchant_id) {
+          setIsLoggedIn(true);
+          setUserRole(userObj.role);
+        }
+      } catch (e) {
+        console.error("Error parsing userData:", e);
+        setIsLoggedIn(false);
+        setUserRole(null);
       }
-    } catch (e) {
-      console.error("Error parsing userData:", e);
-      setIsLoggedIn(false);
     }
-  }
-}, []);
-
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,6 +50,26 @@ useEffect(() => {
     }
     setIsMenuOpen(false);
   };
+
+  // Function to get the correct link and text based on user role
+  const getAuthLink = () => {
+    if (!isLoggedIn) {
+      return { href: "/login", text: "Sign In" };
+    }
+    
+    if (userRole === "SUPER_ADMIN") {
+      return { href: "/admin", text: "Admin Panel" };
+    }
+    
+    if (userRole === "BUSINESS_USER") {
+      return { href: "/dashboard", text: "Dashboard" };
+    }
+    
+    // Default fallback
+    return { href: "/login", text: "Sign In" };
+  };
+
+  const authLink = getAuthLink();
 
   return (
     <nav
@@ -125,14 +146,14 @@ useEffect(() => {
 
           {/* CTA Button - Only show on large screens */}
           <div className="hidden lg:block space-x-5">
-          <Link
-  href={isLoggedIn ? "/dashboard" : "/login"}
-  className={`hover:text-teal-600 transition-colors duration-200 font-medium mr-6 ${
-    isScrolled ? "text-gray-800" : "text-white hover:text-teal-300"
-  }`}
->
-  {isLoggedIn ? "Dashboard" : "Sign In"}
-</Link>
+            <Link
+              href={authLink.href}
+              className={`hover:text-teal-600 transition-colors duration-200 font-medium mr-6 ${
+                isScrolled ? "text-gray-800" : "text-white hover:text-teal-300"
+              }`}
+            >
+              {authLink.text}
+            </Link>
 
             <Link
               href="/signup"
@@ -262,14 +283,13 @@ useEffect(() => {
 
                 {/* Sign In Link */}
                 <div className="pt-4 border-t border-gray-700">
-                <Link
-  href={isLoggedIn ? "/dashboard" : "/login"}
-  onClick={() => setIsMenuOpen(false)}
-  className="block text-left text-white hover:text-teal-300 hover:bg-gray-800 transition-all duration-200 font-medium py-4 px-4 rounded-lg"
->
-  {isLoggedIn ? "Dashboard" : "Sign In"}
-</Link>
-
+                  <Link
+                    href={authLink.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block text-left text-white hover:text-teal-300 hover:bg-gray-800 transition-all duration-200 font-medium py-4 px-4 rounded-lg"
+                  >
+                    {authLink.text}
+                  </Link>
                 </div>
 
                 {/* CTA Button */}

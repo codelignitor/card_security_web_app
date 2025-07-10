@@ -50,7 +50,7 @@ const generateScanToken = async (userObj) => {
   
   try {
     const requestData = {
-      mercahntId: userObj.merchant_id, // Note: API has typo "mercahnt"
+      merchantId: userObj.merchant_id, // Note: API has typo "mercahnt"
       merchantcontact: userObj.phone_no || '',
       isMobile: isMobileDevice() ? "true" : "false"
     };
@@ -363,15 +363,15 @@ const handleSubmit = async (e) => {
       console.log('Subscription created successfully:', result);
       
       // Update user data in localStorage if needed
-      const updatedUserData = {
-        ...userData,
-        subscription: {
-          package_id: plan.id,
-          package_name: plan.name,
-          subscription_date: subscriptionData.subscription_date
-        }
-      };
-      localStorage.setItem('userData', JSON.stringify(updatedUserData));
+      // const updatedUserData = {
+      //   ...userData,
+      //   subscription: {
+      //     package_id: plan.id,
+      //     package_name: plan.name,
+      //     subscription_date: subscriptionData.subscription_date
+      //   }
+      // };
+      // localStorage.setItem('userData', JSON.stringify(updatedUserData));
       setnotification('Subscription created successfully!');
       router.push('/dashboard'); // Redirect to dashboard
     } else {

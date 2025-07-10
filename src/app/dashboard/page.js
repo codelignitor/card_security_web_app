@@ -9,6 +9,7 @@ import DevelopersScreen from '../components/Dashboard-Screens/Developer';
 import Sidebar from '../components/Dashboard-Screens/Sidebar';
 import HomeScreen from '../components/Dashboard-Screens/Homescreen';
 
+
 // Loading component for Suspense fallback
 function DashboardLoader() {
   return (
@@ -126,69 +127,97 @@ function DashboardContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('profile');
   const [isLargeScreen, setIsLargeScreen] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
   
-
-  useEffect(() => {
-  const storedUser = localStorage.getItem('userData');
-
-  if (!storedUser) {
-    // If no user is logged in, redirect to login page
-    router.push('/login');
+  
+// Add this function to your dashboard component
+const getUserDataFromStorage = () => {
+  try {
+    const userData = localStorage.getItem('userData');
+    if (!userData) return null;
+    
+    const parsedData = JSON.parse(userData);
+    return parsedData;
+  } catch (error) {
+    console.error('Error parsing user data from localStorage:', error);
+    return null;
   }
-}, []);
+};
 
 useEffect(() => {
-  const storedUser = localStorage.getItem('userData');
-
-  if (storedUser) {
-    const parsedUser = JSON.parse(storedUser);
-    console.log('User data found in localStorage:', parsedUser);
+  // Check authentication and authorization
+  const checkAuth = () => {
+    const userData = getUserDataFromStorage();
     
-    // Handle nested user object structure
-    const userObj = parsedUser.user || parsedUser;
+    if (!userData) {
+      // No user data found or expired
+      console.log("No valid user data found, redirecting to login");
+      router.push("/login");
+      return;
+    }
     
-    // Set user data to state
+    const userRole = userData.user?.role;
+    
+    if (userRole !== "BUSINESS_USER") {
+      // User is not a business user
+      console.log("Access denied: User is not a business user");
+      
+      // Redirect based on their actual role
+      if (userRole === "SUPER_ADMIN") {
+        router.push("/admin");
+      } else {
+        router.push("/login");
+      }
+      return;
+    }
+    
+    // User is authenticated and is a business user
+    console.log("Access granted: User is a business user");
+    setIsAuthenticated(true);
+    
+    // Set user data to state since access is granted
+    const userObj = userData.user || userData;
     setUserData(userObj);
     
-    // Extract and set business verification status from the correct location
+    // Extract and set business verification status
     const businessVerifiedStatus = getStatusFromBusinessVerified(userObj.business_verified);
     setStatus(businessVerifiedStatus);
     
     console.log('User object:', userObj);
     console.log('Business verified status:', userObj.business_verified);
     console.log('Mapped status:', businessVerifiedStatus);
-  } else {
-    console.log('No user data found in localStorage');
+  };
+
+  checkAuth();
+}, [router]);
+
+// Check if user came from OTP verification
+useEffect(() => {
+  const verified = searchParams.get('verified');
+  if (verified === 'true') {
+    console.log('User verified via OTP');
   }
+  setIsLoading(false);
+}, [searchParams]);
+
+// Handle screen size changes and set initial sidebar state
+useEffect(() => {
+  const checkScreenSize = () => {
+    const isLg = window.innerWidth >= 1024; // lg breakpoint is 1024px
+    setIsLargeScreen(isLg);
+    
+    setSidebarOpen(isLg);
+  };
+
+  // Check initial screen size
+  checkScreenSize();
+
+  // Add event listener for resize
+  window.addEventListener('resize', checkScreenSize);
+
+  // Cleanup event listener
+  return () => window.removeEventListener('resize', checkScreenSize);
 }, []);
-  
-  // Check if user came from OTP verification
-  useEffect(() => {
-    const verified = searchParams.get('verified');
-    if (verified === 'true') {
-      console.log('User verified via OTP');
-    }
-    setIsLoading(false);
-  }, [searchParams]);
-
-  // Handle screen size changes and set initial sidebar state
-  useEffect(() => {
-    const checkScreenSize = () => {
-      const isLg = window.innerWidth >= 1024; // lg breakpoint is 1024px
-      setIsLargeScreen(isLg);
-      
-      setSidebarOpen(isLg);
-    };
-
-    // Check initial screen size
-    checkScreenSize();
-
-    // Add event listener for resize
-    window.addEventListener('resize', checkScreenSize);
-
-    // Cleanup event listener
-    return () => window.removeEventListener('resize', checkScreenSize);
-  }, []);
 
   // Auto-close sidebar when switching tabs on small screens
   const handleTabChange = (tabId) => {
