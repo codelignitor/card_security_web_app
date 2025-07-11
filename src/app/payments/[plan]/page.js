@@ -959,10 +959,14 @@ import React, { useState, use, useMemo, useEffect, useRef } from 'react';
 import { Check, X, ArrowLeft, CreditCard, Shield, Lock, Salad, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import QRCode from "react-qr-code";
+import { jwtDecode } from 'jwt-decode';
 import { notFound, useRouter } from 'next/navigation';
+import { decryptWithAES128 } from '@/app/lib/decrypt';
 
 export default function PaymentPage({ params }) {
   const router = useRouter();
+  const [authToken, setAuthToken] = useState(null);
+const [decryptedCardData, setDecryptedCardData] = useState(null);
   const resolvedParams = use(params);
   const [plan, setPlan] = useState(null);
   const [userData, setUserData] = useState(null);
@@ -1069,7 +1073,7 @@ const generateScanToken = async (userObj) => {
   
   try {
     const requestData = {
-      merchantId: userObj.merchant_id, // Note: API has typo "mercahnt"
+      merchantId: userObj.merchant_id,
       merchantcontact: userObj.phone_no || '',
       isMobile: isMobileDevice() ? "true" : "false"
     };
@@ -1090,15 +1094,19 @@ const generateScanToken = async (userObj) => {
 
     console.log('Scan token generated:', data);
     
-    // Store scanURL in localStorage
+    // Store authToken
+    if (data.authToken) {
+      setAuthToken(data.authToken);
+      localStorage.setItem('authToken', data.authToken);
+    }
+    
+    // Store other data
     if (data.scanURL) {
       localStorage.setItem('scanURL', data.scanURL);
     }
     
-    // You might also want to store other data
     if (data.scanID) {
       localStorage.setItem('scanID', data.scanID);
-      // Start polling for encrypted data
       startPolling(data.scanID);
     }
     
@@ -1110,6 +1118,97 @@ const generateScanToken = async (userObj) => {
     setScanLoading(false);
   }
 };
+
+
+// Add decryption function
+
+const decryptAndPopulateCardData = async () => {
+  try {
+    if (!authToken || !encryptedData) {
+      console.log('Missing authToken or encryptedData');
+      return;
+    }
+
+    // Decode JWT to get encryption_key
+    const decodedToken = jwtDecode(authToken);
+    const encryptionKey = decodedToken.encryption_key;
+
+    if (!encryptionKey) {
+      throw new Error('encryption_key not found in JWT token');
+    }
+
+    // Decrypt the card data
+    const decryptedData = decryptWithAES128(encryptedData, encryptionKey);
+    console.log('Decrypted card data:', decryptedData);
+
+    // Check if scan was successful
+    if (!decryptedData.complete_scan) {
+      throw new Error('Card scan was not completed successfully');
+    }
+
+    // Extract card information from final_ocr object
+    const finalOcr = decryptedData.final_ocr;
+    if (!finalOcr) {
+      throw new Error('Card OCR data not found');
+    }
+
+    // Extract and validate card details
+    const cardNumber = finalOcr.card_number?.value || finalOcr.account_number?.value;
+    const cardholderName = finalOcr.cardholder_name?.value;
+    const expiryDate = finalOcr.expiry_date?.value;
+
+    // Validate required fields
+    if (!cardNumber) {
+      throw new Error('Card number not detected in scan');
+    }
+    if (!expiryDate) {
+      throw new Error('Expiry date not detected in scan');
+    }
+
+    console.log('Extracted card data:', {
+      cardNumber,
+      cardholderName: cardholderName || 'Not detected',
+      expiryDate,
+      confidence: decryptedData.confidence
+    });
+
+    // Update form data with extracted card information
+    setFormData(prev => ({
+      ...prev,
+      cardNumber: cardNumber,
+      cardholderName: cardholderName || '',
+      expiryDate: expiryDate
+    }));
+
+    // Store the full decrypted data for reference
+    setDecryptedCardData({
+      ...decryptedData,
+      extractedData: {
+        cardNumber,
+        cardholderName,
+        expiryDate
+      }
+    });
+
+    // Optional: Show confidence score to user if it's low
+    if (decryptedData.confidence < 80) {
+      console.warn('Low confidence score:', decryptedData.confidence);
+      // You might want to show a warning to the user
+    }
+
+  } catch (error) {
+    console.error('Error decrypting card data:', error);
+    setError(`Failed to process card information: ${error.message}`);
+  }
+};
+
+useEffect(() => {
+  if (encryptedData && authToken) {
+    decryptAndPopulateCardData();
+  }
+}, [encryptedData, authToken]);
+
+
 
   // Fetch plan data and user data on component mount
   useEffect(() => {
@@ -1801,53 +1900,66 @@ const handleSubmit = async (e) => {
                             </p>
                           </div>
                           
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              Card Number
-                            </label>
-                            <input
-                              type="text"
-                              name="cardNumber"
-                              value={formData.cardNumber}
-                              onChange={handleInputChange}
-                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                              placeholder="**** **** **** ****"
-                              required
-                              disabled={submitting}
-                            />
-                          </div>
-                          
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              Cardholder Name
-                            </label>
-                            <input
-                              type="text"
-                              name="cardholderName"
-                              value={formData.cardholderName}
-                              onChange={handleInputChange}
-                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                              placeholder="John Doe"
-                              required
-                              disabled={submitting}
-                            />
-                          </div>
-                          
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              Expiry Date
-                            </label>
-                            <input
-                              type="text"
-                              name="expiryDate"
-                              value={formData.expiryDate}
-                              onChange={handleInputChange}
-                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                              placeholder="MM/YY"
-                              required
-                              disabled={submitting}
-                            />
-                          </div>
+                                          <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                              Card Number
+                                            </label>
+                                            <input
+                                              type="text"
+                                              name="cardNumber"
+                                              value={formData.cardNumber}
+                                              onChange={handleInputChange}
+                                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+                                              placeholder="**** **** **** ****"
+                                              required
+                                              disabled={submitting || decryptedCardData} // Disable if card data is decrypted
+                                              readOnly={decryptedCardData} // Make it read-only if decrypted
+                                            />
+                                            {decryptedCardData && (
+                                              <p className="text-xs text-green-600 mt-1">✓ Auto-filled from secure scan</p>
+                                            )}
+                                          </div>
+
+                                          <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                              Cardholder Name
+                                            </label>
+                                            <input
+                                              type="text"
+                                              name="cardholderName"
+                                              value={formData.cardholderName}
+                                              onChange={handleInputChange}
+                                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+                                              placeholder=""
+                                              required
+                                              disabled={submitting || decryptedCardData}
+                                              readOnly={decryptedCardData}
+                                            />
+                                            {decryptedCardData && (
+                                              <p className="text-xs text-green-600 mt-1">✓ Auto-filled from secure scan</p>
+                                            )}
+                                          </div>
+
+                                          <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                              Expiry Date
+                                            </label>
+                                            <input
+                                              type="text"
+                                              name="expiryDate"
+                                              value={formData.expiryDate}
+                                              onChange={handleInputChange}
+                                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+                                              placeholder="MM/YY"
+                                              required
+                                              disabled={submitting || decryptedCardData}
+                                              readOnly={decryptedCardData}
+                                            />
+                                            {decryptedCardData && (
+                                              <p className="text-xs text-green-600 mt-1">✓ Auto-filled from secure scan</p>
+                                            )}
+                                          </div>
+                       
                         </div>
                       ) : (
                         // Show QR code or loading state if encrypted data is not available
