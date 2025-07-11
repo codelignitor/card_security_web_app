@@ -234,6 +234,8 @@ export default function MainPage() {
 
   // FIXED: Card validation process - don't reset attempt count on success in wrong place
   const startCardValidation = async () => {
+      stopRequestedRef.current = false; // ADD THIS LINE
+
     if (maxAttemptsReached) {
       console.log('🚫 Cannot start validation - max attempts reached');
       return;
@@ -390,6 +392,9 @@ export default function MainPage() {
   };
 
   const startFrontSideDetection = async () => {
+  stopRequestedRef.current = false; // ADD THIS LINE
+
+
     if (maxAttemptsReached) {
       console.log('🚫 Cannot start front scan - max attempts reached');
       return;
@@ -445,6 +450,8 @@ export default function MainPage() {
   // Updated startBackSideDetection function for your main component
 
 const startBackSideDetection = async () => {
+    stopRequestedRef.current = false; // ADD THIS LINE
+
   if (maxAttemptsReached) {
     console.log('🚫 Cannot start back scan - max attempts reached');
     return;
@@ -557,19 +564,48 @@ const startBackSideDetection = async () => {
   };
 
   // FIXED: "Try Again" function - keeps attempt count but resets to appropriate phase
-  const handleTryAgain = () => {
-    console.log(`🔄 Trying again for operation: ${currentOperation}. Attempt count remains: ${attemptCount}`);
-    
-    stopRequestedRef.current = true;
-    clearDetectionTimeout();
-    
-    // FIXED: Don't reset attempt count here - keep it for tracking
-    setDetectionActive(false);
-    setIsProcessing(false);
-    setCountdown(0);
-    setErrorMessage('');
-    
-    // Return to the appropriate phase based on what operation failed
+ const handleTryAgain = () => {
+  console.log(`🔄 Trying again for operation: ${currentOperation}. Attempt count remains: ${attemptCount}`);
+  
+  stopRequestedRef.current = true;
+  clearDetectionTimeout();
+  
+  // Clean up intervals FIRST
+  if (captureIntervalRef.current) {
+    clearInterval(captureIntervalRef.current);
+    captureIntervalRef.current = null;
+  }
+  if (countdownIntervalRef.current) {
+    clearInterval(countdownIntervalRef.current);
+    countdownIntervalRef.current = null;
+  }
+  if (validationIntervalRef.current) {
+    clearInterval(validationIntervalRef.current);
+    validationIntervalRef.current = null;
+  }
+  
+  // Reset states
+  setDetectionActive(false);
+  setIsProcessing(false);
+  setCountdown(0);
+  setErrorMessage('');
+  
+  // Check if we need to restart from front scan (when back scan had retry_required status)
+  if (currentOperation === 'back' && 
+      (errorMessage.includes('start the scanning process from front side again') ||
+       errorMessage.includes('need to restart from front scan'))) {
+    // Restart from front scan
+    console.log('🔄 Restarting from front scan due to retry_required status');
+    setCurrentPhase('ready-for-front');
+    setCurrentOperation('front');
+    setFrontScanState({
+      framesBuffered: 0,
+      chipDetected: false,
+      bankLogoDetected: false,
+      canProceedToBack: false
+    });
+  } else {
+    // Normal retry logic - return to the appropriate phase based on what operation failed
     if (currentOperation === 'validation') {
       setCurrentPhase('idle');
       setValidationState({
@@ -592,20 +628,11 @@ const startBackSideDetection = async () => {
       // Default fallback
       setCurrentPhase('idle');
     }
-    
-    // Clean up intervals
-    if (captureIntervalRef.current) {
-      clearInterval(captureIntervalRef.current);
-    }
-    if (countdownIntervalRef.current) {
-      clearInterval(countdownIntervalRef.current);
-    }
-    if (validationIntervalRef.current) {
-      clearInterval(validationIntervalRef.current);
-    }
-    
-    stopRequestedRef.current = false;
-  };
+  }
+  
+  // DON'T reset stopRequestedRef here - let the button handlers do it
+  // This prevents auto-starting of scans
+};
 
   // FIXED: Start over function
   const handleStartOver = () => {
