@@ -501,7 +501,7 @@ const LandingPage = () => {
         </div>
         <div className="flex-1">
           <h4
-            className={`font-bold text-base sm:text-lg ${
+            className={`font-bold text-left text-base sm:text-lg ${
               isDark ? "text-white" : "text-gray-900"
             } mb-2`}
           >
