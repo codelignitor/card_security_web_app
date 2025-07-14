@@ -253,8 +253,8 @@ function HomeScreen({ status, setActiveTab }) {
         <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
           <h3 className="font-semibold text-blue-900 mb-2">Account Approved!</h3>
           <p className="text-blue-700 text-sm">
-            Congratulations! Your account has been approved. You can now choose a subscription plan 
-            and start using our services.
+        Congratulations! Your account has been approved. If you have not subscribed yet, you can now choose a subscription plan and start using our services.
+
           </p>
         </div>
       )}

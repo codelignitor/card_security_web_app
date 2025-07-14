@@ -21,6 +21,7 @@ export default function LoginPage() {
     countryCode: "+1", // Default country code
   });
 
+  // Comprehensive list of countries with codes, names, and flags
 
   const options = countryCodes.map((country) => ({
     value: `${country.code}-${country.name}`,
@@ -341,7 +342,7 @@ export default function LoginPage() {
                 // Login Form
                 <>
                   <h2 className="text-xl sm:text-2xl font-medium text-gray-900 mb-6 sm:mb-8">
-                    Sign in to your account
+                    Sign in to your admin panel
                   </h2>
 
                   {/* Error Message */}
@@ -459,9 +460,12 @@ export default function LoginPage() {
                   <h2 className="text-xl sm:text-2xl font-medium text-gray-900 mb-2">
                     Enter verification code
                   </h2>
-                  <p className="text-sm text-gray-600 mb-6 sm:mb-8 break-words">
+                  {/* <p className="text-sm text-gray-600 mb-6 sm:mb-8 break-words">
                     We sent a code to {getSelectedCountryInfo().flag}{" "}
                     {formData.countryCode} {emailOrPhone}
+                  </p> */}
+                   <p className="text-sm text-gray-600 mb-6 sm:mb-8 break-words">
+                    We sent a code to your registered phone number
                   </p>
 
                   {/* OTP Error Message */}
@@ -542,5 +546,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-

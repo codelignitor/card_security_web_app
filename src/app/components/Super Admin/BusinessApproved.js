@@ -503,10 +503,10 @@ const BusinessApprovalSection = () => {
                       {selectedBusiness.account_holder_first_name} {selectedBusiness.account_holder_last_name}
                     </p>
                   </div>
-                  <div>
+                  {/* <div>
                     <label className="block text-sm font-medium text-gray-700">Bank Info</label>
                     <p className="mt-1 text-sm text-gray-900">{selectedBusiness.bank_info}</p>
-                  </div>
+                  </div> */}
                 </div>
                 
                 <div>
