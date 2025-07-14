@@ -508,7 +508,7 @@ const LandingPage = () => {
             {feature.title}
           </h4>
           <p
-            className={`text-sm sm:text-base ${
+            className={`text-sm sm:text-base text-justify  ${
               isDark ? "text-gray-300" : "text-gray-600"
             }`}
           >
@@ -627,7 +627,7 @@ const LandingPage = () => {
           <div className="flex flex-col md:flex-row items-center md:items-start gap-10">
             {/* Left Text Section */}
             <div className="w-full md:w-1/2 space-y-6 text-left">
-              <p className="text-base md:text-lg text-gray-700 leading-relaxed">
+              <p className="text-base md:text-lg text-gray-700 text-justify leading-relaxed">
                 <strong>CardNest</strong> is a cutting-edge financial technology
                 company dedicated to transforming how businesses protect
                 themselves and their customers from online card fraud. Founded
@@ -644,7 +644,7 @@ const LandingPage = () => {
                 milliseconds—without disrupting the customer experience.
               </p>
 
-              <p className="text-base md:text-lg text-gray-700 leading-relaxed">
+              <p className="text-base md:text-lg text-gray-700 text-justify leading-relaxed">
                 Our Artificial Intelligence models continuously analyze
                 thousands of data points, including card security features,
                 transaction history, device fingerprinting, location
@@ -678,7 +678,7 @@ const LandingPage = () => {
                     height="450"
                   />
                 </div>
-                <p className="text-base md:text-lg text-gray-700 pt-7 leading-relaxed">
+                <p className="text-base md:text-lg text-gray-700 text-justify pt-7 leading-relaxed">
                 
                   increased customer trust, and significant improvements in
                   operational efficiency and revenue retention. At CardNest, we
@@ -758,7 +758,7 @@ const LandingPage = () => {
 
 
       {/* Connect Section */}
-      <section id="benefits" className="bg-white">
+      <section id="benefits" className="bg-white  ">
         <SectionContent data={sectionsData.connect} isDark={true}  sectionKey="connect" />
 
       </section>

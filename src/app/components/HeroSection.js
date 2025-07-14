@@ -38,19 +38,21 @@ const DiagonalHeroSection = () => {
       {/* Animation Video Background Layer */}
       <div className="absolute top-0 left-0 w-full h-[400px] md:h-[600px] xl:h-[500px] lg:h-[500px] z-0 overflow-hidden">
         {!videoError ? (
-          <video
-            ref={backgroundVideoRef}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            className="w-full h-full object-fill"
-            onError={() => setVideoError(true)}
-          >
-            <source src="/videos/animation.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+      <video
+  ref={backgroundVideoRef}
+  autoPlay
+  loop
+  muted
+  playsInline
+  preload="metadata"
+  className="w-full h-full object-fill"
+  onError={() => setVideoError(true)}
+>
+  <source src="https://d3rfyed8zhcsm.cloudfront.net/Header2.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
             <p className="text-gray-500">Loading animation...</p>
