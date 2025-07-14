@@ -699,7 +699,7 @@ export default function LoginPage() {
           playsInline
           className="absolute inset-0 w-full h-[60%] object-fill"
         >
-          <source src="/videos/animation.mp4" type="video/mp4" />
+          <source src="https://d3rfyed8zhcsm.cloudfront.net/Header2.mp4" type="video/mp4" />
         </video>
       </div>
 
@@ -713,7 +713,7 @@ export default function LoginPage() {
                 className="text-xl sm:text-2xl my-2 font-bold text-white drop-shadow-lg"
               >
                 <video autoPlay loop muted playsInline width="70">
-                  <source src="/videos/cardnest.webm" type="video/webm" />
+<source src="https://dw1u598x1c0uz.cloudfront.net/CardNest%20Logo%20Video.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               </Link>

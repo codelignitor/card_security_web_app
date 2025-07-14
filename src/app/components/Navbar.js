@@ -13,12 +13,13 @@ function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
-            <Link href="/" className="flex-shrink-0">
-                   <video autoPlay loop muted playsInline width="70">
-      <source src="/videos/cardnest.webm" type="video/webm" />
-      Your browser does not support the video tag.
-    </video> 
-            </Link>
+           <Link href="/" className="flex-shrink-0">
+  <video autoPlay loop muted playsInline width="70">
+    <source src="https://dw1u598x1c0uz.cloudfront.net/CardNest%20Logo%20Video.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+</Link>
+
 
          
 
