@@ -87,7 +87,7 @@ const plans = [
                     {/* Logo */}
                     <Link href="/" className="flex-shrink-0">
                            <video autoPlay loop muted playsInline width="70">
-<source src="https://dw1u598x1c0uz.cloudfront.net/CardNest%20Logo%20Video.mp4" type="video/mp4" />
+<source src="https://dw1u598x1c0uz.cloudfront.net/CardNest%20Logo%20WebM%20version.webm" alt="CardNest Logo" />
               Your browser does not support the video tag.
             </video> 
                     </Link>

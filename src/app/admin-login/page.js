@@ -13,6 +13,7 @@ export default function LoginPage() {
   const [otp, setOtp] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
+    const [showCountryCode, setShowCountryCode] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [otpError, setOtpError] = useState("");
@@ -71,22 +72,27 @@ export default function LoginPage() {
     );
   };
 
-  const handleEmailOrPhoneChange = (e) => {
-    const newValue = e.target.value;
-    setEmailOrPhone(newValue);
+const handleEmailOrPhoneChange = (e) => {
+  const newValue = e.target.value;
+  setEmailOrPhone(newValue);
 
-    // Clear error when user starts typing
-    if (error) setError("");
+  // Corrected: use newValue instead of value
+  const isEmail = /[a-zA-Z]/.test(newValue);
+  setShowCountryCode(!isEmail);
 
-    // Save email/phone if remember me is checked
-    if (rememberMe && isClient) {
-      try {
-        localStorage.setItem("savedEmail", newValue);
-      } catch (error) {
-        console.error("Error saving email:", error);
-      }
+  // Clear error when user starts typing
+  if (error) setError("");
+
+  // Save email/phone if remember me is checked
+  if (rememberMe && isClient) {
+    try {
+      localStorage.setItem("savedEmail", newValue);
+    } catch (error) {
+      console.error("Error saving email:", error);
     }
-  };
+  }
+};
+
 
   const setStoredAuth = (token, user, remember) => {
     if (isClient) {
@@ -381,31 +387,35 @@ export default function LoginPage() {
                     </div>
 
                     {/* Email/Phone Input */}
-                    <div>
-                      <label
-                        htmlFor="emailOrPhone"
-                        className="block text-sm font-medium text-gray-700 mb-2"
-                      >
-                        Email or Phone
-                      </label>
-                      <div className="flex">
-                        <div className="flex-shrink-0 flex items-center px-3 py-3 border border-gray-300 border-r-0 rounded-l-md shadow-sm bg-gray-50 text-sm text-gray-600">
-                          {getSelectedCountryInfo().flag}{" "}
-                          {formData.countryCode || "+1"}
-                        </div>
+                  
+                   <div>
+      <label
+        htmlFor="emailOrPhone"
+        className="block text-sm font-medium text-gray-700 mb-2"
+      >
+        Email or Phone
+      </label>
+      <div className="flex">
+        {showCountryCode && (
+          <div className="flex-shrink-0 flex items-center px-3 py-3 border border-gray-300 border-r-0 rounded-l-md shadow-sm bg-gray-50 text-sm text-gray-600">
+            {getSelectedCountryInfo().flag} {formData.countryCode || "+1"}
+          </div>
+        )}
 
-                        <input
-                          id="emailOrPhone"
-                          type="text"
-                          value={emailOrPhone}
-                          onChange={handleEmailOrPhoneChange}
-                          disabled={loading}
-                          className="flex-1 min-w-0 px-3 py-3 border border-gray-300 rounded-r-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/90 disabled:bg-gray-100 text-sm sm:text-base"
-                          placeholder="Enter your email or phone number"
-                          required
-                        />
-                      </div>
-                    </div>
+        <input
+          id="emailOrPhone"
+          type="text"
+          value={emailOrPhone}
+          onChange={handleEmailOrPhoneChange}
+          disabled={loading}
+          className={`flex-1 min-w-0 px-3 py-3 border border-gray-300 ${
+            showCountryCode ? "rounded-r-md" : "rounded-md"
+          } shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/90 disabled:bg-gray-100 text-sm sm:text-base`}
+          placeholder="Enter your email or phone number"
+          required
+        />
+      </div>
+    </div>
 
                     <button
                       type="submit"

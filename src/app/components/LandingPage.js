@@ -82,7 +82,7 @@ const Navbar = () => {
           {/* Logo */}
           <div className="text-xl sm:text-2xl font-bold">
             <video autoPlay loop muted playsInline width="70">
-<source src="https://dw1u598x1c0uz.cloudfront.net/CardNest%20Logo%20Video.mp4" type="video/mp4" />
+<source src="https://dw1u598x1c0uz.cloudfront.net/CardNest%20Logo%20WebM%20version.webm" alt="CardNest Logo" />
               Your browser does not support the video tag.
             </video>
           </div>
@@ -796,7 +796,7 @@ const LandingPage = () => {
                 {/* logo footer */}
                 <div className="text-xl sm:text-2xl font-bold text-white">
                   <video autoPlay loop muted playsInline width="50">
-<source src="https://dw1u598x1c0uz.cloudfront.net/CardNest%20Logo%20Video.mp4" type="video/mp4" />
+<source src="https://dw1u598x1c0uz.cloudfront.net/CardNest%20Logo%20WebM%20version.webm" alt="CardNest Logo" />
                     Your browser does not support the video tag.
                   </video>
                 </div>
