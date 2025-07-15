@@ -719,7 +719,7 @@ export default function SignUpPage() {
       };
 
       // Call your backend API with the required fields
-      const response = await fetch("/api/signup", {
+      const response = await fetch("https://cardsecuritysystem-8xdez.ondigitalocean.app/api/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
