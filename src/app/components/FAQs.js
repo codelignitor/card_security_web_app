@@ -91,7 +91,7 @@ function FAQs() {
   return (
     <section className="my-5 sm:my-5 relative min-h-screen">
       {/* Background video at bottom */}
-      <div className="absolute bottom-0 left-0 w-full h-[400px] lg:[500px] xl:h-auto z-0">
+      <div className="absolute bottom-0 left-0 w-full h-[450px] lg:[500px] xl:h-auto z-0">
         <video
           autoPlay
           muted

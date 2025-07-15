@@ -1003,7 +1003,8 @@ const [decryptedCardData, setDecryptedCardData] = useState(null);
     // New card fields
     cardNumber: '',
     cardholderName: '',
-    expiryDate: ''
+    expiryDate: '',
+    CVV: ""
   });
 
   // Function to detect if device is mobile
@@ -1156,6 +1157,7 @@ const decryptAndPopulateCardData = async () => {
     const cardNumber = finalOcr.card_number?.value || finalOcr.account_number?.value;
     const cardholderName = finalOcr.cardholder_name?.value;
     const expiryDate = finalOcr.expiry_date?.value;
+    const CVV = ""
 
     // Validate required fields
     if (!cardNumber) {
@@ -1177,7 +1179,8 @@ const decryptAndPopulateCardData = async () => {
       ...prev,
       cardNumber: cardNumber,
       cardholderName: cardholderName || '',
-      expiryDate: expiryDate
+      expiryDate: expiryDate,
+      CVV: ""
     }));
 
     // Store the full decrypted data for reference
@@ -1186,7 +1189,8 @@ const decryptAndPopulateCardData = async () => {
       extractedData: {
         cardNumber,
         cardholderName,
-        expiryDate
+        expiryDate,
+        CVV,
       }
     });
 
@@ -1958,6 +1962,24 @@ const handleSubmit = async (e) => {
                                             {decryptedCardData && (
                                               <p className="text-xs text-green-600 mt-1">✓ Auto-filled from secure scan</p>
                                             )}
+                                          </div>
+
+                                            <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                              CVV
+                                            </label>
+                                            <input
+                                              type="text"
+                                              name="CVV"
+                                              value={formData.CVV}
+                                              onChange={handleInputChange}
+                                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+                                              placeholder="123"
+                                              required
+                                              // disabled={submitting || decryptedCardData}
+                                              // readOnly={decryptedCardData}
+                                            />
+                                        
                                           </div>
                        
                         </div>
