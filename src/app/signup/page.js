@@ -560,6 +560,11 @@
 // }
 
 
+
+
+
+
+
 "use client";
 
 import Link from "next/link";
@@ -586,7 +591,7 @@ export default function SignUpPage() {
     email: "",
     phone: "",
     countryCode: "+1",
-    selectedCountry: "United States",
+    country_name: "United States", // Added country_name to match API requirements
   });
 
   // Initialize Firebase reCAPTCHA
@@ -633,8 +638,7 @@ export default function SignUpPage() {
       setFormData((prev) => ({
         ...prev,
         countryCode: selectedCountryObj.code,
-        selectedCountry: selectedCountryObj.name,
-        country_name: selectedCountryObj.name,
+        country_name: selectedCountryObj.name, // Update country_name when country changes
       }));
     }
     // Clear error when user changes selection
@@ -644,9 +648,7 @@ export default function SignUpPage() {
   // Get selected country info for display
   const getSelectedCountryInfo = () => {
     const selected = countryCodes.find(
-      (country) =>
-        country.code === formData.countryCode &&
-        country.name === formData.selectedCountry
+      (country) => country.code === formData.countryCode
     );
     return (
       selected ||
@@ -708,19 +710,21 @@ export default function SignUpPage() {
 
       console.log("Firebase OTP verified successfully:", user);
 
-      // Now call your backend API to create the user account
+      // Prepare the data for your backend API
+      const apiData = {
+        email: formData.email,
+        country_code: formData.countryCode, // Using country_code as per API requirement
+        phone_no: `${formData.countryCode}${formData.phone}`, // Combining country code and phone number
+        country_name: formData.country_name // Using country_name as per API requirement
+      };
+
+      // Call your backend API with the required fields
       const response = await fetch("/api/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email: formData.email,
-          phone: user.phoneNumber, // Use the verified phone number from Firebase
-          countryCode: formData.countryCode,
-          selectedCountry: formData.selectedCountry,
-          firebaseUid: user.uid, // Include Firebase UID for future reference
-        }),
+        body: JSON.stringify(apiData),
       });
 
       const data = await response.json();
@@ -733,7 +737,7 @@ export default function SignUpPage() {
           user: {
             email: formData.email,
             phone: user.phoneNumber,
-            country: formData.selectedCountry,
+            country: formData.country_name,
             firebaseUid: user.uid,
             ...data.user
           },
@@ -743,7 +747,7 @@ export default function SignUpPage() {
 
         setSuccess("Account created successfully!");
         
-        // Redirect to dashboard (you can modify this based on your routing logic)
+        // Redirect to dashboard
         setTimeout(() => {
           router.push("/dashboard");
         }, 1500);
@@ -936,7 +940,7 @@ export default function SignUpPage() {
                       <select
                         id="countryCode"
                         name="countryCode"
-                        value={`${formData.countryCode}-${formData.selectedCountry}`}
+                        value={`${formData.countryCode}-${formData.country_name}`}
                         onChange={handleCountryChange}
                         disabled={loading}
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm disabled:bg-gray-100"

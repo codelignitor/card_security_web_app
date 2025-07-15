@@ -17,13 +17,7 @@ export async function POST(req) {
       );
     }
 
-    // Here you would typically:
-    // 1. Validate the Firebase user exists (optional security check)
-    // 2. Save user data to your database
-    // 3. Create user profile/account
-    // 4. Set up any business logic (user roles, permissions, etc.)
-
-    // For now, returning a mock response
+ 
     const userData = {
       id: Date.now(), // Mock user ID
       email: body.email,
