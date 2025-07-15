@@ -2012,7 +2012,7 @@ const handleSubmit = async (e) => {
                                   level="H"
                                 />
                               </div>
-                              <p className="text-xs text-gray-500 mb-2">Scan ID: {scanData.scanID}</p>
+                              {/* <p className="text-xs text-gray-500 mb-2">Scan ID: {scanData.scanID}</p> */}
                               <p className="text-sm text-gray-600">Scan this code with your mobile device</p>
                               {pollingRef.current && (
                                 <div className="mt-3 flex items-center justify-center text-xs text-gray-500">

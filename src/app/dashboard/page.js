@@ -2,12 +2,12 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState, useEffect, Suspense } from 'react';
 import BusinessScreen from '../components/Dashboard-Screens/BusinessScreen';
-import BalanceScreen from '../components/Dashboard-Screens/Balancescreen';
 import SubscriptionsScreen from '../components/Dashboard-Screens/SubscriptionScreen';
 import DocumentsScreen from '../components/Dashboard-Screens/DocumentScreens';
 import DevelopersScreen from '../components/Dashboard-Screens/Developer';
 import Sidebar from '../components/Dashboard-Screens/Sidebar';
 import HomeScreen from '../components/Dashboard-Screens/Homescreen';
+import CardFeatureScreen from '../components/Dashboard-Screens/CardFeatureScreen';
 
 
 // Loading component for Suspense fallback
@@ -55,67 +55,6 @@ function getStatusFromBusinessVerified(businessVerified) {
       return 'incomplete-profile';
   }
 }
-
-// UPDATE THE renderContent FUNCTION
-const renderContent = () => {
-  switch (activeTab) {
-    case 'home':
-      return (
-        <HomeScreen
-          status={status} 
-          setActiveTab={handleTabChange}
-        />
-      );
-      
-    case 'profile':
-      // Show business form for both incomplete-profile and incomplete statuses
-      if (status === 'incomplete-profile' || status === 'incomplete') {
-        return (
-          <BusinessScreen
-            businessInfo={businessInfo}
-            documents={documents}
-            status={status}
-            isSubmitting={isSubmitting}
-            submitError={submitError}
-            submitSuccess={submitSuccess}
-            handleInputChange={handleInputChange}
-            handleFileUpload={handleFileUpload}
-            removeDocument={removeDocument}
-            handleSubmit={handleSubmit}
-            router={router}
-          />
-        );
-      } else {
-        // Show profile view for other statuses
-        return (
-          <div className="bg-white rounded-lg shadow-sm border p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Business Profile</h2>
-            <p className="text-gray-600">Your business profile is complete and under review.</p>
-          </div>
-        );
-      }
-       
-    case 'subscriptions':
-      return <SubscriptionsScreen />;
-      
-    case 'documents':
-      return (
-        <DocumentsScreen 
-          documents={documents} 
-          setActiveTab={handleTabChange}
-          handleFileUpload={handleFileUpload}
-        />
-      );
-      
- 
-
-    case 'developers':
-      return <DevelopersScreen />;
-      
-    default:
-      return null;
-  }
-};
 
 // Separate component that uses useSearchParams
 function DashboardContent() {
@@ -628,6 +567,9 @@ const checkBusinessStatus = async () => {
       case 'subscriptions':
         return <SubscriptionsScreen />;
         
+        case 'Card':
+        return <CardFeatureScreen />;
+
       case 'documents':
         return (
           <DocumentsScreen 

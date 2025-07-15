@@ -1,23 +1,4 @@
-// export async function POST(req) {
-//   try {
-//     const body = await req.json();
-//     console.log("✅ Signup data received:", body);
 
-//     // No DB for now, just return a fake status response
-//     return Response.json({
-//       success: true,
-//       status: "User created successfully (mock)",
-//       user: {
-//         name: body.name,
-//         email: body.email,
-//         phone: body.phone,
-//       },
-//     });
-//   } catch (error) {
-//     console.error("❌ Error in signup API:", error);
-//     return new Response("Internal Server Error", { status: 500 });
-//   }
-// }
 
 // app/api/signup/route.js
 export async function POST(req) {

@@ -35,8 +35,10 @@ function Sidebar({
     { id: 'home', label: 'Home', icon: '🏠' },
     { id: 'profile', label: 'Business Profile', icon: '👤' },
     { id: 'subscriptions', label: 'Subscriptions', icon: '📋' },
+   { id: 'Card', label: 'Feature Settings', icon: ' 💳 ' },
     { id: 'documents', label: 'Documents', icon: '📄' },
     { id: 'developers', label: 'Developers', icon: '⚡' }
+
   ];
 
   return (
