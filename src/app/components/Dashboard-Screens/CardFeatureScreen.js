@@ -193,7 +193,7 @@ const CreditCardFeatureSelector = () => {
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
             <div className="flex items-center gap-2 mb-2">
               <AlertCircle className="w-5 h-5 text-blue-600" />
-              <h3 className="font-semibold text-blue-800">What you'll get:</h3>
+              <h3 className="font-semibold text-blue-800">What you will get:</h3>
             </div>
             <ul className="text-sm text-blue-700 space-y-1">
               <li>• Access to all card features</li>
