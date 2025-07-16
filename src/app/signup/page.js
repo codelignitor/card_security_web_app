@@ -664,7 +664,7 @@ export default function SignUpPage() {
       const apiData = {
         email: formData.email,
         country_code: formData.countryCode,
-        phone_no: `${formData.countryCode}${formData.phone}`,
+        phone_no: `${formData.phone}`,
         country_name: formData.country_name
       };
 
