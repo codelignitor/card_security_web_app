@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Check, CreditCard, Shield, Zap, Phone, RotateCcw, Lock, AlertCircle } from 'lucide-react';
+import Image from 'next/image';
 
 const CreditCardFeatureSelector = () => {
   const [selectedFeatures, setSelectedFeatures] = useState({
@@ -233,8 +234,13 @@ const CreditCardFeatureSelector = () => {
                   Card Front
                 </h3>
                 <div className="w-full max-w-xs lg:max-w-sm">
-                  <div className="w-full h-32 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl lg:rounded-2xl shadow-xl lg:shadow-2xl flex items-center justify-center">
-                    <span className="text-white font-bold">SAMPLE CARD</span>
+                  <div className="w-full h-32  rounded-xl lg:rounded-2xl shadow-xl lg:shadow-2xl flex items-center justify-center">
+                    {/* <span className="text-white font-bold">SAMPLE CARD</span> */}
+                    <Image src="/images/cardfront.png"
+                      height= "300"
+                      width="450"
+                      alt='card front'
+                    />
                   </div>
                 </div>
               </div>
@@ -246,8 +252,13 @@ const CreditCardFeatureSelector = () => {
                   Card Back
                 </h3>
                 <div className="w-full max-w-xs lg:max-w-sm">
-                  <div className="w-full h-32 bg-gradient-to-r from-gray-400 to-gray-600 rounded-xl lg:rounded-2xl shadow-xl lg:shadow-2xl flex items-center justify-center">
-                    <span className="text-white font-bold">SAMPLE BACK</span>
+                  <div className="w-full h-32 rounded-xl lg:rounded-2xl shadow-xl lg:shadow-2xl flex items-center justify-center">
+                    {/* <span className="text-white font-bold">SAMPLE BACK</span> */}
+                      <Image src="/images/cardback.png"
+                      height= "350"
+                      width="450"
+                      alt='card front'
+                    />
                   </div>
                 </div>
               </div>
