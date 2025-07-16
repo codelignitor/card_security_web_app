@@ -20,6 +20,7 @@ const CreditCardFeatureSelector = () => {
   const [hasActiveSubscription, setHasActiveSubscription] = useState(false);
   const [subscriptionData, setSubscriptionData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState(null);
 
   const frontFeatures = [
     { key: 'bank_logo', label: 'Bank Logo', icon: CreditCard },
@@ -44,8 +45,12 @@ const CreditCardFeatureSelector = () => {
           const parsedUser = JSON.parse(storedUser);
           const userObj = parsedUser.user || parsedUser;
           
-          // Get merchant_id from user object
+          // Get both user_id and merchant_id from user object
+          const userIdFromStorage = userObj.id;
           const merchantId = userObj.merchant_id;
+          
+          // Set user_id for later use in API call
+          setUserId(userIdFromStorage);
           
           if (merchantId) {
             // Call the API with merchant_id
@@ -127,30 +132,48 @@ const CreditCardFeatureSelector = () => {
   };
 
   const handleSubmit = async () => {
+    if (!userId) {
+      setMessage('Error: User ID not found. Please log in again.');
+      return;
+    }
+
     setIsSubmitting(true);
     setMessage('');
 
     try {
-      const response = await fetch('/api/card-features', {
+      const requestBody = {
+        user_id: userId,
+        bank_logo: selectedFeatures.bank_logo,
+        chip: selectedFeatures.chip,
+        mag_strip: selectedFeatures.mag_strip,
+        sig_strip: selectedFeatures.sig_strip,
+        hologram: selectedFeatures.hologram,
+        customer_service: selectedFeatures.customer_service,
+        symmetry: selectedFeatures.symmetry
+      };
+
+      console.log('Sending request to API:', requestBody);
+
+      const response = await fetch('https://cardsecuritysystem-8xdez.ondigitalocean.app/api/feature/store', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          features: selectedFeatures,
-          timestamp: new Date().toISOString()
-        }),
+        body: JSON.stringify(requestBody),
       });
 
+      console.log('Response status:', response.status);
+      const responseData = await response.json();
+      console.log('Response data:', responseData);
+
       if (response.ok) {
-        const data = await response.json();
         setMessage('Features saved successfully!');
-        console.log('Saved features:', data);
+        console.log('Features saved:', responseData);
       } else {
-        throw new Error('Failed to save features');
+        throw new Error(responseData.message || 'Failed to save features');
       }
     } catch (error) {
-      setMessage('Error saving features. Please try again.');
+      setMessage(`Error saving features: ${error.message}`);
       console.error('Error:', error);
     } finally {
       setIsSubmitting(false);
@@ -361,7 +384,7 @@ const CreditCardFeatureSelector = () => {
                 
                 <button
                   onClick={handleSubmit}
-                  disabled={isSubmitting || getSelectedCount() === 0}
+                  disabled={isSubmitting || !userId}
                   className="w-full bg-blue-600 text-white py-2 px-3 rounded-md text-sm font-semibold hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
                 >
                   {isSubmitting ? 'Saving...' : 'Save Features'}
