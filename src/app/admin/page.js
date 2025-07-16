@@ -11,10 +11,6 @@ import PricingSectionAdmin from '../components/Super Admin/PricingSection';
 // Placeholder components for other sections
 
 
-
-
-
-
 const UserActivitySection = () => (
   <div className="bg-white rounded-lg shadow-sm border p-6">
     <h2 className="text-xl font-semibold text-gray-800 mb-4">User Activity</h2>
@@ -168,7 +164,7 @@ const AdminDashboard = () => {
       if (!userData) {
         // No user data found or expired
         console.log("No valid user data found, redirecting to login");
-        router.push("/login");
+        router.push("/admin-login");
         return;
       }
       
