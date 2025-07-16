@@ -1075,7 +1075,7 @@ const generateScanToken = async (userObj) => {
   try {
     const requestData = {
       merchantId: userObj.merchant_id,
-      merchantcontact: userObj.phone_no || '',
+merchantcontact: userObj?.phone_no || userObj?.phone || '',
       isMobile: isMobileDevice() ? "true" : "false"
     };
 
