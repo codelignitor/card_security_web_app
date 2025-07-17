@@ -141,20 +141,20 @@ function PricingSectionAdmin() {
     const design = getPackageDesign(packageData.package_name);
 
     return (
-      <div key={packageData.id} className={` text-black relative overflow-hidden rounded-xl border-2 ${design.borderColor} ${design.bgGradient} shadow-lg hover:shadow-xl transition-all duration-300`}>
+      <div key={packageData.id} className={`text-black relative overflow-hidden rounded-xl border-2 ${design.borderColor} ${design.bgGradient} shadow-lg hover:shadow-xl transition-all duration-300`}>
         {/* Header accent bar */}
         <div className={`h-1 ${design.accentColor}`}></div>
         
-        <div className="p-6">
-          <div className="flex justify-between items-start mb-4">
+        <div className="p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 sm:gap-0 mb-4">
             <div className="flex items-center space-x-2">
-              <DollarSign className={`w-6 h-6 ${design.colorClass}`} />
-              <h3 className="font-bold text-xl text-gray-800">{packageData.package_name}</h3>
+              <DollarSign className={`w-5 h-5 sm:w-6 sm:h-6 ${design.colorClass}`} />
+              <h3 className="font-bold text-lg sm:text-xl text-gray-800">{packageData.package_name}</h3>
             </div>
             {!isEditing && (
               <button
                 onClick={() => handleEdit(packageData)}
-                className={`p-2 rounded-lg ${design.accentColor} text-white hover:opacity-80 transition-opacity shadow-md`}
+                className={`self-start p-2 rounded-lg ${design.accentColor} text-white hover:opacity-80 transition-opacity shadow-md`}
                 disabled={loading}
               >
                 <Edit size={16} />
@@ -164,7 +164,7 @@ function PricingSectionAdmin() {
 
           {isEditing ? (
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     <DollarSign className="inline w-4 h-4 mr-1" />
@@ -175,7 +175,7 @@ function PricingSectionAdmin() {
                     step="0.01"
                     value={editingPackage.package_price}
                     onChange={(e) => handleInputChange('package_price', e.target.value)}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="w-full px-3 py-2 sm:px-4 sm:py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm sm:text-base"
                   />
                 </div>
                 
@@ -188,12 +188,12 @@ function PricingSectionAdmin() {
                     type="number"
                     value={editingPackage.monthly_limit}
                     onChange={(e) => handleInputChange('monthly_limit', e.target.value)}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="w-full px-3 py-2 sm:px-4 sm:py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm sm:text-base"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Overage Rate ($)
@@ -203,7 +203,7 @@ function PricingSectionAdmin() {
                     step="0.01"
                     value={editingPackage.overage_rate}
                     onChange={(e) => handleInputChange('overage_rate', e.target.value)}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="w-full px-3 py-2 sm:px-4 sm:py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm sm:text-base"
                   />
                 </div>
 
@@ -216,7 +216,7 @@ function PricingSectionAdmin() {
                     type="text"
                     value={editingPackage.package_period}
                     onChange={(e) => handleInputChange('package_period', e.target.value)}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="w-full px-3 py-2 sm:px-4 sm:py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm sm:text-base"
                   />
                 </div>
               </div>
@@ -229,16 +229,16 @@ function PricingSectionAdmin() {
                   value={editingPackage.package_description || ''}
                   onChange={(e) => handleInputChange('package_description', e.target.value)}
                   rows="3"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+                  className="w-full px-3 py-2 sm:px-4 sm:py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none text-sm sm:text-base"
                   placeholder="Enter package description..."
                 />
               </div>
 
-              <div className="flex space-x-3 pt-2">
+              <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 pt-2">
                 <button
                   onClick={handleSave}
                   disabled={loading}
-                  className="flex-1 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 disabled:opacity-50 flex items-center justify-center space-x-2 font-semibold shadow-md transition-all"
+                  className="w-full sm:flex-1 bg-green-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg hover:bg-green-700 disabled:opacity-50 flex items-center justify-center space-x-2 font-semibold shadow-md transition-all text-sm sm:text-base"
                 >
                   <Save size={18} />
                   <span>{loading ? 'Saving...' : 'Save Changes'}</span>
@@ -246,7 +246,7 @@ function PricingSectionAdmin() {
                 <button
                   onClick={handleCancel}
                   disabled={loading}
-                  className="flex-1 bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 disabled:opacity-50 flex items-center justify-center space-x-2 font-semibold shadow-md transition-all"
+                  className="w-full sm:flex-1 bg-gray-500 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg hover:bg-gray-600 disabled:opacity-50 flex items-center justify-center space-x-2 font-semibold shadow-md transition-all text-sm sm:text-base"
                 >
                   <X size={18} />
                   <span>Cancel</span>
@@ -256,31 +256,31 @@ function PricingSectionAdmin() {
           ) : (
             <div className="space-y-4">
               <div className="text-center">
-                <p className={`text-5xl font-bold ${design.colorClass} mb-2`}>
+                <p className={`text-3xl sm:text-4xl md:text-5xl font-bold ${design.colorClass} mb-2`}>
                   ${packageData.package_price}
                 </p>
-                <p className="text-gray-500 text-lg font-medium">
+                <p className="text-gray-500 text-base sm:text-lg font-medium">
                   per {packageData.package_period}
                 </p>
               </div>
 
               <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 bg-white bg-opacity-60 rounded-lg">
-                  <span className="text-gray-700 font-medium flex items-center">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-white bg-opacity-60 rounded-lg gap-2 sm:gap-0">
+                  <span className="text-gray-700 font-medium flex items-center text-sm sm:text-base">
                     <Users className="w-4 h-4 mr-2 text-gray-500" />
                     Monthly Limit
                   </span>
-                  <span className="font-bold text-gray-800">
+                  <span className="font-bold text-gray-800 text-sm sm:text-base">
                     {packageData.monthly_limit === 100000000 ? 'Unlimited' : packageData.monthly_limit.toLocaleString()}
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between p-3 bg-white bg-opacity-60 rounded-lg">
-                  <span className="text-gray-700 font-medium flex items-center">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-white bg-opacity-60 rounded-lg gap-2 sm:gap-0">
+                  <span className="text-gray-700 font-medium flex items-center text-sm sm:text-base">
                     <DollarSign className="w-4 h-4 mr-2 text-gray-500" />
                     Overage Rate
                   </span>
-                  <span className="font-bold text-gray-800">
+                  <span className="font-bold text-gray-800 text-sm sm:text-base">
                     ${packageData.overage_rate}
                   </span>
                 </div>
@@ -301,31 +301,33 @@ function PricingSectionAdmin() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br text-black from-gray-50 to-gray-100 p-6">
+    <div className="min-h-screen bg-gradient-to-br text-black from-gray-50 to-gray-100 p-3 sm:p-6">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8 mb-8">
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl border border-gray-200 p-4 sm:p-6 md:p-8 mb-6 sm:mb-8">
           {/* Notification */}
           {notification.show && (
-            <div className={`mb-6 p-4 rounded-xl flex items-center space-x-3 shadow-md ${
+            <div className={`mb-4 sm:mb-6 p-3 sm:p-4 rounded-lg sm:rounded-xl flex items-start sm:items-center space-x-3 shadow-md ${
               notification.type === 'success' 
                 ? 'bg-green-50 text-green-800 border border-green-200' 
                 : 'bg-red-50 text-red-800 border border-red-200'
             }`}>
-              {notification.type === 'success' ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
-              <span className="font-medium">{notification.message}</span>
+              <div className="flex-shrink-0 mt-0.5 sm:mt-0">
+                {notification.type === 'success' ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
+              </div>
+              <span className="font-medium text-sm sm:text-base leading-tight sm:leading-normal">{notification.message}</span>
             </div>
           )}
 
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-0">
             <div>
-              <h1 className="text-3xl font-bold text-gray-800 mb-2">Pricing Management</h1>
-              <p className="text-gray-600">Manage your subscription packages and pricing tiers</p>
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-1 sm:mb-2">Pricing Management</h1>
+              <p className="text-gray-600 text-sm sm:text-base">Manage your subscription packages and pricing tiers</p>
             </div>
             <button
               onClick={fetchPricingData}
               disabled={loading}
-              className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 disabled:opacity-50 font-semibold shadow-lg transition-all duration-200 flex items-center space-x-2"
+              className="w-full sm:w-auto bg-blue-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg sm:rounded-xl hover:bg-blue-700 disabled:opacity-50 font-semibold shadow-lg transition-all duration-200 flex items-center justify-center space-x-2 text-sm sm:text-base"
             >
               <RefreshCw size={18} className={loading ? 'animate-spin' : ''} />
               <span>{loading ? 'Refreshing...' : 'Refresh Data'}</span>
@@ -335,29 +337,29 @@ function PricingSectionAdmin() {
 
         {/* Loading State */}
         {loading && !editingPackage ? (
-          <div className="flex justify-center items-center py-16">
+          <div className="flex justify-center items-center py-12 sm:py-16">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent mx-auto mb-4"></div>
-              <p className="text-gray-600 font-medium">Loading pricing data...</p>
+              <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-4 border-blue-600 border-t-transparent mx-auto mb-4"></div>
+              <p className="text-gray-600 font-medium text-sm sm:text-base">Loading pricing data...</p>
             </div>
           </div>
         ) : (
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             {/* Package Cards */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 sm:gap-8">
               {packages.slice(0, 2).map(packageData => renderPackageCard(packageData))}
             </div>
             
             {/* Instructions */}
             {!editingPackage && packages.length > 0 && (
-              <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6 shadow-md">
-                <div className="flex items-start space-x-3">
-                  <div className="bg-blue-600 text-white p-2 rounded-lg">
+              <div className="bg-blue-50 border-2 border-blue-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-md">
+                <div className="flex flex-col sm:flex-row sm:items-start space-y-3 sm:space-y-0 sm:space-x-3">
+                  <div className="flex-shrink-0 bg-blue-600 text-white p-2 rounded-lg self-start">
                     <AlertCircle size={20} />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-blue-900 mb-2">How to Edit Packages</h3>
-                    <p className="text-blue-800 leading-relaxed">
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-blue-900 mb-2 text-sm sm:text-base">How to Edit Packages</h3>
+                    <p className="text-blue-800 leading-relaxed text-sm sm:text-base">
                       Click the edit button on any package card to modify pricing, limits, and descriptions. 
                       Your changes will be automatically saved to the API and reflected immediately.
                     </p>
@@ -368,15 +370,15 @@ function PricingSectionAdmin() {
 
             {/* Empty State */}
             {packages.length === 0 && !loading && (
-              <div className="text-center py-16">
-                <div className="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <div className="text-center py-12 sm:py-16">
+                <div className="bg-gray-100 rounded-full w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center mx-auto mb-4">
                   <DollarSign size={32} className="text-gray-400" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-600 mb-2">No Packages Found</h3>
-                <p className="text-gray-500 mb-4">Unable to load pricing packages. Please try refreshing.</p>
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-600 mb-2">No Packages Found</h3>
+                <p className="text-gray-500 mb-4 text-sm sm:text-base px-4">Unable to load pricing packages. Please try refreshing.</p>
                 <button
                   onClick={fetchPricingData}
-                  className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-medium transition-all"
+                  className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-medium transition-all text-sm sm:text-base"
                 >
                   Try Again
                 </button>

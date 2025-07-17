@@ -1,10 +1,10 @@
 import React from 'react'
 
-function ContentManagementSection() {
+function UserActivitySection() {
   return (
    <div className="bg-white rounded-lg text-black h-screen shadow-sm border p-6">
       <h2 className="text-xl font-semibold text-gray-800 mb-4">
-       Content Management
+       User Activity Management
       </h2>
 
       <div className="space-y-6">
@@ -17,4 +17,5 @@ function ContentManagementSection() {
   )
 }
 
-export default ContentManagementSection
+export default UserActivitySection
+
