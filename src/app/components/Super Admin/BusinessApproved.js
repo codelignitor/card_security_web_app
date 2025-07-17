@@ -1028,7 +1028,7 @@ const BusinessApprovalSection = () => {
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center flex-1 min-w-0">
           <div className="flex-shrink-0 h-12 w-12 mr-4">
-            <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+            <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-slate-800 to-purple-900 flex items-center justify-center shadow-lg">
               <Building className="h-6 w-6 text-white" />
             </div>
           </div>
@@ -1057,7 +1057,7 @@ const BusinessApprovalSection = () => {
       
       <button
         onClick={() => handleViewDocument(business)}
-        className="w-full inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-blue-200 transform transition-all duration-200 hover:scale-105 shadow-lg"
+        className="w-full inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-slate-800 to-purple-900 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-blue-200 transform transition-all duration-200 hover:scale-105 shadow-lg"
       >
         <Eye className="h-5 w-5 mr-2" />
         View Documents
@@ -1070,8 +1070,8 @@ const BusinessApprovalSection = () => {
       {isApproved && approvedLoading ? (
         <div className="p-12 text-center">
           <div className="relative">
-            <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-200 border-t-blue-600 mx-auto mb-4"></div>
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 opacity-20 animate-pulse"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-4 border-slate-500 border-t-blue-900 mx-auto mb-4"></div>
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-slate-800 to-purple-800 opacity-20 animate-pulse"></div>
           </div>
           <p className="text-gray-600 font-medium">Loading approved businesses...</p>
         </div>
@@ -1105,7 +1105,7 @@ const BusinessApprovalSection = () => {
                     <td className="px-8 py-6 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-12 w-12">
-                          <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+                          <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-slate-800 to-purple-600 800 items-center justify-center shadow-lg">
                             <Building className="h-6 w-6 text-white" />
                           </div>
                         </div>
@@ -1137,7 +1137,7 @@ const BusinessApprovalSection = () => {
                     <td className="px-8 py-6 whitespace-nowrap text-center">
                       <button
                         onClick={() => handleViewDocument(business)}
-                        className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-blue-200 transform transition-all duration-200 hover:scale-105 shadow-lg"
+                        className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-slate-700 to-purple-800 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-blue-200 transform transition-all duration-200 hover:scale-105 shadow-lg"
                       >
                         <Eye className="h-4 w-4 mr-2" />
                         <span className="hidden sm:inline">View Documents</span>
@@ -1217,7 +1217,7 @@ const BusinessApprovalSection = () => {
       )}
 
       {/* Modern Header */}
-      <div className="p-8 bg-gradient-to-r from-blue-600 to-purple-700 text-white">
+      <div className="p-8 bg-gradient-to-r from-slate-800 to-purple-800 text-white">
         <h2 className="text-3xl font-bold mb-2 flex items-center">
           <div className="h-10 w-10 rounded-2xl bg-white/20 flex items-center justify-center mr-4">
             <Building className="w-6 h-6" />
@@ -1276,7 +1276,7 @@ const BusinessApprovalSection = () => {
                 renderEmptyState(
                   'No Pending Requests',
                   'There are no business verification requests at the moment.',
-                  <div className="h-20 w-20 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center mx-auto">
+                  <div className="h-20 w-20 rounded-full bg-gradient-to-br from-slate-800 to-purple-700 flex items-center justify-center mx-auto">
                     <FileText className="h-10 w-10 text-white" />
                   </div>
                 )
@@ -1292,7 +1292,7 @@ const BusinessApprovalSection = () => {
                 renderEmptyState(
                   'No Approved Businesses',
                   'There are no approved businesses at the moment.',
-                  <div className="h-20 w-20 rounded-full bg-gradient-to-br from-emerald-400 to-green-500 flex items-center justify-center mx-auto">
+                  <div className="h-20 w-20 rounded-full bg-gradient-to-br from-green-900 to-green-700 flex items-center justify-center mx-auto">
                     <Users className="h-10 w-10 text-white" />
                   </div>
                 )
@@ -1307,7 +1307,7 @@ const BusinessApprovalSection = () => {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm overflow-y-auto h-full w-full z-50 p-4">
           <div className="relative top-4 sm:top-10 mx-auto p-0 border-0 w-full max-w-5xl shadow-2xl rounded-3xl bg-white overflow-hidden">
             {/* Modal Header */}
-            <div className="bg-gradient-to-r from-blue-600 to-purple-700 text-white p-8">
+            <div className="bg-gradient-to-r from-slate-800 to-purple-900 text-white p-8">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-2xl font-bold mb-2">Business Details Review</h3>
@@ -1385,7 +1385,7 @@ const BusinessApprovalSection = () => {
                       <div className="flex space-x-3">
                         <button
                           onClick={() => window.open(`${selectedBusiness.registration_document_path}`, '_blank')}
-                          className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-blue-200 transform transition-all duration-200 hover:scale-105 shadow-lg"
+                          className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-slate-800 to-indigo-900 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-blue-200 transform transition-all duration-200 hover:scale-105 shadow-lg"
                         >
                           <Eye className="h-4 w-4 mr-2" />
                           <span className="hidden sm:inline">View Document</span>
@@ -1397,7 +1397,7 @@ const BusinessApprovalSection = () => {
                             `${selectedBusiness.business_name}_registration_document.${selectedBusiness.registration_document_path.split('.').pop()}`
                           )}
                           disabled={downloadLoading}
-                          className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-green-700 focus:outline-none focus:ring-4 focus:ring-emerald-200 transform transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                          className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-700 to-green-600 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-green-700 focus:outline-none focus:ring-4 focus:ring-emerald-200 transform transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                         >
                           {downloadLoading ? (
                             <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
@@ -1469,7 +1469,7 @@ const BusinessApprovalSection = () => {
                   <button
                     onClick={() => handleApprove(selectedBusiness.id)}
                     disabled={actionLoading}
-                    className="w-full lg:w-auto inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl hover:from-emerald-600 hover:to-green-700 focus:outline-none focus:ring-4 focus:ring-emerald-200 transform transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                    className="w-full lg:w-auto inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-emerald-800 to-green-900 text-white font-bold rounded-xl hover:from-emerald-600 hover:to-green-700 focus:outline-none focus:ring-4 focus:ring-emerald-200 transform transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                   >
                     {actionLoading ? (
                       <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-3"></div>

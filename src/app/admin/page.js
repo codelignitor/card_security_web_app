@@ -96,16 +96,16 @@ const AdminDashboard = () => {
     );
   }
 
-  const getPageDescription = (tabName) => {
-    const descriptions = {
-      'Enterprise Approval': 'Review and manage enterprise client approval requests and business verifications',
-      'Pricing': 'Configure pricing plans, subscription tiers, and billing settings for all user types',
-      'User Activity': 'Monitor user engagement, API usage statistics, and platform activity in real-time',
-      'Content Management': 'Create, edit, and moderate content across the platform with publishing controls',
-      'API Documentation': 'Manage API documentation, integration guides, and developer resources'
-    };
-    return descriptions[tabName] || `Manage and monitor your ${tabName.toLowerCase()} settings`;
-  };
+  // const getPageDescription = (tabName) => {
+  //   const descriptions = {
+  //     'Enterprise Approval': 'Review and manage enterprise client approval requests and business verifications',
+  //     'Pricing': 'Configure pricing plans, subscription tiers, and billing settings for all user types',
+  //     'User Activity': 'Monitor user engagement, API usage statistics, and platform activity in real-time',
+  //     'Content Management': 'Create, edit, and moderate content across the platform with publishing controls',
+  //     'API Documentation': 'Manage API documentation, integration guides, and developer resources'
+  //   };
+  //   return descriptions[tabName] || `Manage and monitor your ${tabName.toLowerCase()} settings`;
+  // };
 
   const renderTabContent = () => {
     if (isLoading) {
@@ -161,10 +161,10 @@ const AdminDashboard = () => {
             <div className="max-w-7xl mx-auto w-full">
               <div className="space-y-4 sm:space-y-6">
                 {/* Page Title Section */}
-                <div className="bg-white rounded-lg shadow-sm border p-4 sm:p-6">
+                {/* <div className="bg-white rounded-lg shadow-sm border p-4 sm:p-6">
                   <h1 className="text-xl sm:text-2xl font-bold text-gray-900">{activeTab}</h1>
                   <p className="text-gray-600 mt-1 text-sm sm:text-base">{getPageDescription(activeTab)}</p>
-                </div>
+                </div> */}
                 
                 {/* Main Content */}
                 {renderTabContent()}
