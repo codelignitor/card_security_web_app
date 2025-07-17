@@ -1022,121 +1022,121 @@ const BusinessApprovalSection = () => {
 };
 
 const renderMobileCard = (business, isApproved = false) => (
-  <div key={business.id} className="bg-white border border-gray-200 rounded p-3 mb-2 shadow-sm">
-    <div className="flex items-start justify-between mb-2">
-      <div className="flex-1 min-w-0">
-        <h3 className="text-xs font-medium text-gray-900 truncate mb-1">
-          {business.business_name}
-        </h3>
-        <p className="text-xs text-gray-500 truncate">
-          Reg: {business.business_registration_number}
-        </p>
-      </div>
-      {getStatusBadge(business.user.business_verified)}
-    </div>
-    
-    <div className="space-y-1.5 mb-3">
-      <div className="flex items-center text-xs text-gray-600 bg-gray-50 rounded p-1.5">
-        <Mail className="h-2.5 w-2.5 mr-1.5 text-blue-500" />
-        <span className="truncate">{business.user.email}</span>
-      </div>
-      <div className="flex items-center text-xs text-gray-500 bg-gray-50 rounded p-1.5">
-        <Calendar className="h-2.5 w-2.5 mr-1.5 text-purple-500" />
-        <span>{formatDate(business.created_at)}</span>
-      </div>
-    </div>
-    
-    <button
-      onClick={() => handleViewDocument(business)}
-      className="w-full inline-flex items-center justify-center px-2 py-1.5 bg-slate-700 text-white text-xs font-medium rounded hover:bg-slate-600 transition-colors"
-    >
-      <Eye className="h-3 w-3 mr-1" />
-      View
-    </button>
-  </div>
+ <div key={business.id} className="bg-white border border-gray-200 rounded p-3 mb-2 shadow-sm">
+   <div className="flex items-start justify-between mb-2">
+     <div className="flex-1 min-w-0">
+       <h3 className="text-xs font-medium text-gray-900 truncate mb-1">
+         {business.business_name}
+       </h3>
+       <p className="text-xs text-gray-500 truncate">
+         Reg: {business.business_registration_number}
+       </p>
+     </div>
+     {getStatusBadge(business.user.business_verified)}
+   </div>
+   
+   <div className="space-y-1.5 mb-3">
+     <div className="flex items-center text-xs text-gray-600 bg-gray-50 rounded p-1.5">
+       <Mail className="h-2.5 w-2.5 mr-1.5 text-blue-500" />
+       <span className="truncate">{business.user.email}</span>
+     </div>
+     <div className="flex items-center text-xs text-gray-500 bg-gray-50 rounded p-1.5">
+       <Calendar className="h-2.5 w-2.5 mr-1.5 text-purple-500" />
+       <span>{formatDate(isApproved ? business.updated_at : business.created_at)}</span>
+     </div>
+   </div>
+   
+   <button
+     onClick={() => handleViewDocument(business)}
+     className="w-full inline-flex items-center justify-center px-2 py-1.5 bg-slate-700 text-white text-xs font-medium rounded hover:bg-slate-600 transition-colors"
+   >
+     <Eye className="h-3 w-3 mr-1" />
+     View
+   </button>
+ </div>
 );
 
 const renderBusinessTable = (businessList, isApproved = false) => (
-  <div className="overflow-hidden">
-    {isApproved && approvedLoading ? (
-      <div className="p-6 text-center">
-        <div className="animate-spin rounded-full h-6 w-6 border-2 border-slate-500 border-t-blue-700 mx-auto mb-2"></div>
-        <p className="text-gray-600 text-sm">Loading...</p>
-      </div>
-    ) : (
-      <>
-        {/* Desktop Table View */}
-        <div className="hidden md:block overflow-x-auto">
-          <table className="min-w-full">
-            <thead>
-              <tr className="bg-gray-50">
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-600 uppercase">
-                  Company
-                </th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-600 uppercase">
-                  Contact
-                </th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-600 uppercase">
-                  Date
-                </th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-600 uppercase">
-                  Status
-                </th>
-                <th className="px-3 py-2 text-center text-xs font-medium text-gray-600 uppercase">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {businessList.map((business, index) => (
-                <tr key={business.id} className={`hover:bg-gray-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}>
-                  <td className="px-3 py-2">
-                    <div>
-                      <div className="text-sm font-medium text-gray-900">
-                        {business.business_name}
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        {business.business_registration_number}
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-3 py-2">
-                    <div className="flex items-center bg-gray-50 rounded p-1.5">
-                      <Mail className="h-3 w-3 text-blue-500 mr-1.5" />
-                      <div className="text-xs text-gray-900">{business.user.email}</div>
-                    </div>
-                  </td>
-                  <td className="px-3 py-2">
-                    <div className="flex items-center text-xs text-gray-700 bg-gray-50 rounded p-1.5">
-                      <Calendar className="h-3 w-3 text-purple-500 mr-1.5" />
-                      {formatDate(business.created_at)}
-                    </div>
-                  </td>
-                  <td className="px-3 py-2">
-                    {getStatusBadge(business.user.business_verified)}
-                  </td>
-                  <td className="px-3 py-2 text-center">
-                    <button
-                      onClick={() => handleViewDocument(business)}
-                      className="inline-flex items-center px-2 py-1 bg-slate-700 text-white text-xs font-medium rounded hover:bg-slate-600 transition-colors"
-                    >
-                      <Eye className="h-3 w-3 mr-1" />
-                      View
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+ <div className="overflow-hidden">
+   {isApproved && approvedLoading ? (
+     <div className="p-6 text-center">
+       <div className="animate-spin rounded-full h-6 w-6 border-2 border-slate-500 border-t-blue-700 mx-auto mb-2"></div>
+       <p className="text-gray-600 text-sm">Loading...</p>
+     </div>
+   ) : (
+     <>
+       {/* Desktop Table View */}
+       <div className="hidden md:block overflow-x-auto">
+         <table className="min-w-full">
+           <thead>
+             <tr className="bg-gray-50">
+               <th className="px-3 py-2 text-left text-xs font-medium text-gray-600 uppercase">
+                 Company
+               </th>
+               <th className="px-3 py-2 text-left text-xs font-medium text-gray-600 uppercase">
+                 Contact
+               </th>
+               <th className="px-3 py-2 text-left text-xs font-medium text-gray-600 uppercase">
+                 {isApproved ? 'Approved Date' : 'Requested Date'}
+               </th>
+               <th className="px-3 py-2 text-left text-xs font-medium text-gray-600 uppercase">
+                 Status
+               </th>
+               <th className="px-3 py-2 text-center text-xs font-medium text-gray-600 uppercase">
+                 Actions
+               </th>
+             </tr>
+           </thead>
+           <tbody className="bg-white divide-y divide-gray-200">
+             {businessList.map((business, index) => (
+               <tr key={business.id} className={`hover:bg-gray-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}>
+                 <td className="px-3 py-2">
+                   <div>
+                     <div className="text-sm font-medium text-gray-900">
+                       {business.business_name}
+                     </div>
+                     <div className="text-xs text-gray-500">
+                       {business.business_registration_number}
+                     </div>
+                   </div>
+                 </td>
+                 <td className="px-3 py-2">
+                   <div className="flex items-center bg-gray-50 rounded p-1.5">
+                     <Mail className="h-3 w-3 text-blue-500 mr-1.5" />
+                     <div className="text-xs text-gray-900">{business.user.email}</div>
+                   </div>
+                 </td>
+                 <td className="px-3 py-2">
+                   <div className="flex items-center text-xs text-gray-700 bg-gray-50 rounded p-1.5">
+                     <Calendar className="h-3 w-3 text-purple-500 mr-1.5" />
+                     {formatDate(isApproved ? business.updated_at : business.created_at)}
+                   </div>
+                 </td>
+                 <td className="px-3 py-2">
+                   {getStatusBadge(business.user.business_verified)}
+                 </td>
+                 <td className="px-3 py-2 text-center">
+                   <button
+                     onClick={() => handleViewDocument(business)}
+                     className="inline-flex items-center px-2 py-1 bg-slate-700 text-white text-xs font-medium rounded hover:bg-slate-600 transition-colors"
+                   >
+                     <Eye className="h-3 w-3 mr-1" />
+                     View
+                   </button>
+                 </td>
+               </tr>
+             ))}
+           </tbody>
+         </table>
+       </div>
 
-        {/* Mobile Card View */}
-        <div className="md:hidden px-2">
-          {businessList.map((business) => renderMobileCard(business, isApproved))}
-        </div>
-      </>
-    )}
-  </div>
+       {/* Mobile Card View */}
+       <div className="md:hidden px-2">
+         {businessList.map((business) => renderMobileCard(business, isApproved))}
+       </div>
+     </>
+   )}
+ </div>
 );
 
 const renderEmptyState = (title, description, icon) => (
