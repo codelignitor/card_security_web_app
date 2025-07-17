@@ -2,6 +2,37 @@
 import React, { useState, useEffect } from 'react';
 
 const NavigationSidebar = ({ activeTab, setActiveTab, sidebarOpen, setSidebarOpen }) => {
+  const [userEmail, setUserEmail] = useState('admin@cardnest.com');
+
+  // Helper function to get userData from localStorage
+  const getUserDataFromStorage = () => {
+    try {
+      const storedData = localStorage.getItem("userData");
+      if (!storedData) return null;
+      
+      const userData = JSON.parse(storedData);
+      const now = new Date().getTime();
+      
+      // Check if data has expired
+      if (userData.expirationTime && now > userData.expirationTime) {
+        localStorage.removeItem("userData");
+        return null;
+      }
+      
+      return userData;
+    } catch (error) {
+      console.error("Error reading userData from localStorage:", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    // Get user email from localStorage
+    const userData = getUserDataFromStorage();
+    if (userData && userData.user && userData.user.email) {
+      setUserEmail(userData.user.email);
+    }
+  }, []);
 
   const tabs = [
     { id: 'enterprise', label: 'Enterprise Approval', icon: '🏢' },
@@ -126,7 +157,7 @@ const NavigationSidebar = ({ activeTab, setActiveTab, sidebarOpen, setSidebarOpe
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-gray-900 truncate">Super Admin</p>
-                  <p className="text-xs text-gray-500 truncate">admin@cardnest.com</p>
+                  <p className="text-xs text-gray-500 truncate">{userEmail}</p>
                 </div>
               </div>
             </div>
@@ -142,7 +173,10 @@ const NavigationSidebar = ({ activeTab, setActiveTab, sidebarOpen, setSidebarOpe
                 
                 {/* Tooltip for user info */}
                 <div className="absolute left-10 bg-gray-800 text-white text-sm px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
-                  Super Admin
+                  <div className="text-center">
+                    <div className="font-medium">Super Admin</div>
+                    <div className="text-xs opacity-75">{userEmail}</div>
+                  </div>
                   <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1 w-2 h-2 bg-gray-800 rotate-45"></div>
                 </div>
               </div>
