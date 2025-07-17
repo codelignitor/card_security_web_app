@@ -10,9 +10,10 @@ import APIDocumentationSection from '../components/Super Admin/ApiDoc';
 import PageHeader from '../components/Super Admin/AdminHeader';
 import NavigationSidebar from '../components/Super Admin/AdminNav';
 import DashboardFooter from '../components/Super Admin/AdminFooter';
+import HomePage from '../components/Super Admin/HomePage';
 
 const AdminDashboard = () => {
-  const [activeTab, setActiveTab] = useState('Enterprise Approval');
+  const [activeTab, setActiveTab] = useState('Home');
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -112,6 +113,8 @@ const AdminDashboard = () => {
     }
 
     switch (activeTab) {
+      case 'Home':
+        return <HomePage/>
       case 'Enterprise Approval':
         return <BusinessApprovalSection />;
       case 'Pricing':

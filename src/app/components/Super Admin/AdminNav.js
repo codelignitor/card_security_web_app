@@ -1,6 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 
+
 const NavigationSidebar = ({ activeTab, setActiveTab, sidebarOpen, setSidebarOpen }) => {
   const [userEmail, setUserEmail] = useState('admin@cardnest.com');
 
@@ -34,13 +35,15 @@ const NavigationSidebar = ({ activeTab, setActiveTab, sidebarOpen, setSidebarOpe
     }
   }, []);
 
-  const tabs = [
-    { id: 'enterprise', label: 'Enterprise Approval', icon: '🏢' },
-    { id: 'pricing', label: 'Pricing', icon: '💰' },
-    { id: 'activity', label: 'User Activity', icon: '📊' },
-    { id: 'content', label: 'Content Management', icon: '📝' },
-    { id: 'api-docs', label: 'API Documentation', icon: '📖' }
-  ];
+const tabs = [
+  { id: 'home', label: 'Home', icon: '🏠' },
+  { id: 'enterprise', label: 'Enterprise Approval', icon: '🏢' },
+  { id: 'pricing', label: 'Pricing', icon: '💰' },
+  { id: 'activity', label: 'User Activity', icon: '📊' },
+  { id: 'content', label: 'Content Management', icon: '📝' },
+  { id: 'api-docs', label: 'API Documentation', icon: '📖' }
+];
+
 
   const handleTabClick = (tabId, tabLabel) => {
     setActiveTab(tabLabel);
