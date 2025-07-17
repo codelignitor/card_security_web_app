@@ -1027,11 +1027,11 @@ const BusinessApprovalSection = () => {
     <div key={business.id} className="bg-white backdrop-blur-sm border border-gray-200/60 rounded-2xl p-6 mb-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center flex-1 min-w-0">
-          <div className="flex-shrink-0 h-12 w-12 mr-4">
+          {/* <div className="flex-shrink-0 h-12 w-12 mr-4">
             <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-slate-800 to-purple-900 flex items-center justify-center shadow-lg">
               <Building className="h-6 w-6 text-white" />
             </div>
-          </div>
+          </div> */}
           <div className="flex-1 min-w-0">
             <h3 className="text-lg font-bold text-gray-900 truncate mb-1">
               {business.business_name}
@@ -1104,11 +1104,11 @@ const BusinessApprovalSection = () => {
                   <tr key={business.id} className={`hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-200 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}`}>
                     <td className="px-8 py-6 whitespace-nowrap">
                       <div className="flex items-center">
-                        <div className="flex-shrink-0 h-12 w-12">
+                        {/* <div className="flex-shrink-0 h-12 w-12">
                           <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-slate-800 to-purple-600 800 items-center justify-center shadow-lg">
                             <Building className="h-6 w-6 text-white" />
                           </div>
-                        </div>
+                        </div> */}
                         <div className="ml-4">
                           <div className="text-lg font-bold text-gray-900 mb-1">
                             {business.business_name}
@@ -1366,7 +1366,9 @@ const BusinessApprovalSection = () => {
                 )}
 
                 {/* Document Section */}
-                <div className="bg-white border-2 border-gray-200 rounded-2xl overflow-hidden">
+
+                {activeTab === "pending" &&(
+                   <div className="bg-white border-2 border-gray-200 rounded-2xl overflow-hidden">
                   <div className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-6">
                     <h4 className="text-xl font-bold flex items-center">
                       <FileText className="h-6 w-6 mr-3" />
@@ -1443,6 +1445,8 @@ const BusinessApprovalSection = () => {
                     </div>
                   </div>
                 </div>
+                )}
+               
 
                 {/* Modern Reject Reason Form */}
                 {showRejectForm && (
