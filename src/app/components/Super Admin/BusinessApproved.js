@@ -991,407 +991,377 @@ const BusinessApprovalSection = () => {
     }
   };
 
-  const getStatusBadge = (verified) => {
-    // Handle both string and number values
-    const status = String(verified).toUpperCase();
-    
-    if (status === "1" || status === "APPROVED") {
-      return (
-        <div className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-emerald-100 to-green-100 text-emerald-700 border border-emerald-200">
-          <CheckCircle className="w-3.5 h-3.5 mr-1.5" />
-          <span className="hidden sm:inline">Approved</span>
-          <span className="sm:hidden">✓</span>
-        </div>
-      );
-    } else if (status === "2" || status === "INCOMPLETE") {
-      return (
-        <div className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-red-100 to-rose-100 text-red-700 border border-red-200">
-          <XCircle className="w-3.5 h-3.5 mr-1.5" />
-          <span className="hidden sm:inline">Incomplete</span>
-          <span className="sm:hidden">✗</span>
-        </div>
-      );
-    } else {
-      return (
-        <div className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-700 border border-amber-200">
-          <Calendar className="w-3.5 h-3.5 mr-1.5" />
-          <span className="hidden sm:inline">Pending</span>
-          <span className="sm:hidden">⏳</span>
-        </div>
-      );
-    }
-  };
-
-  // Modern Mobile Card View
-  const renderMobileCard = (business, isApproved = false) => (
-    <div key={business.id} className="bg-white backdrop-blur-sm border border-gray-200/60 rounded-2xl p-6 mb-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center flex-1 min-w-0">
-          {/* <div className="flex-shrink-0 h-12 w-12 mr-4">
-            <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-slate-800 to-purple-900 flex items-center justify-center shadow-lg">
-              <Building className="h-6 w-6 text-white" />
-            </div>
-          </div> */}
-          <div className="flex-1 min-w-0">
-            <h3 className="text-lg font-bold text-gray-900 truncate mb-1">
-              {business.business_name}
-            </h3>
-            <p className="text-sm text-gray-500 truncate">
-              Reg: {business.business_registration_number}
-            </p>
-          </div>
-        </div>
-        {getStatusBadge(business.user.business_verified)}
-      </div>
-      
-      <div className="space-y-3 mb-6">
-        <div className="flex items-center text-sm text-gray-600 bg-gray-50 rounded-lg p-3">
-          <Mail className="h-4 w-4 mr-3 flex-shrink-0 text-blue-500" />
-          <span className="truncate font-medium">{business.user.email}</span>
-        </div>
-        <div className="flex items-center text-sm text-gray-500 bg-gray-50 rounded-lg p-3">
-          <Calendar className="h-4 w-4 mr-3 flex-shrink-0 text-purple-500" />
-          <span className="font-medium">{formatDate(business.created_at)}</span>
-        </div>
-      </div>
-      
-      <button
-        onClick={() => handleViewDocument(business)}
-        className="w-full inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-slate-800 to-purple-900 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-blue-200 transform transition-all duration-200 hover:scale-105 shadow-lg"
-      >
-        <Eye className="h-5 w-5 mr-2" />
-        View Documents
-      </button>
-    </div>
-  );
-
-  const renderBusinessTable = (businessList, isApproved = false) => (
-    <div className="overflow-hidden">
-      {isApproved && approvedLoading ? (
-        <div className="p-12 text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-12 w-12 border-4 border-slate-500 border-t-blue-900 mx-auto mb-4"></div>
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-slate-800 to-purple-800 opacity-20 animate-pulse"></div>
-          </div>
-          <p className="text-gray-600 font-medium">Loading approved businesses...</p>
-        </div>
-      ) : (
-        <>
-          {/* Desktop Table View */}
-          <div className="hidden md:block overflow-x-auto">
-            <table className="min-w-full">
-              <thead>
-                <tr className="bg-gradient-to-r from-gray-50 to-gray-100">
-                  <th className="px-8 py-6 text-left text-xs font-bold text-gray-600 uppercase tracking-wider border-b-2 border-gray-200">
-                    Company Details
-                  </th>
-                  <th className="px-8 py-6 text-left text-xs font-bold text-gray-600 uppercase tracking-wider border-b-2 border-gray-200">
-                    Contact
-                  </th>
-                  <th className="px-8 py-6 text-left text-xs font-bold text-gray-600 uppercase tracking-wider border-b-2 border-gray-200">
-                    {activeTab === 'approved' ? 'Approved Date' : 'Requested Date'}
-                  </th>
-                  <th className="px-8 py-6 text-left text-xs font-bold text-gray-600 uppercase tracking-wider border-b-2 border-gray-200">
-                    Status
-                  </th>
-                  <th className="px-8 py-6 text-center text-xs font-bold text-gray-600 uppercase tracking-wider border-b-2 border-gray-200">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-100">
-                {businessList.map((business, index) => (
-                  <tr key={business.id} className={`hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-200 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}`}>
-                    <td className="px-8 py-6 whitespace-nowrap">
-                      <div className="flex items-center">
-                        {/* <div className="flex-shrink-0 h-12 w-12">
-                          <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-slate-800 to-purple-600 800 items-center justify-center shadow-lg">
-                            <Building className="h-6 w-6 text-white" />
-                          </div>
-                        </div> */}
-                        <div className="ml-4">
-                          <div className="text-lg font-bold text-gray-900 mb-1">
-                            {business.business_name}
-                          </div>
-                          <div className="text-sm text-gray-500 font-medium">
-                            Reg: {business.business_registration_number}
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-8 py-6 whitespace-nowrap">
-                      <div className="flex items-center bg-gray-50 rounded-lg p-3">
-                        <Mail className="h-5 w-5 text-blue-500 mr-3" />
-                        <div className="text-sm font-medium text-gray-900">{business.user.email}</div>
-                      </div>
-                    </td>
-                    <td className="px-8 py-6 whitespace-nowrap">
-                      <div className="flex items-center text-sm font-medium text-gray-700 bg-gray-50 rounded-lg p-3">
-                        <Calendar className="h-4 w-4 text-purple-500 mr-2" />
-                        {formatDate(business.created_at)}
-                      </div>
-                    </td>
-                    <td className="px-8 py-6 whitespace-nowrap">
-                      {getStatusBadge(business.user.business_verified)}
-                    </td>
-                    <td className="px-8 py-6 whitespace-nowrap text-center">
-                      <button
-                        onClick={() => handleViewDocument(business)}
-                        className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-slate-700 to-purple-800 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-blue-200 transform transition-all duration-200 hover:scale-105 shadow-lg"
-                      >
-                        <Eye className="h-4 w-4 mr-2" />
-                        <span className="hidden sm:inline">View Documents</span>
-                        <span className="sm:hidden">View</span>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Mobile Card View */}
-          <div className="md:hidden px-6">
-            {businessList.map((business) => renderMobileCard(business, isApproved))}
-          </div>
-        </>
-      )}
-    </div>
-  );
-
-  const renderEmptyState = (title, description, icon) => (
-    <div className="p-16 text-center">
-      <div className="mb-6">
-        {icon}
-      </div>
-      <h3 className="text-2xl font-bold text-gray-800 mb-3">{title}</h3>
-      <p className="text-gray-500 text-lg">{description}</p>
-    </div>
-  );
-
-  if (loading) {
+ const getStatusBadge = (verified) => {
+  const status = String(verified).toUpperCase();
+  
+  if (status === "1" || status === "APPROVED") {
     return (
-      <div className="bg-white rounded-3xl shadow-xl border border-gray-200/60 p-8">
-        <div className="animate-pulse space-y-6">
-          <div className="h-8 bg-gradient-to-r from-gray-200 to-gray-300 rounded-2xl w-1/3"></div>
-          <div className="space-y-4">
-            <div className="h-6 bg-gradient-to-r from-gray-200 to-gray-300 rounded-xl"></div>
-            <div className="h-6 bg-gradient-to-r from-gray-200 to-gray-300 rounded-xl w-5/6"></div>
-            <div className="h-6 bg-gradient-to-r from-gray-200 to-gray-300 rounded-xl w-4/6"></div>
-          </div>
-        </div>
+      <div className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700 border border-emerald-200">
+        <CheckCircle className="w-2.5 h-2.5 mr-1" />
+        <span className="hidden sm:inline">Approved</span>
+        <span className="sm:hidden">✓</span>
+      </div>
+    );
+  } else if (status === "2" || status === "INCOMPLETE") {
+    return (
+      <div className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-red-100 text-red-700 border border-red-200">
+        <XCircle className="w-2.5 h-2.5 mr-1" />
+        <span className="hidden sm:inline">Incomplete</span>
+        <span className="sm:hidden">✗</span>
+      </div>
+    );
+  } else {
+    return (
+      <div className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700 border border-amber-200">
+        <Calendar className="w-2.5 h-2.5 mr-1" />
+        <span className="hidden sm:inline">Pending</span>
+        <span className="sm:hidden">⏳</span>
       </div>
     );
   }
+};
 
+const renderMobileCard = (business, isApproved = false) => (
+  <div key={business.id} className="bg-white border border-gray-200 rounded p-3 mb-2 shadow-sm">
+    <div className="flex items-start justify-between mb-2">
+      <div className="flex-1 min-w-0">
+        <h3 className="text-xs font-medium text-gray-900 truncate mb-1">
+          {business.business_name}
+        </h3>
+        <p className="text-xs text-gray-500 truncate">
+          Reg: {business.business_registration_number}
+        </p>
+      </div>
+      {getStatusBadge(business.user.business_verified)}
+    </div>
+    
+    <div className="space-y-1.5 mb-3">
+      <div className="flex items-center text-xs text-gray-600 bg-gray-50 rounded p-1.5">
+        <Mail className="h-2.5 w-2.5 mr-1.5 text-blue-500" />
+        <span className="truncate">{business.user.email}</span>
+      </div>
+      <div className="flex items-center text-xs text-gray-500 bg-gray-50 rounded p-1.5">
+        <Calendar className="h-2.5 w-2.5 mr-1.5 text-purple-500" />
+        <span>{formatDate(business.created_at)}</span>
+      </div>
+    </div>
+    
+    <button
+      onClick={() => handleViewDocument(business)}
+      className="w-full inline-flex items-center justify-center px-2 py-1.5 bg-slate-700 text-white text-xs font-medium rounded hover:bg-slate-600 transition-colors"
+    >
+      <Eye className="h-3 w-3 mr-1" />
+      View
+    </button>
+  </div>
+);
+
+const renderBusinessTable = (businessList, isApproved = false) => (
+  <div className="overflow-hidden">
+    {isApproved && approvedLoading ? (
+      <div className="p-6 text-center">
+        <div className="animate-spin rounded-full h-6 w-6 border-2 border-slate-500 border-t-blue-700 mx-auto mb-2"></div>
+        <p className="text-gray-600 text-sm">Loading...</p>
+      </div>
+    ) : (
+      <>
+        {/* Desktop Table View */}
+        <div className="hidden md:block overflow-x-auto">
+          <table className="min-w-full">
+            <thead>
+              <tr className="bg-gray-50">
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-600 uppercase">
+                  Company
+                </th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-600 uppercase">
+                  Contact
+                </th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-600 uppercase">
+                  Date
+                </th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-600 uppercase">
+                  Status
+                </th>
+                <th className="px-3 py-2 text-center text-xs font-medium text-gray-600 uppercase">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {businessList.map((business, index) => (
+                <tr key={business.id} className={`hover:bg-gray-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}>
+                  <td className="px-3 py-2">
+                    <div>
+                      <div className="text-sm font-medium text-gray-900">
+                        {business.business_name}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {business.business_registration_number}
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-3 py-2">
+                    <div className="flex items-center bg-gray-50 rounded p-1.5">
+                      <Mail className="h-3 w-3 text-blue-500 mr-1.5" />
+                      <div className="text-xs text-gray-900">{business.user.email}</div>
+                    </div>
+                  </td>
+                  <td className="px-3 py-2">
+                    <div className="flex items-center text-xs text-gray-700 bg-gray-50 rounded p-1.5">
+                      <Calendar className="h-3 w-3 text-purple-500 mr-1.5" />
+                      {formatDate(business.created_at)}
+                    </div>
+                  </td>
+                  <td className="px-3 py-2">
+                    {getStatusBadge(business.user.business_verified)}
+                  </td>
+                  <td className="px-3 py-2 text-center">
+                    <button
+                      onClick={() => handleViewDocument(business)}
+                      className="inline-flex items-center px-2 py-1 bg-slate-700 text-white text-xs font-medium rounded hover:bg-slate-600 transition-colors"
+                    >
+                      <Eye className="h-3 w-3 mr-1" />
+                      View
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Mobile Card View */}
+        <div className="md:hidden px-2">
+          {businessList.map((business) => renderMobileCard(business, isApproved))}
+        </div>
+      </>
+    )}
+  </div>
+);
+
+const renderEmptyState = (title, description, icon) => (
+  <div className="p-6 text-center">
+    <div className="mb-3">
+      {icon}
+    </div>
+    <h3 className="text-sm font-medium text-gray-800 mb-1">{title}</h3>
+    <p className="text-gray-500 text-xs">{description}</p>
+  </div>
+);
+
+if (loading) {
   return (
-    <div className="bg-white rounded-3xl shadow-xl border border-gray-200/60 text-black overflow-hidden backdrop-blur-sm">
-      {/* Modern Notification */}
-      {notification && (
-        <div className={`fixed top-6 right-6 z-50 p-6 rounded-2xl shadow-2xl max-w-sm backdrop-blur-lg border ${
-          notification.type === 'success' 
-            ? 'bg-emerald-50/90 border-emerald-200 shadow-emerald-200/50' 
-            : 'bg-red-50/90 border-red-200 shadow-red-200/50'
-        }`}>
-          <div className="flex items-start">
-            <div className="flex-shrink-0">
-              {notification.type === 'success' ? (
-                <div className="h-8 w-8 rounded-full bg-emerald-500 flex items-center justify-center">
-                  <CheckCircle className="h-5 w-5 text-white" />
-                </div>
-              ) : (
-                <div className="h-8 w-8 rounded-full bg-red-500 flex items-center justify-center">
-                  <AlertCircle className="h-5 w-5 text-white" />
-                </div>
-              )}
-            </div>
-            <div className="ml-4">
-              <p className={`text-sm font-semibold ${
-                notification.type === 'success' ? 'text-emerald-800' : 'text-red-800'
-              }`}>
-                {notification.message}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Modern Header */}
-      <div className="p-8 bg-gradient-to-r from-slate-800 to-purple-800 text-white">
-        <h2 className="text-3xl font-bold mb-2 flex items-center">
-          <div className="h-10 w-10 rounded-2xl bg-white/20 flex items-center justify-center mr-4">
-            <Building className="w-6 h-6" />
-          </div>
-          Business Management
-        </h2>
-        <p className="text-blue-100 text-lg">Manage business verification requests and approvals</p>
-      </div>
-
-      <div className="p-8">
-        {/* Modern Tab Navigation */}
-        <div className="flex space-x-2 bg-gray-100/80 p-2 rounded-2xl mb-8 backdrop-blur-sm">
-          <button
-            onClick={() => handleTabChange('pending')}
-            className={`flex-1 px-6 py-4 text-sm font-bold rounded-xl transition-all duration-300 ${
-              activeTab === 'pending'
-                ? 'bg-white text-blue-700 shadow-lg shadow-blue-200/50 scale-105'
-                : 'text-gray-600 hover:text-gray-800 hover:bg-white/50'
-            }`}
-          >
-            <div className="flex items-center justify-center">
-              <Calendar className="w-5 h-5 mr-2" />
-              <span className="hidden sm:inline">Pending Approval</span>
-              <span className="sm:hidden">Pending</span>
-              <span className="ml-2 px-2 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-bold">
-                {businesses.length}
-              </span>
-            </div>
-          </button>
-          <button
-            onClick={() => handleTabChange('approved')}
-            className={`flex-1 px-6 py-4 text-sm font-bold rounded-xl transition-all duration-300 ${
-              activeTab === 'approved'
-                ? 'bg-white text-green-700 shadow-lg shadow-green-200/50 scale-105'
-                : 'text-gray-600 hover:text-gray-800 hover:bg-white/50'
-            }`}
-          >
-            <div className="flex items-center justify-center">
-              <Users className="w-5 h-5 mr-2" />
-              <span className="hidden sm:inline">Approved Businesses</span>
-              <span className="sm:hidden">Approved</span>
-              <span className="ml-2 px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold">
-                {approvedBusinesses.length}
-              </span>
-            </div>
-          </button>
-        </div>
-
-        {/* Tab Content */}
-        <div className="bg-gray-50/50 rounded-2xl overflow-hidden">
-          {activeTab === 'pending' && (
-            <>
-              {businesses.length > 0 ? (
-                renderBusinessTable(businesses)
-              ) : (
-                renderEmptyState(
-                  'No Pending Requests',
-                  'There are no business verification requests at the moment.',
-                  <div className="h-20 w-20 rounded-full bg-gradient-to-br from-slate-800 to-purple-700 flex items-center justify-center mx-auto">
-                    <FileText className="h-10 w-10 text-white" />
-                  </div>
-                )
-              )}
-            </>
-          )}
-
-          {activeTab === 'approved' && (
-            <>
-              {approvedBusinesses.length > 0 || approvedLoading ? (
-                renderBusinessTable(approvedBusinesses, true)
-              ) : (
-                renderEmptyState(
-                  'No Approved Businesses',
-                  'There are no approved businesses at the moment.',
-                  <div className="h-20 w-20 rounded-full bg-gradient-to-br from-green-900 to-green-700 flex items-center justify-center mx-auto">
-                    <Users className="h-10 w-10 text-white" />
-                  </div>
-                )
-              )}
-            </>
-          )}
+    <div className="bg-white rounded shadow border border-gray-200 p-4">
+      <div className="animate-pulse space-y-3">
+        <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+        <div className="space-y-2">
+          <div className="h-3 bg-gray-200 rounded"></div>
+          <div className="h-3 bg-gray-200 rounded w-5/6"></div>
+          <div className="h-3 bg-gray-200 rounded w-4/6"></div>
         </div>
       </div>
+    </div>
+  );
+}
 
-      {/* Modern Modal for Document Review */}
-      {isModalOpen && selectedBusiness && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm overflow-y-auto h-full w-full z-50 p-4">
-          <div className="relative top-4 sm:top-10 mx-auto p-0 border-0 w-full max-w-5xl shadow-2xl rounded-3xl bg-white overflow-hidden">
-            {/* Modal Header */}
-            <div className="bg-gradient-to-r from-slate-800 to-purple-900 text-white p-8">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-2xl font-bold mb-2">Business Details Review</h3>
-                  <p className="text-blue-100">Comprehensive verification assessment</p>
+return (
+  <div className="bg-white rounded shadow border border-gray-200 text-black overflow-hidden">
+    {/* Notification */}
+    {notification && (
+      <div className={`fixed top-3 right-3 z-50 p-3 rounded shadow-lg max-w-xs ${
+        notification.type === 'success' 
+          ? 'bg-emerald-50 border border-emerald-200' 
+          : 'bg-red-50 border border-red-200'
+      }`}>
+        <div className="flex items-start">
+          <div className="flex-shrink-0">
+            {notification.type === 'success' ? (
+              <CheckCircle className="h-4 w-4 text-emerald-500" />
+            ) : (
+              <AlertCircle className="h-4 w-4 text-red-500" />
+            )}
+          </div>
+          <div className="ml-2">
+            <p className={`text-xs font-medium ${
+              notification.type === 'success' ? 'text-emerald-800' : 'text-red-800'
+            }`}>
+              {notification.message}
+            </p>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* Header */}
+    <div className="p-3 sm:p-4 bg-slate-800 text-white">
+      <h2 className="text-sm sm:text-base font-medium mb-1 flex items-center">
+        <Building className="w-4 h-4 mr-2" />
+        Business Management
+      </h2>
+      <p className="text-slate-200 text-xs">Manage verification requests</p>
+    </div>
+
+    <div className="p-3 sm:p-4">
+      {/* Tab Navigation */}
+      <div className="flex space-x-1 bg-gray-100 p-1 rounded mb-4">
+        <button
+          onClick={() => handleTabChange('pending')}
+          className={`flex-1 px-2 py-1.5 text-xs font-medium rounded transition-colors ${
+            activeTab === 'pending'
+              ? 'bg-white text-blue-700 shadow-sm'
+              : 'text-gray-600 hover:text-gray-800'
+          }`}
+        >
+          <div className="flex items-center justify-center">
+            <Calendar className="w-3 h-3 mr-1" />
+            <span>Pending</span>
+            <span className="ml-1 px-1 py-0.5 bg-amber-100 text-amber-700 rounded text-xs">
+              {businesses.length}
+            </span>
+          </div>
+        </button>
+        <button
+          onClick={() => handleTabChange('approved')}
+          className={`flex-1 px-2 py-1.5 text-xs font-medium rounded transition-colors ${
+            activeTab === 'approved'
+              ? 'bg-white text-green-700 shadow-sm'
+              : 'text-gray-600 hover:text-gray-800'
+          }`}
+        >
+          <div className="flex items-center justify-center">
+            <Users className="w-3 h-3 mr-1" />
+            <span>Approved</span>
+            <span className="ml-1 px-1 py-0.5 bg-emerald-100 text-emerald-700 rounded text-xs">
+              {approvedBusinesses.length}
+            </span>
+          </div>
+        </button>
+      </div>
+
+      {/* Tab Content */}
+      <div className="bg-gray-50 rounded overflow-hidden">
+        {activeTab === 'pending' && (
+          <>
+            {businesses.length > 0 ? (
+              renderBusinessTable(businesses)
+            ) : (
+              renderEmptyState(
+                'No Pending Requests',
+                'No verification requests at the moment.',
+                <div className="h-8 w-8 rounded-full bg-slate-700 flex items-center justify-center mx-auto">
+                  <FileText className="h-4 w-4 text-white" />
                 </div>
-                <button
-                  onClick={() => setIsModalOpen(false)}
-                  className="text-white/80 hover:text-white hover:bg-white/20 rounded-full p-2 transition-all duration-200"
-                  disabled={actionLoading}
-                >
-                  <XCircle className="h-6 w-6" />
-                </button>
+              )
+            )}
+          </>
+        )}
+
+        {activeTab === 'approved' && (
+          <>
+            {approvedBusinesses.length > 0 || approvedLoading ? (
+              renderBusinessTable(approvedBusinesses, true)
+            ) : (
+              renderEmptyState(
+                'No Approved Businesses',
+                'No approved businesses at the moment.',
+                <div className="h-8 w-8 rounded-full bg-green-700 flex items-center justify-center mx-auto">
+                  <Users className="h-4 w-4 text-white" />
+                </div>
+              )
+            )}
+          </>
+        )}
+      </div>
+    </div>
+
+    {/* Modal */}
+    {isModalOpen && selectedBusiness && (
+      <div className="fixed inset-0 bg-black/50 overflow-y-auto h-full w-full z-50 p-2">
+        <div className="relative top-2 sm:top-8 mx-auto border-0 w-full max-w-3xl shadow-xl rounded bg-white">
+          {/* Modal Header */}
+          <div className="bg-slate-800 text-white p-3 sm:p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-sm sm:text-base font-medium mb-1">Business Details</h3>
+                <p className="text-slate-200 text-xs">Verification review</p>
               </div>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="text-white/80 hover:text-white hover:bg-white/20 rounded p-1"
+                disabled={actionLoading}
+              >
+                <XCircle className="h-4 w-4" />
+              </button>
             </div>
-            
-            <div className="p-8 max-h-[80vh] overflow-y-auto">
-              <div className="space-y-8">
-                {/* Business Information Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6 border border-blue-200/50">
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Business Name</label>
-                    <p className="text-lg font-semibold text-gray-900">{selectedBusiness.business_name}</p>
-                  </div>
-                  <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6 border border-blue-200/50">
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Registration Number</label>
-                    <p className="text-lg font-semibold text-gray-900">{selectedBusiness.business_registration_number}</p>
-                  </div>
+          </div>
+          
+          <div className="p-3 sm:p-4 max-h-[80vh] overflow-y-auto">
+            <div className="space-y-4">
+              {/* Business Information */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                <div className="bg-blue-50 rounded p-3">
+                  <label className="block text-xs font-medium text-gray-700 mb-1">Business Name</label>
+                  <p className="text-gray-900 text-sm font-medium">{selectedBusiness.business_name}</p>
                 </div>
-                
-                <div className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-2xl p-6 border border-emerald-200/50">
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Account Holder</label>
-                  <p className="text-lg font-semibold text-gray-900">
-                    {selectedBusiness.account_holder_first_name} {selectedBusiness.account_holder_last_name}
-                  </p>
+                <div className="bg-blue-50 rounded p-3">
+                  <label className="block text-xs font-medium text-gray-700 mb-1">Registration Number</label>
+                  <p className="text-gray-900 text-sm font-medium">{selectedBusiness.business_registration_number}</p>
                 </div>
-                
-                <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-6 border border-amber-200/50">
-                  <label className="block text-sm font-bold text-gray-700 mb-3">Business Address</label>
-                  <div className="text-gray-900 space-y-1">
-                    <p className="font-medium">{selectedBusiness.street}</p>
-                    {selectedBusiness.street_line2 && <p className="font-medium">{selectedBusiness.street_line2}</p>}
-                    <p className="font-medium">{selectedBusiness.city}, {selectedBusiness.state} {selectedBusiness.zip_code}</p>
-                    <p className="font-semibold text-amber-700">{selectedBusiness.country}</p>
-                  </div>
+              </div>
+              
+              <div className="bg-green-50 rounded p-3">
+                <label className="block text-xs font-medium text-gray-700 mb-1">Account Holder</label>
+                <p className="text-gray-900 text-sm font-medium">
+                  {selectedBusiness.account_holder_first_name} {selectedBusiness.account_holder_last_name}
+                </p>
+              </div>
+              
+              <div className="bg-amber-50 rounded p-3">
+                <label className="block text-xs font-medium text-gray-700 mb-1">Business Address</label>
+                <div className="text-gray-900 text-sm space-y-1">
+                  <p>{selectedBusiness.street}</p>
+                  {selectedBusiness.street_line2 && <p>{selectedBusiness.street_line2}</p>}
+                  <p>{selectedBusiness.city}, {selectedBusiness.state} {selectedBusiness.zip_code}</p>
+                  <p className="font-medium">{selectedBusiness.country}</p>
                 </div>
+              </div>
 
-                {/* Previous verification reason */}
-                {selectedBusiness.user.verification_reason && (
-                  <div className="bg-gradient-to-br from-red-50 to-rose-50 border border-red-200 rounded-2xl p-6">
-                    <label className="block text-sm font-bold text-red-800 mb-3 flex items-center">
-                      <AlertCircle className="h-5 w-5 mr-2" />
-                      Previous Verification Notes
-                    </label>
-                    <p className="text-red-700 font-medium bg-white/50 rounded-xl p-4">{selectedBusiness.user.verification_reason}</p>
-                  </div>
-                )}
+              {/* Previous verification reason */}
+              {selectedBusiness.user.verification_reason && (
+                <div className="bg-red-50 border border-red-200 rounded p-3">
+                  <label className="block text-xs font-medium text-red-800 mb-1 flex items-center">
+                    <AlertCircle className="h-3 w-3 mr-1" />
+                    Previous Notes
+                  </label>
+                  <p className="text-red-700 text-sm bg-white rounded p-2">{selectedBusiness.user.verification_reason}</p>
+                </div>
+              )}
 
-                {/* Document Section */}
-
-                {activeTab === "pending" &&(
-                   <div className="bg-white border-2 border-gray-200 rounded-2xl overflow-hidden">
-                  <div className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-6">
-                    <h4 className="text-xl font-bold flex items-center">
-                      <FileText className="h-6 w-6 mr-3" />
+              {/* Document Section */}
+              {activeTab === "pending" && (
+                <div className="bg-white border border-gray-200 rounded overflow-hidden">
+                  <div className="bg-indigo-600 text-white p-3">
+                    <h4 className="text-sm font-medium flex items-center">
+                      <FileText className="h-4 w-4 mr-1" />
                       Registration Document
                     </h4>
                   </div>
                   
-                  <div className="p-6">
-                    <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-6 space-y-4 lg:space-y-0">
-                      <div className="flex items-center min-w-0 bg-gray-50 rounded-xl p-4">
-                        <FileText className="h-6 w-6 text-indigo-500 mr-3 flex-shrink-0" />
-                        <span className="text-gray-700 font-medium truncate">
+                  <div className="p-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3 space-y-2 sm:space-y-0">
+                      <div className="flex items-center min-w-0 bg-gray-50 rounded p-2">
+                        <FileText className="h-3 w-3 text-indigo-500 mr-1" />
+                        <span className="text-gray-700 text-xs truncate">
                           {selectedBusiness.registration_document_path.split('/').pop()}
                         </span>
                       </div>
-                      <div className="flex space-x-3">
+                      <div className="flex space-x-2">
                         <button
                           onClick={() => window.open(`${selectedBusiness.registration_document_path}`, '_blank')}
-                          className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-slate-800 to-indigo-900 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-blue-200 transform transition-all duration-200 hover:scale-105 shadow-lg"
+                          className="flex items-center px-2 py-1 bg-slate-700 text-white text-xs font-medium rounded hover:bg-slate-600"
                         >
-                          <Eye className="h-4 w-4 mr-2" />
-                          <span className="hidden sm:inline">View Document</span>
-                          <span className="sm:hidden">View</span>
+                          <Eye className="h-3 w-3 mr-1" />
+                          View
                         </button>
                         <button
                           onClick={() => handleDownloadDocument(
@@ -1399,133 +1369,130 @@ const BusinessApprovalSection = () => {
                             `${selectedBusiness.business_name}_registration_document.${selectedBusiness.registration_document_path.split('.').pop()}`
                           )}
                           disabled={downloadLoading}
-                          className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-700 to-green-600 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-green-700 focus:outline-none focus:ring-4 focus:ring-emerald-200 transform transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                          className="flex items-center px-2 py-1 bg-emerald-600 text-white text-xs font-medium rounded hover:bg-emerald-700 disabled:opacity-50"
                         >
                           {downloadLoading ? (
-                            <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
+                            <div className="animate-spin rounded-full h-3 w-3 border border-white border-t-transparent mr-1"></div>
                           ) : (
-                            <Download className="h-4 w-4 mr-2" />
+                            <Download className="h-3 w-3 mr-1" />
                           )}
-                          <span className="hidden sm:inline">Download</span>
-                          <span className="sm:hidden">DL</span>
+                          Download
                         </button>
                       </div>
                     </div>
                     
-                    {/* Enhanced Document Preview */}
-                    <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-6 border-2 border-gray-200">
+                    {/* Document Preview */}
+                    <div className="bg-gray-50 rounded p-3">
                       <div className="aspect-w-16 aspect-h-9">
                         {selectedBusiness.registration_document_path.toLowerCase().includes('.pdf') ? (
                           <iframe
                             src={`${selectedBusiness.registration_document_path}`}
-                            className="w-full h-80 border-0 rounded-xl shadow-inner"
+                            className="w-full h-48 border-0 rounded"
                             title="Document Preview"
                           />
                         ) : (
                           <img
                             src={`${selectedBusiness.registration_document_path}`}
                             alt="Registration Document"
-                            className="w-full h-80 object-contain rounded-xl shadow-inner"
+                            className="w-full h-48 object-contain rounded"
                             onError={(e) => {
                               e.target.style.display = 'none';
                               e.target.nextSibling.style.display = 'flex';
                             }}
                           />
                         )}
-                        <div className="hidden w-full h-80 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center border-2 border-dashed border-gray-300">
+                        <div className="hidden w-full h-48 bg-gray-100 rounded flex items-center justify-center">
                           <div className="text-center">
-                            <div className="h-16 w-16 rounded-full bg-gray-300 flex items-center justify-center mx-auto mb-4">
-                              <FileText className="h-8 w-8 text-gray-500" />
-                            </div>
-                            <p className="text-lg font-semibold text-gray-600 mb-2">Preview not available</p>
-                            <p className="text-sm text-gray-500">Use View or Download buttons above</p>
+                            <FileText className="h-8 w-8 text-gray-400 mx-auto mb-1" />
+                            <p className="text-gray-500 text-xs">Preview not available</p>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                )}
-               
+              )}
 
-                {/* Modern Reject Reason Form */}
-                {showRejectForm && (
-                  <div className="bg-gradient-to-br from-red-50 to-rose-50 border-2 border-red-200 rounded-2xl p-6">
-                    <label className="block text-lg font-bold text-red-800 mb-4 flex items-center">
-                      <XCircle className="h-6 w-6 mr-3" />
-                      Reason for Rejection *
-                    </label>
-                    <textarea
-                      value={rejectReason}
-                      onChange={(e) => setRejectReason(e.target.value)}
-                      className="w-full px-6 py-4 border-2 border-red-300 rounded-xl focus:outline-none focus:ring-4 focus:ring-red-200 focus:border-red-500 text-gray-800 font-medium bg-white/80 backdrop-blur-sm resize-none"
-                      rows="4"
-                      placeholder="Please provide a detailed reason for rejecting this business profile. Be specific about what needs to be corrected or improved..."
-                      required
-                    />
-                  </div>
-                )}
-              </div>
-
-              {/* Modern Action Buttons - Only for pending businesses */}
-              {activeTab === 'pending' && (
-                <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-end space-y-4 lg:space-y-0 lg:space-x-4 mt-8 pt-8 border-t-2 border-gray-200">
-                  <button
-                    onClick={() => handleApprove(selectedBusiness.id)}
-                    disabled={actionLoading}
-                    className="w-full lg:w-auto inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-emerald-800 to-green-900 text-white font-bold rounded-xl hover:from-emerald-600 hover:to-green-700 focus:outline-none focus:ring-4 focus:ring-emerald-200 transform transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                  >
-                    {actionLoading ? (
-                      <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-3"></div>
-                    ) : (
-                      <CheckCircle className="h-5 w-5 mr-3" />
-                    )}
-                    Approve Business
-                  </button>
-
-                  {!showRejectForm ? (
-                    <button
-                      onClick={handleRejectClick}
-                      disabled={actionLoading}
-                      className="w-full lg:w-auto inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-red-500 to-rose-600 text-white font-bold rounded-xl hover:from-red-600 hover:to-rose-700 focus:outline-none focus:ring-4 focus:ring-red-200 transform transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                    >
-                      <XCircle className="h-5 w-5 mr-3" />
-                      Reject Application
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => handleReject(selectedBusiness.id)}
-                      disabled={actionLoading || !rejectReason.trim()}
-                      className="w-full lg:w-auto inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-red-600 to-rose-700 text-white font-bold rounded-xl hover:from-red-700 hover:to-rose-800 focus:outline-none focus:ring-4 focus:ring-red-200 transform transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                    >
-                      {actionLoading ? (
-                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-3"></div>
-                      ) : (
-                        <XCircle className="h-5 w-5 mr-3" />
-                      )}
-                      Confirm Rejection
-                    </button>
-                  )}
-                  
-                  <button
-                    onClick={() => {
-                      setIsModalOpen(false);
-                      setShowRejectForm(false);
-                      setRejectReason('');
-                    }}
-                    disabled={actionLoading}
-                    className="w-full lg:w-auto px-8 py-4 text-gray-700 font-bold bg-gray-200 hover:bg-gray-300 rounded-xl focus:outline-none focus:ring-4 focus:ring-gray-200 transform transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                  >
-                    Cancel
-                  </button>
+              {/* Reject Reason Form */}
+              {showRejectForm && (
+                <div className="bg-red-50 border border-red-200 rounded p-3">
+                  <label className="block text-xs font-medium text-red-800 mb-1 flex items-center">
+                    <XCircle className="h-3 w-3 mr-1" />
+                    Reason for Rejection *
+                  </label>
+                  <textarea
+                    value={rejectReason}
+                    onChange={(e) => setRejectReason(e.target.value)}
+                    className="w-full px-2 py-1.5 border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 text-sm"
+                    rows="3"
+                    placeholder="Please provide a detailed reason for rejection..."
+                    required
+                  />
                 </div>
               )}
             </div>
+
+            {/* Action Buttons */}
+            {activeTab === 'pending' && (
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-end space-y-2 sm:space-y-0 sm:space-x-2 mt-4 pt-3 border-t">
+                <button
+                  onClick={() => handleApprove(selectedBusiness.id)}
+                  disabled={actionLoading}
+                  className="flex items-center justify-center px-3 py-1.5 bg-emerald-600 text-white text-xs font-medium rounded hover:bg-emerald-700 disabled:opacity-50"
+                >
+                  {actionLoading ? (
+                    <div className="animate-spin rounded-full h-3 w-3 border border-white border-t-transparent mr-1"></div>
+                  ) : (
+                    <CheckCircle className="h-3 w-3 mr-1" />
+                  )}
+                  Approve
+                </button>
+
+                {!showRejectForm ? (
+                  <button
+                    onClick={handleRejectClick}
+                    disabled={actionLoading}
+                    className="flex items-center justify-center px-3 py-1.5 bg-red-600 text-white text-xs font-medium rounded hover:bg-red-700 disabled:opacity-50"
+                  >
+                    <XCircle className="h-3 w-3 mr-1" />
+                    Reject
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleReject(selectedBusiness.id)}
+                    disabled={actionLoading || !rejectReason.trim()}
+                    className="flex items-center justify-center px-3 py-1.5 bg-red-600 text-white text-xs font-medium rounded hover:bg-red-700 disabled:opacity-50"
+                  >
+                    {actionLoading ? (
+                      <div className="animate-spin rounded-full h-3 w-3 border border-white border-t-transparent mr-1"></div>
+                    ) : (
+                      <XCircle className="h-3 w-3 mr-1" />
+                    )}
+                    Confirm Rejection
+                  </button>
+                )}
+                
+                <button
+                  onClick={() => {
+                    setIsModalOpen(false);
+                    setShowRejectForm(false);
+                    setRejectReason('');
+                  }}
+                  disabled={actionLoading}
+                  className="px-3 py-1.5 text-gray-700 bg-gray-200 hover:bg-gray-300 text-xs font-medium rounded disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
           </div>
         </div>
-      )}
-    </div>
-  );
+      </div>
+    )}
+  </div>
+); 
+
+  
 };
 
 export default BusinessApprovalSection;
