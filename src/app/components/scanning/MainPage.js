@@ -8,6 +8,7 @@ import CameraView from './CameraView';
 
 // Import utilities
 import { initializeCamera, captureFrame, cleanupCamera } from '@/app/utils/CameraUtils';
+// import { initializeCamera, captureFrame, cleanupCamera } from '@/app/utils/CameraUtils';
 import { useDetection } from '@/app/hooks/UseDetection';
 import { sendFrameToAPI } from '@/app/utils/apiService';
 
@@ -483,10 +484,13 @@ const startBackSideDetection = async () => {
         
         // Check for complete_scan flag
         if (finalResult.complete_scan === true) {
-          console.log('🎯✅ FINAL: Complete scan confirmed in main component');
-          console.log('🚫 No more API calls should occur after this point');
-          console.log('📊 Final result data:', finalResult);
-          
+
+          // console.log('🎯✅ FINAL: Complete scan confirmed in main component');
+          // console.log('🚫 No more API calls should occur after this point');
+          // console.log('📊 Final result data:', finalResult);
+         
+         
+          cleanupCamera(videoRef);
           setFinalOcrResults(finalResult);
           setCurrentPhase('results');
           

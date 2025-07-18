@@ -192,10 +192,10 @@ function HomeScreen({ status, setActiveTab }) {
               Contact Support →
             </button>
             <a 
-              href="mailto:support@lollicash.com"
+              href="mailto:support@cardnest.io"
               className="block text-purple-700 hover:text-purple-900 text-sm"
             >
-              Email: support@lollicash.com
+              Email: support@cardnest.io
             </a>
           </div>
         </div>
