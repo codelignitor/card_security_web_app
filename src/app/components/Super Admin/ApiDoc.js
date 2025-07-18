@@ -397,7 +397,7 @@ const APIDocumentationSection = () => {
             <li>• Supported formats: PDF, DOC, DOCX, TXT, MD</li>
             <li>• Maximum file size: 10MB</li>
             <li>• Files are converted to base64 for secure transmission</li>
-            <li>• Merchant ID is automatically retrieved from UserData</li>
+            {/* <li>• Merchant ID is automatically retrieved from UserData</li> */}
           </ul>
         </div>
       </div>
