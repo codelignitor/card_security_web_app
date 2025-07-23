@@ -66,8 +66,8 @@ function DashboardContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('profile');
   const [isLargeScreen, setIsLargeScreen] = useState(false);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   
 // Add this function to your dashboard component
 const getUserDataFromStorage = () => {
@@ -195,7 +195,7 @@ useEffect(() => {
   });
   
   const [documents, setDocuments] = useState([]);
-  const [status, setStatus] = useState('incomplete'); // Initialize as incomplete
+  const [status, setStatus] = useState('pending'); // Initialize as incomplete
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   // API Integration States
@@ -213,7 +213,7 @@ useEffect(() => {
     { id: 'developers', label: 'Developers', icon: '⚡' }
   ];
 
-  const handleInputChange = (e) => {
+const handleInputChange = (e) => {
     const { name, value, type, files } = e.target;
     
     if (type === 'file') {
@@ -239,19 +239,24 @@ useEffect(() => {
   };
 
  // API INTEGRATION - Fixed handleSubmit function
-const handleSubmit = async () => {
+// console.log("User Data at submit:", userData);
+ const handleSubmit = async () => {
   setIsSubmitting(true);
   setSubmitError(null);
   setSubmitSuccess(false);
+  
   
   // Validation
   const requiredFields = ['business_name', 'business_registration_number', 'account_holder_first_name', 'account_holder_last_name', 'street', 'city', 'state', 'country', 'email'];
   const missingFields = requiredFields.filter(field => !businessInfo[field]?.trim());
   
-  if (missingFields.length > 0) {
-    setSubmitError('Please fill in all required fields');
-    setIsSubmitting(false);
-    return;
+  //check for all Required fields in case of Incomplete profile 
+  if (status === "incomplete-profile" || status === "INCOMPLETE-PROFILE"){
+    if (missingFields.length > 0) {
+      setSubmitError('Please fill in all required field');
+      setIsSubmitting(false);
+      return;
+    }
   }
 
   if (!businessInfo.registration_document) {
@@ -263,7 +268,8 @@ const handleSubmit = async () => {
   try {
     // Prepare FormData for API submission
     const formData = new FormData();
-    
+    formData.append("user_id", userData?.id); // or merchant_id 
+
     // Add all business information fields individually
     Object.keys(businessInfo).forEach(key => {
       if (key === 'registration_document' && businessInfo[key]) {
@@ -272,6 +278,11 @@ const handleSubmit = async () => {
         formData.append(key, businessInfo[key]);
       }
     });
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
     
     // Make API call
     const response = await fetch('https://cardsecuritysystem-8xdez.ondigitalocean.app/api/business-profile', {
@@ -378,6 +389,7 @@ const handleSubmit = async () => {
 const checkBusinessVerificationStatus = async (userId) => {
   try {
     const response = await fetch(`https://cardsecuritysystem-8xdez.ondigitalocean.app/api/business-profile/business-verification-status?user_id=${userId}`);
+    //  console.log(userData?.userId);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -523,6 +535,7 @@ const checkBusinessStatus = async () => {
       // Cleanup interval on component unmount
       return () => clearInterval(statusCheckInterval);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData?.id]);
 
   // Legacy status check (keeping for backward compatibility)
@@ -534,6 +547,7 @@ const checkBusinessStatus = async () => {
         checkBusinessStatus();
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData?.id]);
 
   const renderContent = () => {
@@ -550,6 +564,7 @@ const checkBusinessStatus = async () => {
         return (
           <BusinessScreen
             businessInfo={businessInfo}
+            setBusinessInfo={setBusinessInfo}
             documents={documents}
             status={status}
             isSubmitting={isSubmitting}
